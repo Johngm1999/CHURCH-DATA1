@@ -46,7 +46,11 @@ const Dashboard = (props) => {
     }, [location]);
 
     return (
-        <>
+        <div
+            style={{
+                background: "#e6eaeb",
+            }}
+        >
             {user?.user_role?.toLowerCase() === "admin" && (
                 <Sidebar {...props} show={showSidebar} />
             )}
@@ -56,7 +60,7 @@ const Dashboard = (props) => {
                     marginLeft: `${showSidebar ? "250px" : "0px"}`,
                     position: "relative",
                     transition: "margin .25s",
-                    height: "96vh",
+                    height: "100vh",
                     overflow: "auto",
                 }}
                 ref={mainContent}
@@ -73,7 +77,7 @@ const Dashboard = (props) => {
                 </div>
                 {/* <footer className='py-4' /> */}
             </div>
-        </>
+        </div>
     );
 };
 

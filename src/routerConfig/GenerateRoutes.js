@@ -9,8 +9,6 @@ import { Toaster } from "react-hot-toast";
 function GenerateRoutes() {
     const { user } = useAuthenticationState();
 
-    console.log(user?.user_role?.toLowerCase());
-
     let routes = [];
     switch (user?.user_role?.toLowerCase()) {
         case "admin":

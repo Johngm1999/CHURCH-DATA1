@@ -17,6 +17,8 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import FormSubmissionBtn from "../../components/FormSubmissionBtn";
+import endpoints from "../../services/endpoints";
+import toast from "react-hot-toast";
 
 const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
     const initialValues = {
@@ -60,51 +62,55 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
     };
 
     const validationSchema = Yup.object({
-        formNumber: Yup.string().required("Required"),
-        fullName: Yup.string().required("Required"),
-        dateOfBirth: Yup.string().required("Required"),
-        age: Yup.number().required("Required"),
-        gender: Yup.string().required("Required"),
-        permanentAddress: Yup.string().required("Required"),
-        mobileNumber: Yup.string().required("Required"),
-        educationalQualification: Yup.string().required("Required"),
-        currentOccupation: Yup.string(),
-        professionalDetails: Yup.string(),
-        currentCourse: Yup.string(),
-        pendingSacraments: Yup.string(),
-        hasOrganisationGroup: Yup.string().required("Required"),
-        organisationGroup: Yup.string(),
-        hasParishActivity: Yup.string().required("Required"),
-        parishActivity: Yup.string(),
-        isOutsideParish: Yup.string().required("Required"),
-        isStudent: Yup.string().required("Required"),
-        countryCity: Yup.string().required("Required"),
-        parishContact: Yup.string().required("Required"),
-        residentialAddress: Yup.string().required("Required"),
-        isAttendingSundayMass: Yup.string().required("Required"),
-        sundayMassLocation: Yup.string(),
-        houseName: Yup.string().required("Required"),
-        parentsName: Yup.string().required("Required"),
-        parentsNumber: Yup.string().required("Required"),
-        unit: Yup.string().required("Required"),
-        specials: Yup.string(),
-        healthIssues: Yup.string(),
+        formNumber: Yup.string().required("Required"), // Required field
+        fullName: Yup.string().nullable(), // Optional, but validates if a value is present
+        dateOfBirth: Yup.string().nullable(),
+        age: Yup.number().nullable().positive().integer(), // Optional, should be a positive integer if present
+        gender: Yup.string().nullable(),
+        permanentAddress: Yup.string().nullable(),
+        mobileNumber: Yup.string().nullable(), // Example validation if mobileNumber is present
+        educationalQualification: Yup.string().nullable(),
+        currentOccupation: Yup.string().nullable(),
+        professionalDetails: Yup.string().nullable(),
+        currentCourse: Yup.string().nullable(),
+        pendingSacraments: Yup.string().nullable(),
+        hasOrganisationGroup: Yup.string().nullable(),
+        organisationGroup: Yup.string().nullable(),
+        hasParishActivity: Yup.string().nullable(),
+        parishActivity: Yup.string().nullable(),
+        isOutsideParish: Yup.string().nullable(),
+        isStudent: Yup.string().nullable(),
+        countryCity: Yup.string().nullable(),
+        parishContact: Yup.string().nullable(),
+        residentialAddress: Yup.string().nullable(),
+        isAttendingSundayMass: Yup.string().nullable(),
+        sundayMassLocation: Yup.string().nullable(),
+        houseName: Yup.string().nullable(),
+        parentsName: Yup.string().nullable(),
+        parentsNumber: Yup.string().nullable(), // Example validation
+        unit: Yup.string().nullable(),
+        specials: Yup.string().nullable(),
+        healthIssues: Yup.string().nullable(),
+        email: Yup.string()
+            .nullable() // Allows the email field to be null or empty
+            .email("Invalid email format"),
     });
 
-    const onSubmit = (values, { setSubmitting }) => {
-        // axios
-        //     .post(endpoint, values)
-        //     .then(() => {
-        //         onAfterSubmit();
-        //     })
-        //     .catch((err) => {
-        //         showAlert(
-        //             "error",
-        //             err.response.data?.statusText || "Something went wrong"
-        //         );
-        //         console.log(err);
-        //     })
-        //     .finally((res) => setSubmitting(false));
+    const onSubmit = async (values, { setSubmitting }) => {
+        try {
+            await axios.post(endpoints.youth.add, values);
+            onAfterSubmit();
+            toast.success(`Record has been added successfully`);
+        } catch (err) {
+            // Log the error and display error message in toast
+            console.error(err);
+            toast.error(
+                err.response?.data?.statusText || "Something went wrong"
+            );
+        } finally {
+            // Set submitting state to false
+            setSubmitting(false);
+        }
     };
 
     return (

@@ -82,9 +82,12 @@ function Youthcomplete({ getIncompleteDataCount }) {
     };
 
     const cellModifier = {
-        "sacraments.baptism": ({ value }) => (value == 1 ? "yes" : "no"),
-        "sacraments.holyCommunion": ({ value }) => (value == 1 ? "yes" : "no"),
-        "sacraments.confirmation": ({ value }) => (value == 1 ? "yes" : "no"),
+        "sacraments.baptism": ({ value }) =>
+            Number(value) === 1 ? "yes" : "no",
+        "sacraments.holyCommunion": ({ value }) =>
+            Number(value) === 1 ? "yes" : "no",
+        "sacraments.confirmation": ({ value }) =>
+            Number(value) === 1 ? "yes" : "no",
         pendingSacraments: ({ value }) => (value ? value : "Nothing Pending"),
     };
 
@@ -300,7 +303,6 @@ function Youthcomplete({ getIncompleteDataCount }) {
                     )}
                 </form>
             </Box>
-            {console.log("fetchUtils.response?.pagination", fetchUtils)}
 
             {/* Paginated Table */}
             <PaginatedTable

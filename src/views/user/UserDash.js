@@ -2,6 +2,7 @@ import YouthDataCollectionForm from "./YothForm";
 import YouthModal from "./YouthModal";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useAuthenticationState } from "../../context/Auth.context";
+import churchImg from "../../asset/img/church.jpeg";
 
 function UserDash() {
     // You can adjust the number of modals here
@@ -63,6 +64,13 @@ function UserDash() {
             </Box>
 
             <Box
+                style={{
+                    backgroundImage: `url(${churchImg})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    minHeight: "80vh",
+                    borderRadius: 10,
+                }}
                 sx={{
                     flexGrow: 1,
                     // p: 2,
@@ -70,6 +78,7 @@ function UserDash() {
                     justifyContent: "center",
                     alignItems: "center",
                     minHeight: "80vh",
+                    mt: 2,
                 }}
             >
                 <Grid container spacing={2} justifyContent="center">
