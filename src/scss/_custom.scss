@@ -1,0 +1,440 @@
+// html elements
+body {
+    font-family: 'Inter', sans-serif;
+}
+a {
+    text-decoration: none !important;
+}
+a:hover {
+    text-decoration: none !important;
+}
+textarea {
+    letter-spacing: 0.8px;
+    font-size: 0.9rem;
+}
+::placeholder {
+    color: #e4e4e4;
+    font-size: 0.8rem;
+    font-family: inherit;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #e4e4e4;
+}
+
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: #e4e4e4;
+}
+body ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+body ::-webkit-scrollbar-thumb {
+    background-color: #adb8ed;
+    border-radius: 10px;
+}
+body ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #e2dddd;
+}
+
+@media screen and (min-width: 480px) {
+    body {
+        font-size: 1rem;
+    }
+}
+
+/* Bootstrap modifications */
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    margin: 0 !important;
+}
+
+.nav-tabs {
+    border: 1px solid $primary;
+    border-radius: 10px;
+    overflow: hidden;
+    .nav-link {
+        color: black;
+        border: none;
+        border-radius: 0px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        // @include border-top-radius($nav-tabs-border-radius);
+        &:hover,
+        &:focus {
+            color: $primary;
+            // Prevents active .nav-link tab overlapping focus outline of previous/next .nav-link
+            isolation: isolate;
+        }
+
+        &.disabled {
+            color: $nav-link-disabled-color;
+            background-color: transparent;
+            border-color: transparent;
+        }
+    }
+
+    .nav-link.active,
+    .nav-item.show .nav-link {
+        color: $white;
+        background-color: $primary;
+        opacity: 0.8;
+        border-color: $nav-tabs-link-active-border-color;
+    }
+
+    .dropdown-menu {
+        // Make dropdown border overlap tab border
+        margin-top: -$nav-tabs-border-width;
+        // Remove the top rounded corners here since there is a hard edge above the menu
+        @include border-top-radius(0);
+    }
+}
+
+.accordion-button {
+    //   padding: $accordion-button-padding-y $accordion-button-padding-x;
+    //   color: $accordion-button-color;
+    //   background-color: $accordion-button-bg;
+    //   border: 0;
+
+    &:not(.collapsed) {
+        box-shadow: inset 0 -1px 0 rgba(69, 101, 245, 0.89);
+        border-radius: none;
+
+        &::after {
+            background-image: url('/src/asset/icons/Chevron.svg') !important;
+            margin-top: 0px;
+            //   transform: $accordion-icon-transform;
+        }
+    }
+
+    // Accordion icon
+    &::after {
+        width: 12px !important;
+        height: 12px !important;
+        background-image: url('/src/asset/icons/Chevron.svg') !important;
+        margin-top: 10px;
+        background-size: 12px !important;
+        // @include transition($accordion-icon-transition);
+    }
+
+    //   &:hover {
+    //     z-index: 2;
+    //   }
+
+    &:focus {
+        box-shadow: inset 0 -1px 0 rgba(228, 228, 228, 0.13);
+    }
+}
+
+.modal-content {
+    border: none;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #bdbdbd;
+        background: rgba(242, 242, 242, 0.4);
+        font-size: 0.8em;
+        padding-top: 0.55rem;
+        padding-bottom: 0.55rem;
+        &:focus {
+            box-shadow: none;
+        }
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        &[type='number'] {
+            -moz-appearance: textfield;
+        }
+    }
+    textarea {
+        border-radius: 10px !important;
+        font-size: 0.8em;
+    }
+    label {
+        text-transform: capitalize;
+        margin-bottom: 4px;
+        font-size: 0.8em;
+        color: #344054;
+    }
+    .PhoneInput {
+        border: 1px solid #bdbdbd;
+        background-color: rgba(242, 242, 242, 0.4);
+        padding: 5px;
+        padding-left: 7px;
+        border-radius: 8px;
+        :focus-visible {
+            outline: none;
+        }
+        .PhoneInputInput {
+            border: none;
+            background-color: transparent;
+        }
+    }
+}
+
+.custom-tab .nav-tabs {
+    border-radius: 10px;
+    overflow: hidden;
+    .nav-link {
+        margin-bottom: 0px;
+        color: black;
+        border: none;
+        border-radius: 0px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        // @include border-top-radius($nav-tabs-border-radius);
+        &:hover,
+        &:focus {
+            color: $primary;
+            // Prevents active .nav-link tab overlapping focus outline of previous/next .nav-link
+            isolation: isolate;
+        }
+
+        &.disabled {
+            color: $nav-link-disabled-color;
+            background-color: transparent;
+            border-color: transparent;
+        }
+    }
+
+    .nav-link.active,
+    .nav-item.show .nav-link {
+        color: $white;
+        background-color: $primary;
+        border-color: $nav-tabs-link-active-border-color;
+    }
+}
+
+.bell {
+    .dropdown-toggle::after {
+        display: none !important;
+    }
+
+    .dropdown-menu {
+        border-radius: 20px;
+        border-top-right-radius: 0;
+        overflow: hidden;
+    }
+}
+
+.custom-dropdown {
+    .dropdown-toggle::after {
+        display: none !important;
+    }
+    .dropdown-menu {
+        border-radius: 20px;
+        border-top-right-radius: 0;
+        overflow: hidden;
+    }
+}
+/********** helpers ************* */
+
+.mt--1 {
+    margin-top: -1rem;
+}
+.mt--2 {
+    margin-top: -2rem;
+}
+.mt--3 {
+    margin-top: -4rem;
+}
+.mt--4 {
+    margin-top: -13rem;
+}
+.mb--1 {
+    margin-bottom: -1rem;
+}
+.mb--2 {
+    margin-bottom: -2rem;
+}
+.mb--3 {
+    margin-bottom: -3rem;
+}
+.mb--4 {
+    margin-bottom: -4rem;
+}
+.ml--1 {
+    margin-left: -1rem;
+}
+.ml--2 {
+    margin-left: -2rem;
+}
+.ml--3 {
+    margin-left: -3rem;
+}
+.ml--4 {
+    margin-left: -4rem;
+}
+.mr--1 {
+    margin-right: -1rem;
+}
+.mr--2 {
+    margin-right: -2rem;
+}
+.mr--3 {
+    margin-right: -3rem;
+}
+.mr--4 {
+    margin-right: -4rem;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+.text-black {
+    color: rgb(36, 36, 36);
+}
+.bg-white {
+    background-color: white;
+}
+.rounded-smooth {
+    border-radius: 0.5rem;
+}
+.rounded-smoother {
+    border-radius: 1rem;
+}
+.clearFocusDecorate:focus {
+    box-shadow: none !important;
+}
+
+.table-search {
+    position: relative;
+    input {
+        border: none;
+        height: 30px;
+        display: inline-block;
+        &:focus {
+            box-shadow: none;
+        }
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border-radius: 10rem;
+        background-color: #f5f5f5;
+        right: -11px;
+    }
+    &:focus {
+        box-shadow: none !important;
+    }
+}
+
+.choice {
+    &:hover .remove-choice::after {
+        opacity: 1;
+    }
+
+    .remove-choice {
+        position: relative;
+        &::after {
+            content: '\00D7';
+            position: absolute;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background-color: tomato;
+            border-radius: 50%;
+            color: white;
+            font-size: large;
+            top: 0;
+            opacity: 0; // Initially hide the close button
+            transition: opacity 0.3s ease; // Add a transition for smooth visibility change
+        }
+    }
+}
+// Time picker
+
+.rc-time-picker input {
+    border: none;
+    background-color: white;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+//
+.media-library-form {
+    .nav-tabs {
+        background-color: #117bff24;
+        border: 1px solid #117bff;
+        border-radius: 20px;
+        overflow: hidden;
+        .nav-link {
+            color: black;
+            border: none;
+            border-radius: 20px;
+            padding-top: 20px;
+            padding-bottom: 10px;
+            padding-left: 25px;
+            padding-right: 25px;
+            // @include border-top-radius($nav-tabs-border-radius);
+            &:hover,
+            &:focus {
+                color: #117bff;
+                // Prevents active .nav-link tab overlapping focus outline of previous/next .nav-link
+                isolation: isolate;
+            }
+
+            &.disabled {
+                color: $nav-link-disabled-color;
+                background-color: transparent;
+                border-color: transparent;
+            }
+        }
+
+        .nav-link.active,
+        .nav-item.show .nav-link {
+            color: $white;
+            background-color: #117bff;
+            opacity: 0.8;
+            border-color: $nav-tabs-link-active-border-color;
+        }
+
+        .dropdown-menu {
+            // Make dropdown border overlap tab border
+            margin-top: -$nav-tabs-border-width;
+            // Remove the top rounded corners here since there is a hard edge above the menu
+            @include border-top-radius(0);
+        }
+    }
+}
+.mandatory-course-form {
+    .header-title{
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .content{
+        font-size: 14px;
+        font-weight: 400;
+        color: #667085;
+    }
+}
+.mandatory-course-dropdown-container{
+    width: 24%;
+}
+
+.modal-below-lg{
+    width: 662px;
+}
+
+.modal-below-md{
+    width: 400px;
+}
