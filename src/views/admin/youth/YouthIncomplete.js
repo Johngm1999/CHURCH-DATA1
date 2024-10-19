@@ -28,6 +28,20 @@ function YouthIncomplete({ getIncompleteDataCount }) {
         pendingSacraments: ({ value }) => (value ? value : "Nothing Pending"),
     };
 
+    const handleFirst = () => {
+        setPage(1);
+        setTriggerApiCall(true);
+    };
+    const handleLast = (totalPages) => {
+        setPage(totalPages);
+        setTriggerApiCall(true);
+    };
+    const handlePageJump = (page, totalPages) => {
+        const pageNumber = Math.max(1, Math.min(totalPages, Number(page)));
+        setPage(pageNumber);
+        setTriggerApiCall(true);
+    };
+
     return (
         <>
             <PaginatedTable
@@ -37,12 +51,15 @@ function YouthIncomplete({ getIncompleteDataCount }) {
                 Form={YouthDataCollectionForm}
                 endpoints={endpoints.youth}
                 formSize="lg"
-                pagination={fetchUtils.response?.pagination}
+                pagination={fetchUtils.pagination}
                 {...fetchUtils}
                 insertable={false}
                 getIncompleteDataCount={getIncompleteDataCount}
                 cellModifier={cellModifier}
                 irremovable
+                handleFirst={handleFirst}
+                handleLast={handleLast}
+                handlePageJump={handlePageJump}
             />
         </>
     );

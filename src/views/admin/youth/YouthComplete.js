@@ -67,6 +67,19 @@ function Youthcomplete({ getIncompleteDataCount }) {
         setPage(page);
         setTriggerApiCall(true);
     };
+    const handleFirst = () => {
+        setPage(1);
+        setTriggerApiCall(true);
+    };
+    const handleLast = (totalPages) => {
+        setPage(totalPages);
+        setTriggerApiCall(true);
+    };
+    const handlePageJump = (page, totalPages) => {
+        const pageNumber = Math.max(1, Math.min(totalPages, Number(page)));
+        setPage(pageNumber);
+        setTriggerApiCall(true);
+    };
 
     const cellModifier = {
         "sacraments.baptism": ({ value }) => (value == 1 ? "yes" : "no"),
@@ -260,33 +273,34 @@ function Youthcomplete({ getIncompleteDataCount }) {
                     </Grid>
 
                     {/* Search and Reset Buttons */}
-                    {setSearchParams.education ||
+                    {(setSearchParams.education ||
                         searchParams.dob ||
                         searchParams.mobileNumber ||
-                        (searchParams.name && (
-                            <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                mt={3}
+                        searchParams.name) && (
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            mt={3}
+                        >
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
                             >
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    type="submit"
-                                >
-                                    Search
-                                </Button>
-                                <Button
-                                    variant="outlined"
-                                    color="secondary"
-                                    onClick={handleResetSearch}
-                                >
-                                    Reset
-                                </Button>
-                            </Box>
-                        ))}
+                                Search
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="secondary"
+                                onClick={handleResetSearch}
+                            >
+                                Reset
+                            </Button>
+                        </Box>
+                    )}
                 </form>
             </Box>
+            {console.log("fetchUtils.response?.pagination", fetchUtils)}
 
             {/* Paginated Table */}
             <PaginatedTable
@@ -296,10 +310,13 @@ function Youthcomplete({ getIncompleteDataCount }) {
                 Form={YouthDataCollectionForm}
                 endpoints={endpoints.youth}
                 formSize="lg"
-                pagination={fetchUtils.response?.pagination}
                 {...fetchUtils}
                 getIncompleteDataCount={getIncompleteDataCount}
                 cellModifier={cellModifier}
+                pagination={fetchUtils.pagination}
+                handleFirst={handleFirst}
+                handleLast={handleLast}
+                handlePageJump={handlePageJump}
             />
         </>
     );

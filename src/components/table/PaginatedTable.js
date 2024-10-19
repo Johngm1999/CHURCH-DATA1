@@ -15,6 +15,7 @@ import { ReactComponent as ChevronRight } from "../../asset/icons/ChevronRight.s
 import { ReactComponent as ChevronLeft } from "../../asset/icons/ChevronLeft.svg";
 import ReactExport from "react-export-excel-xlsx-fix";
 import withAlert from "../withAlert";
+import AdvancedPagination from "./AdvancedPagination";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -48,6 +49,9 @@ const PaginatedTable = (props) => {
         pagination = {},
         isCch,
         getIncompleteDataCount,
+        handleFirst,
+        handleLast,
+        handlePageJump,
     } = props;
     const downloadFileName = downloadExcelName || name;
     const ensureString = (value) => {
@@ -57,8 +61,8 @@ const PaginatedTable = (props) => {
         return String(value);
     };
 
-    const { currentPage, totalPages, totalRecords, recordsPerPage } =
-        pagination;
+    const { currentPage, totalPages, totalRecords, limit } = pagination;
+    console.log("pagination", pagination);
 
     const columnData = useRef(
         relevants.map((element, i) => {
@@ -251,33 +255,40 @@ const PaginatedTable = (props) => {
                             getIncompleteDataCount={getIncompleteDataCount}
                         />
                         {pageOptions.length > 0 && (
-                            <div className="paginate">
-                                <button
-                                    disabled={currentPage === 1}
-                                    onClick={() =>
-                                        handlePrevious(currentPage - 1)
-                                    }
-                                >
-                                    <ChevronLeft />
-                                </button>
-                                <div className="page">
-                                    <span className="current">
-                                        {currentPage}
-                                    </span>
-                                    <span className="divider">/</span>
-                                    <span className="total">
-                                        {isCch ? 1 : totalPages}
-                                    </span>
-                                </div>
-                                <button
-                                    disabled={
-                                        isCch || currentPage === totalPages
-                                    }
-                                    onClick={() => handleNext(currentPage + 1)}
-                                >
-                                    <ChevronRight />
-                                </button>
-                            </div>
+                            // <div className="paginate">
+                            //     <button
+                            //         disabled={currentPage === 1}
+                            //         onClick={() =>
+                            //             handlePrevious(currentPage - 1)
+                            //         }
+                            //     >
+                            //         <ChevronLeft />
+                            //     </button>
+                            //     <div className="page">
+                            //         <span className="current">
+                            //             {currentPage}
+                            //         </span>
+                            //         <span className="divider">/</span>
+                            //         <span className="total">{totalPages}</span>
+                            //     </div>
+                            //     <button
+                            //         disabled={currentPage === totalPages}
+                            //         onClick={() => handleNext(currentPage + 1)}
+                            //     >
+                            //         <ChevronRight />
+                            //     </button>
+                            // </div>
+                            <AdvancedPagination
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                totalRecords={totalRecords}
+                                recordsPerPage={limit}
+                                handlePrevious={handlePrevious}
+                                handleNext={handleNext}
+                                handleFirst={handleFirst}
+                                handleLast={handleLast}
+                                handlePageJump={handlePageJump}
+                            />
                         )}
                     </>
                 )}

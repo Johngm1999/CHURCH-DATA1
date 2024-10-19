@@ -30,15 +30,17 @@ const ReportCard = ({ title, type, location, titleColor = "#000" }) => {
                     bgcolor: titleColor,
                     borderRadius: 5,
                     width: { xs: "80%", sm: "70%", md: "90%" }, // Responsive width for title box
-                    left: "50%",
-                    transform: "translateX(-50%)", // Center align the box
+                    left: "5%",
+                    // transform: "translateX(-50%)", // Center align the box
                     color: "#fff",
                     textAlign: "center",
                     fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" }, // Responsive font size
                     cursor: "pointer",
                     transition: "transform 0.3s, background-color 0.3s",
+                    boxShadow: 6,
                     "&:hover": {
                         backgroundColor: "primary.dark", // Change color on hover
+                        transform: "scale(1.1)",
                     },
                 }}
                 onClick={() => navigate(location)}
@@ -51,12 +53,6 @@ const ReportCard = ({ title, type, location, titleColor = "#000" }) => {
 
 const Overview = () => {
     const data = useAxiosGet(endpoints.dashboard.get);
-
-    const userCounts = {
-        YouthData: 120,
-        GlobalMembers: 45,
-        ParishMembers: 80,
-    };
 
     const reports = [
         {
