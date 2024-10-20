@@ -123,9 +123,9 @@ const YouthDataCollectionForm = ({
             callCount();
         } catch (err) {
             // Log the error and display error message in toast
-            console.error(err);
+            console.error("Server Error:", err);
             toast.error(
-                err.response?.data?.statusText || "Something went wrong"
+                err.response?.data?.errorMesaage || "Something went wrong"
             );
         } finally {
             // Set submitting state to false
