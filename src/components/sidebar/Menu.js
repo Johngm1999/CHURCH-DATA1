@@ -76,9 +76,7 @@ function Menu({ routes }) {
                 to={"/" + path}
                 className="d-block my-1 py-3 small rounded-smooth text-white"
                 style={{
-                    background:
-                        pathname === "/" + path &&
-                        "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(122,5,217,1) 100%)",
+                    background: pathname === "/" + path && "#6090db",
                     color: pathname === "/" + path && "blue",
                     paddingLeft: "10px",
                 }}

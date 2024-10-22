@@ -2,7 +2,7 @@ import Overview from "../views/admin/overview/Overview";
 import YouthList from "../views/admin/youth/YouthList";
 import Parish from "../views/admin/parish/Parish";
 import Global from "../views/admin/global/Global";
-import DeletedYouth from "../views/admin/deleted/DeletedYouth";
+import DeletedYouth from "../views/admin/deleted/youth/DeletedYouth";
 
 const adminRoutes = Object.freeze([
     {

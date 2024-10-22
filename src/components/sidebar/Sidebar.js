@@ -41,8 +41,8 @@ function Sidebar({ routes, show }) {
             </div>
 
             {/* Logout Button at the Bottom */}
-            <Box sx={{ p: 3, display: "flex", justifyContent: "center" }}>
-                {/* <Button
+            {/* <Box sx={{ p: 3, display: "flex", justifyContent: "center" }}> */}
+            {/* <Button
                     variant="contained"
                     color="secondary"
                     fullWidth
@@ -50,8 +50,8 @@ function Sidebar({ routes, show }) {
                 >
                     Logout
                 </Button> */}
-                <LogoutWithWarning />
-            </Box>
+            {/* <LogoutWithWarning /> */}
+            {/* </Box> */}
         </Box>
     );
 }

@@ -47,7 +47,7 @@ function LogoutWithWarning({
                 </div>
             )}
         >
-            <Button variant="contained" color="secondary" fullWidth>
+            <Button variant="text" fullWidth>
                 Logout
             </Button>
         </ModalWrapper>

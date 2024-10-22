@@ -1,10 +1,10 @@
 import { useState } from "react";
-import PaginatedTable from "../../../components/table/PaginatedTable";
-import endpoints from "../../../services/endpoints";
+import PaginatedTable from "../../../../components/table/PaginatedTable";
+import endpoints from "../../../../services/endpoints";
 import DeletedYouthData from "./DeletedYouthDataDisplayForm";
-import { useAxiosGet } from "../../../hooks/axiosHooks";
-import viewProps from "../../viewprops";
-import DeleteWithWarning from "../../../components/DeleteWithWarning";
+import { useAxiosGet } from "../../../../hooks/axiosHooks";
+import viewProps from "../../../viewprops";
+import DeleteWithWarning from "../../../../components/DeleteWithWarning";
 import toast from "react-hot-toast";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import WarningOutlinedIcon from "@mui/icons-material/WarningOutlined";
@@ -83,6 +83,9 @@ function DeletedYouth() {
                                 <WarningOutlinedIcon
                                     sx={{ color: "red", fontSize: "80px" }}
                                 />
+                                <div style={{ color: "red", fontSize: "10px" }}>
+                                    Note : This data cannot be recovered.
+                                </div>
                             </div>
                         </>
                     }

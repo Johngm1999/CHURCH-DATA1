@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { Button, Col, Dropdown, Form, InputGroup, Row } from "react-bootstrap";
+import { Button, Dropdown, Form, InputGroup, Row } from "react-bootstrap";
 import endpoints from "../../services/endpoints";
 import Boy from "../../asset/img/Boy.png";
 import WithModal from "../WithModal";
@@ -10,6 +10,7 @@ import eyeopen from "../../asset/icons/Eyeopen.svg";
 import eyeclose from "../../asset/icons/Eyeclose.svg";
 import toast from "react-hot-toast";
 import extractErrorFromRes from "../../helpers/extractErrorFromRes";
+import LogoutWithWarning from "../Logout";
 
 function Profile({ showAlert }) {
     const [passwordVisibility, setPasswordVisibility] = useState({
@@ -159,53 +160,31 @@ function Profile({ showAlert }) {
             <Dropdown align="end">
                 <Dropdown.Toggle
                     variant="transparent"
-                    className="shadow-sm ms-4"
+                    className="shadow-sm ms-6"
                     style={{
                         padding: "0",
-                        background: `radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)`,
+                        borderRadius: 10,
+                        height: "50px",
                     }}
                 >
-                    <Row className="m-0">
-                        <Col sm="auto" className="p-0">
-                            {!user.dp ? (
-                                <img
-                                    alt="boy Icon"
-                                    height="48px"
-                                    width="48px"
-                                    src={Boy}
-                                />
-                            ) : (
-                                <div
-                                    style={{
-                                        height: "48px",
-                                        width: "48px",
-                                        borderRadius: "50%",
-                                        backgroundImage: `url(${encodeURI(
-                                            user.dp
-                                        )})`,
-                                        backgroundSize: "cover",
-                                        backgroundPosition: "center",
-                                    }}
-                                />
-                            )}
-                        </Col>
-                        <Col
-                            sm="auto"
-                            className="d-flex flex-column justify-content-around py-1"
+                    <div>
+                        <div>
+                            <img
+                                alt="boy Icon"
+                                height="48px"
+                                width="48px"
+                                src={Boy}
+                            />
+                        </div>
+                        {/* <span
+                            className="text-black-50 text-capitalize"
+                            style={{
+                                fontSize: "10px",
+                            }}
                         >
-                            <span className="text-uppercase">
-                                {user.user_role?.toLowerCase() === "admin"
-                                    ? "Church Admin"
-                                    : "Church User"}
-                            </span>
-                            <span
-                                className="text-black-50 text-capitalize"
-                                style={{ lineHeight: ".7", fontSize: ".8em" }}
-                            >
-                                {user.user_role?.toLowerCase()}
-                            </span>
-                        </Col>
-                    </Row>
+                            {user.user_role?.toLowerCase()}
+                        </span> */}
+                    </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="border-0 shadow-sm p-3">
                     <WithModal
@@ -252,8 +231,9 @@ function Profile({ showAlert }) {
                         </Dropdown.Item>
                     </WithModal>
 
-                    <Dropdown.Item onClick={logout}>
-                        <span className="small">Logout</span>
+                    <Dropdown.Item>
+                        {/* <span className="small">Logout</span> */}
+                        <LogoutWithWarning />
                     </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>

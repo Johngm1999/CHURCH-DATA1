@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAxiosGet } from "../../../hooks/axiosHooks";
 import endpoints from "../../../services/endpoints";
 import Profile from "../../../components/navbar/Profile";
+import Certificate from "../../../components/Certificate";
 
 const ReportCard = ({ title, type, location, titleColor = "#000" }) => {
     const navigate = useNavigate();
@@ -88,8 +89,8 @@ const Overview = () => {
                     borderRadius: 5,
                     fontWeight: 700,
                     // bgcolor: "#fff",
-                    background:
-                        "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(122,5,217,1) 100%)",
+                    // background:
+                    //     "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(122,5,217,1) 100%)",
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
@@ -101,16 +102,18 @@ const Overview = () => {
             <Typography
                 variant="h6"
                 sx={{
-                    px: 2,
+                    px: 1,
                     textAlign: "center",
                     boxShadow: 3,
                     my: 6,
                     borderRadius: 2,
-                    width: "12%",
-                    bgcolor: "greenyellow",
+                    width: "14%",
+                    // bgcolor: "greenyellow",
+                    borderBottom: "2px solid grey",
+                    fontWeight: 700,
                 }}
             >
-                Data Count
+                DATA COUNT
             </Typography>
             <Grid container spacing={3}>
                 {/* Members Card */}
@@ -171,10 +174,11 @@ const Overview = () => {
                     my: 4,
                     borderRadius: 2,
                     width: "15%",
-                    bgcolor: "greenyellow",
+                    borderBottom: "2px solid grey",
+                    fontWeight: 700,
                 }}
             >
-                Data Report
+                DATA REPORT
             </Typography>
             <Grid container spacing={6} sx={{ mt: 8 }}>
                 {reports.map(({ type, title, color, location }) => (
@@ -188,6 +192,7 @@ const Overview = () => {
                     </Grid>
                 ))}
             </Grid>
+            {/* <Certificate /> */}
         </Container>
     );
 };
