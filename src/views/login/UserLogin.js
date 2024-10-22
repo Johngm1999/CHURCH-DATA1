@@ -36,6 +36,7 @@ function Login() {
 
     useEffect(() => {
         logout();
+        // eslint-disable-next-line
     }, []);
 
     const onLogin = (e) => {
@@ -115,6 +116,7 @@ function Login() {
                                 margin="normal"
                                 required
                                 variant="outlined"
+                                autoComplete="current-password"
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">

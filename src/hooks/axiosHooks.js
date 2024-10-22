@@ -58,6 +58,7 @@ const useAxiosGet = (url, { preventCall = false, ...restConfig } = {}) => {
             unmounted = true;
             controller.abort();
         };
+        // eslint-disable-next-line
     }, [url, reloadToken, preventCall]);
 
     return { response, loading, error, reFetch, pagination };
@@ -153,6 +154,7 @@ const useAxiosGetMultiple = (
             unmountedOnReload.current = true;
             controller.abort();
         };
+        // eslint-disable-next-line
     }, [reloadToken, preventCall]);
 
     const reFetch = () => {
@@ -246,6 +248,7 @@ const useAxiosPost = (
             unmounted = true;
             controller.abort();
         };
+        // eslint-disable-next-line
     }, [url, reloadToken, preventCall]);
 
     return { response, loading, error, reFetch };

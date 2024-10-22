@@ -38,7 +38,9 @@ function UserDash() {
                     p: 2,
                     boxShadow: 3,
                     borderRadius: 5,
-                    bgcolor: "#fff",
+                    // bgcolor: "#fff",
+                    background:
+                        "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(122,5,217,1) 100%)",
                 }}
             >
                 <Typography

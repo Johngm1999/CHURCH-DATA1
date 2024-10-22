@@ -3,6 +3,7 @@ import { Box, Container, Grid, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAxiosGet } from "../../../hooks/axiosHooks";
 import endpoints from "../../../services/endpoints";
+import Profile from "../../../components/navbar/Profile";
 
 const ReportCard = ({ title, type, location, titleColor = "#000" }) => {
     const navigate = useNavigate();
@@ -81,15 +82,21 @@ const Overview = () => {
                 variant="h4"
                 sx={{
                     p: 2,
-                    textAlign: "center",
+                    textAlign: "right",
                     boxShadow: 3,
                     mb: 2,
                     borderRadius: 5,
                     fontWeight: 700,
-                    bgcolor: "#fff",
+                    // bgcolor: "#fff",
+                    background:
+                        "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(122,5,217,1) 100%)",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                 }}
             >
-                CHURCH DATA PORTAL
+                <span style={{ width: "65%" }}>CHURCH DATA PORTAL</span>
+                <Profile />
             </Typography>
             <Typography
                 variant="h6"

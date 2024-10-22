@@ -22,9 +22,9 @@ function YouthIncomplete({ getIncompleteDataCount }) {
     };
 
     const cellModifier = {
-        "sacraments.baptism": ({ value }) => (value == 1 ? "yes" : "no"),
-        "sacraments.holyCommunion": ({ value }) => (value == 1 ? "yes" : "no"),
-        "sacraments.confirmation": ({ value }) => (value == 1 ? "yes" : "no"),
+        // "sacraments.baptism": ({ value }) => (value == 1 ? "yes" : "no"),
+        // "sacraments.holyCommunion": ({ value }) => (value == 1 ? "yes" : "no"),
+        // "sacraments.confirmation": ({ value }) => (value == 1 ? "yes" : "no"),
         pendingSacraments: ({ value }) => (value ? value : "Nothing Pending"),
     };
 

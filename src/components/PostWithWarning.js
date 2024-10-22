@@ -1,7 +1,7 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
-import Loader from './Loader';
+import axios from "axios";
+import React, { useState } from "react";
+import { Button } from "@mui/material"; // Importing MUI Button
+import Loader from "./Loader";
 
 function PostWithWarning({
     endpoint,
@@ -34,20 +34,24 @@ function PostWithWarning({
 
     return (
         <>
-            <div className='text-center'>
+            <div className="text-center" style={{ width: "100%" }}>
                 <Button
-                    variant={successVarient ? successVarient : 'danger'}
-                    className='mx-2 text-white rounded-2 px-4'
+                    variant="contained" // MUI variant
+                    color={successVarient || "success"} // Using MUI's color prop, e.g., error = red
+                    className="mx-2"
                     disabled={loading}
                     onClick={onAction}
+                    sx={{ borderRadius: 10, px: 6, width: "45%" }}
                 >
                     Yes
                 </Button>
                 <Button
-                    variant={dangerVarient ? dangerVarient : 'success'}
-                    className='mx-2 text-white rounded-2 px-4'
+                    variant="outlined" // MUI variant
+                    color={dangerVarient || "error"} // Using MUI's color prop, e.g., success = green
+                    // className="mx-2"
                     disabled={loading}
                     onClick={onClose}
+                    sx={{ borderRadius: 10, px: 6, width: "45%" }}
                 >
                     No
                 </Button>

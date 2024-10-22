@@ -7,7 +7,7 @@ import {
     useGlobalFilter,
     usePagination,
 } from "react-table";
-import { GlobalFilter } from "./GlobalFilter";
+// import { GlobalFilter } from "./GlobalFilter";
 import Loader from "../Loader";
 import TableTemplate from "./TableTemplate";
 import { ReactComponent as Download } from "../../asset/icons/Download.svg";
@@ -49,6 +49,8 @@ const PaginatedTable = (props) => {
         handleFirst,
         handleLast,
         handlePageJump,
+        DisplayForm = () => <div></div>,
+        showFullDetails = false,
     } = props;
     const downloadFileName = downloadExcelName || name;
     // const ensureString = (value) => {
@@ -59,7 +61,6 @@ const PaginatedTable = (props) => {
     // };
 
     const { currentPage, totalPages, totalRecords, limit } = pagination;
-    console.log("pagination", pagination);
 
     const columnData = useRef(
         relevants.map((element, i) => {
@@ -107,11 +108,11 @@ const PaginatedTable = (props) => {
         page,
         pageOptions,
         prepareRow,
-        state,
-        setGlobalFilter,
+        // state,
+        // setGlobalFilter,
     } = tableInstance;
 
-    const { globalFilter } = state;
+    // const { globalFilter } = state;
 
     let modalSize = {};
 
@@ -147,15 +148,15 @@ const PaginatedTable = (props) => {
             <div className="pe-2 py-4 pe-md-4 d-flex align-items-center cardHead">
                 <span
                     // className='mt--3 '
-                    style={{ fontSize: "20px", color: "#000" }}
+                    style={{ fontSize: "20px", color: "#000", fontWeight: 700 }}
                 >
-                    {name}
+                    {name?.toUpperCase()}
                 </span>
                 <span className="ms-auto">
-                    <GlobalFilter
+                    {/* <GlobalFilter
                         filter={globalFilter}
                         setFilter={setGlobalFilter}
-                    />
+                    /> */}
                 </span>
                 {insertable && (
                     <ModalWrapper
@@ -242,6 +243,8 @@ const PaginatedTable = (props) => {
                             modalSize={modalSize}
                             showAlert={showAlert}
                             getIncompleteDataCount={getIncompleteDataCount}
+                            DisplayForm={DisplayForm}
+                            showFullDetails={showFullDetails}
                         />
                         {pageOptions.length > 0 && (
                             <AdvancedPagination

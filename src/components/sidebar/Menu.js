@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Accordion, Col, Row } from "react-bootstrap";
 
 import { NavLink, useLocation } from "react-router-dom";
-import { useAuthenticationState } from "../../context/Auth.context";
+// import { useAuthenticationState } from "../../context/Auth.context";
+import { ReactComponent as DashboardActive } from "../../asset/icons/DashboardActive.svg";
+import { ReactComponent as Dashboard } from "../../asset/icons/Dashboard.svg";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 function Menu({ routes }) {
     const [activeModule, setActiveModule] = useState("");
 
     const { pathname } = useLocation();
-    const { user } = useAuthenticationState();
+    // const { user } = useAuthenticationState();
     useEffect(() => {
         const routesInsideModule = routes.filter((route) => !!route.module);
 
@@ -24,16 +28,21 @@ function Menu({ routes }) {
         return () => {
             setActiveModule("");
         };
+        // eslint-disable-next-line
     }, [pathname]);
 
     const menuIconMap = {
-        Report: {
-            active: "",
-            inactive: "",
-        },
         overview: {
-            active: "",
-            inactive: "",
+            active: <Dashboard />,
+            inactive: <DashboardActive />,
+        },
+        Report: {
+            active: <AssessmentOutlinedIcon sx={{ color: "Blue" }} />,
+            inactive: <AssessmentOutlinedIcon sx={{ color: "white" }} />,
+        },
+        "Deleted Data": {
+            active: <DeleteOutlineOutlinedIcon sx={{ color: "Blue" }} />,
+            inactive: <DeleteOutlineOutlinedIcon sx={{ color: "white" }} />,
         },
     };
 
@@ -66,12 +75,19 @@ function Menu({ routes }) {
                 key={path}
                 to={"/" + path}
                 className="d-block my-1 py-3 small rounded-smooth text-white"
+                style={{
+                    background:
+                        pathname === "/" + path &&
+                        "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(122,5,217,1) 100%)",
+                    color: pathname === "/" + path && "blue",
+                    paddingLeft: "10px",
+                }}
             >
                 <Row>
                     <Col sm={1}>
                         {pathname === "/" + path
-                            ? menuIconMap[path].active
-                            : menuIconMap[path].inactive}
+                            ? menuIconMap[path]?.active
+                            : menuIconMap[path]?.inactive}
                     </Col>
                     <Col sm={10}>
                         <div className="ps-3">{name}</div>
@@ -106,8 +122,8 @@ function Menu({ routes }) {
                         >
                             <Accordion.Button className="bg-transparent px-0">
                                 {activeModule === module
-                                    ? menuIconMap[module].active
-                                    : menuIconMap[module].inactive}
+                                    ? menuIconMap[module]?.active
+                                    : menuIconMap[module]?.inactive}
                                 <span className="ps-3 text-white small text-capitalize">
                                     {module}
                                 </span>

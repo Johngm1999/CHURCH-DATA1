@@ -111,6 +111,7 @@ const AuthenticationProvider = (props) => {
         return () => {
             axios.interceptors.response.eject(axiosId);
         };
+        // eslint-disable-next-line
     }, []);
 
     const login = useCallback(async (userCredential) => {
@@ -136,6 +137,7 @@ const AuthenticationProvider = (props) => {
         setUser(initUser);
         localStorage.clear();
         navigate("login");
+        // eslint-disable-next-line
     }, []);
 
     const value = useMemo(

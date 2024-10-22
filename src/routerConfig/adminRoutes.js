@@ -2,6 +2,7 @@ import Overview from "../views/admin/overview/Overview";
 import YouthList from "../views/admin/youth/YouthList";
 import Parish from "../views/admin/parish/Parish";
 import Global from "../views/admin/global/Global";
+import DeletedYouth from "../views/admin/deleted/DeletedYouth";
 
 const adminRoutes = Object.freeze([
     {
@@ -26,6 +27,12 @@ const adminRoutes = Object.freeze([
         page: Global,
         name: "Global",
         module: "Report",
+    },
+    {
+        path: "youth-removed",
+        page: DeletedYouth,
+        name: "Deleted Youth Data",
+        module: "Deleted Data",
     },
 ]);
 export default adminRoutes;

@@ -15,9 +15,14 @@ const endpoints = Object.freeze({
         incompleteList: "youth/inomplete",
         incompleteCount: "youth/incomplete-count",
         search: "youth/search",
+        deletedYouth: "youth/deletedYouth",
+        restoreYouth: "youth/restoreYouth",
+        permanentDelete: "youth/permanentDelete",
     },
     dashboard: {
         get: "dashboard/",
+        changePassword: "dashboard/changePassword",
+        changeUserPassword: "dashboard/changeUserPassword",
     },
 });
 

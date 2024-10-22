@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import Menu from "./Menu";
-import { Box, Button } from "@mui/material";
-import { useAuthenticationState } from "../../context/Auth.context";
+import { Box } from "@mui/material";
+import LogoutWithWarning from "../Logout";
 
 function Sidebar({ routes, show }) {
-    const { logout } = useAuthenticationState();
     const sidebarStyle = {
         width: "250px",
         position: "fixed",
@@ -17,6 +16,7 @@ function Sidebar({ routes, show }) {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        zIndex: 100,
     };
 
     return (
@@ -41,15 +41,16 @@ function Sidebar({ routes, show }) {
             </div>
 
             {/* Logout Button at the Bottom */}
-            <Box sx={{ p: 3 }}>
-                <Button
+            <Box sx={{ p: 3, display: "flex", justifyContent: "center" }}>
+                {/* <Button
                     variant="contained"
                     color="secondary"
                     fullWidth
-                    onClick={logout} // Assuming you have a logout function
+                    onClick={logout}
                 >
                     Logout
-                </Button>
+                </Button> */}
+                <LogoutWithWarning />
             </Box>
         </Box>
     );

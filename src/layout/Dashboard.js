@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Outlet } from "react-router-dom";
-import Loader from "../components/Loader.js";
-// import AdminNavbar from '../components/navbar/AdminNavbar.js';
+// import Loader from "../components/Loader.js";
+// import AdminNavbar from "../components/navbar/AdminNavbar.js";
 import Sidebar from "../components/sidebar/Sidebar.js";
 import { useAuthenticationState } from "../context/Auth.context.js";
 // import { useAxiosGet } from '../services/axiosHooks.js';
@@ -52,8 +52,19 @@ const Dashboard = (props) => {
             }}
         >
             {user?.user_role?.toLowerCase() === "admin" && (
-                <Sidebar {...props} show={showSidebar} />
+                <Sidebar
+                    {...props}
+                    show={showSidebar}
+                    toggleSidebar={toggleSidebar}
+                />
             )}
+            {/* 
+            <AdminNavbar
+                toggleSidebar={toggleSidebar}
+                showSidebar={showSidebar}
+                // notifications={notifications}
+                // reFetchNotifications={reFetch}
+            /> */}
 
             <div
                 style={{
@@ -65,12 +76,6 @@ const Dashboard = (props) => {
                 }}
                 ref={mainContent}
             >
-                {/* <AdminNavbar
-                    toggleSidebar={toggleSidebar}
-                    showSidebar={showSidebar}
-                    notifications={notifications}
-                    reFetchNotifications={reFetch}
-                /> */}
                 <div className="px-5 mt-4">
                     {/* {loading ? <Loader /> : <Outlet />} */}
                     <Outlet />

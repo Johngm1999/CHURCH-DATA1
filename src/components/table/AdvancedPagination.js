@@ -5,7 +5,7 @@ import {
     FirstPage,
     LastPage,
 } from "@mui/icons-material";
-import { Box, Button, MenuItem, Select, TextField } from "@mui/material";
+import { Box, Button, MenuItem, Select } from "@mui/material";
 
 function AdvancedPagination({
     currentPage,

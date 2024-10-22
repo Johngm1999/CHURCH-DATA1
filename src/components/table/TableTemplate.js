@@ -5,6 +5,8 @@ import ModalWrapper from "../ModalWrapper";
 import { ReactComponent as SortUp } from "../../asset/icons/SortUp.svg";
 import { ReactComponent as SortDown } from "../../asset/icons/SortDown.svg";
 import { ReactComponent as Sort } from "../../asset/icons/Sort.svg";
+import { Button } from "@mui/material";
+import PreviewIcon from "@mui/icons-material/VisibilityOutlined";
 
 function TableTemplate(props) {
     const {
@@ -23,19 +25,23 @@ function TableTemplate(props) {
         modalSize,
         showAlert,
         getIncompleteDataCount,
+        DisplayForm,
+        showFullDetails,
     } = props;
 
     return (
         <div className="table-responsive">
             <div className="table" {...getTableProps()} id="table-to-xls">
                 <div className="thead">
-                    {headerGroups.map((headerGroup) => (
+                    {headerGroups.map((headerGroup, index) => (
                         <div
+                            key={index}
                             className="tr"
                             {...headerGroup.getHeaderGroupProps()}
                         >
-                            {headerGroup.headers.map((column) => (
+                            {headerGroup.headers.map((column, index) => (
                                 <div
+                                    key={index}
                                     className="th"
                                     style={{ background: "#92b6f0" }}
                                     {...column.getHeaderProps()}
@@ -72,6 +78,14 @@ function TableTemplate(props) {
                                     style={{ background: "#92b6f0" }}
                                 >
                                     Delete
+                                </div>
+                            )}
+                            {showFullDetails && (
+                                <div
+                                    className="th text-center"
+                                    style={{ background: "#92b6f0" }}
+                                >
+                                    Complete Details
                                 </div>
                             )}
                         </div>
@@ -127,10 +141,30 @@ function TableTemplate(props) {
                                         </ModalWrapper>
                                     </div>
                                 )}
+
                                 {!irremovable && (
                                     <div className="td text-center">
                                         <DeleteWithWarning
-                                            title={name}
+                                            title={
+                                                <>
+                                                    Delete Details{" "}
+                                                    {row.original.fullName && (
+                                                        <>
+                                                            of{" "}
+                                                            <span
+                                                                style={{
+                                                                    color: "red",
+                                                                }}
+                                                            >
+                                                                {
+                                                                    row.original
+                                                                        .fullName
+                                                                }
+                                                            </span>
+                                                        </>
+                                                    )}
+                                                </>
+                                            }
                                             configBody={{
                                                 ...row.original,
                                             }}
@@ -144,6 +178,60 @@ function TableTemplate(props) {
                                             }}
                                             endpoint={endpoints.delete}
                                         />
+                                    </div>
+                                )}
+
+                                {showFullDetails && (
+                                    <div className="td text-center">
+                                        <ModalWrapper
+                                            showFooter={showFullDetails}
+                                            modalTitle={
+                                                <>
+                                                    Full Details{" "}
+                                                    {row.original.fullName && (
+                                                        <>
+                                                            of{" "}
+                                                            <span
+                                                                style={{
+                                                                    color: "#fff",
+                                                                }}
+                                                            >
+                                                                {
+                                                                    row.original
+                                                                        .fullName
+                                                                }
+                                                            </span>
+                                                        </>
+                                                    )}
+                                                </>
+                                            }
+                                            modalAttrs={{
+                                                size: modalSize.update,
+                                            }}
+                                            renderModalBody={(closeModal) => (
+                                                <DisplayForm
+                                                    onAfterSubmit={() => {
+                                                        closeModal();
+                                                        reFetch();
+                                                    }}
+                                                    onCancel={closeModal}
+                                                    endpoint={endpoints.update}
+                                                    getIncompleteDataCount={
+                                                        getIncompleteDataCount
+                                                    }
+                                                    updateValues={{
+                                                        ...row.original,
+                                                    }}
+                                                    {...updateFormProps}
+                                                />
+                                            )}
+                                        >
+                                            <Button>
+                                                <PreviewIcon
+                                                    sx={{ color: "black" }}
+                                                />
+                                            </Button>
+                                        </ModalWrapper>
                                     </div>
                                 )}
                             </div>
