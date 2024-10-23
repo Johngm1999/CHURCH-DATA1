@@ -1,4 +1,7 @@
-import UserDash from "../views/user/UserDash";
+import { lazy } from "react";
+
+// Lazy load the components
+const UserDash = lazy(() => import("../views/user/UserDash"));
 
 const userRoutes = Object.freeze([
     {

@@ -53,8 +53,8 @@ function ModalWrapper({
                             textTransform: "uppercase", // Uppercase text
                             letterSpacing: "0.5px", // Customize letter spacing
                             borderBottom: "4px solid #000",
-                            background:
-                                "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(122,5,217,1) 100%)",
+                            background: "#fff",
+                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
                         }}
                     >
                         {modalTitle}

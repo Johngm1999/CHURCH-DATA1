@@ -24,6 +24,18 @@ const endpoints = Object.freeze({
         changePassword: "dashboard/changePassword",
         changeUserPassword: "dashboard/changeUserPassword",
     },
+    global: {
+        add: "global/add",
+        update: "global/update",
+        delete: "global/delete",
+        get: "global/",
+        incompleteList: "global/inomplete",
+        incompleteCount: "global/incomplete-count",
+        search: "global/search",
+        deletedGlobal: "global/deletedGlobal",
+        restoreGlobal: "global/restoreGlobal",
+        permanentDelete: "global/permanentDelete",
+    },
 });
 
 export default endpoints;

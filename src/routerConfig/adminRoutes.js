@@ -1,8 +1,14 @@
-import Overview from "../views/admin/overview/Overview";
-import YouthList from "../views/admin/youth/YouthList";
-import Parish from "../views/admin/parish/Parish";
-import Global from "../views/admin/global/Global";
-import DeletedYouth from "../views/admin/deleted/youth/DeletedYouth";
+import { lazy } from "react";
+import DeletedGlobal from "../views/admin/deleted/global/DeletedGlobal";
+
+// Lazy load the components
+const Overview = lazy(() => import("../views/admin/overview/Overview"));
+const YouthList = lazy(() => import("../views/admin/youth/YouthList"));
+const Parish = lazy(() => import("../views/admin/parish/Parish"));
+const Global = lazy(() => import("../views/admin/global/GlobalList"));
+const DeletedYouth = lazy(() =>
+    import("../views/admin/deleted/youth/DeletedYouth")
+);
 
 const adminRoutes = Object.freeze([
     {
@@ -34,5 +40,12 @@ const adminRoutes = Object.freeze([
         name: "Deleted Youth Data",
         module: "Deleted Data",
     },
+    {
+        path: "global-removed",
+        page: DeletedGlobal,
+        name: "Deleted Global Data",
+        module: "Deleted Data",
+    },
 ]);
+
 export default adminRoutes;

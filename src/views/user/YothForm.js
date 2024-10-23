@@ -1063,10 +1063,7 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                             <FormControl
                                 fullWidth
                                 component="fieldset"
-                                error={
-                                    touched.educationalQualification &&
-                                    Boolean(errors.educationalQualification)
-                                }
+                                error={touched.unit && Boolean(errors.unit)}
                             >
                                 <div
                                     // component="legend"
@@ -1182,9 +1179,9 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                         </Select>
                                     )}
                                 </Field>
-                                {touched.educationalQualification && (
+                                {touched.unit && (
                                     <FormHelperText>
-                                        {errors.educationalQualification}
+                                        {errors.unit}
                                     </FormHelperText>
                                 )}
                             </FormControl>

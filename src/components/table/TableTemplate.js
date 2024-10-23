@@ -193,7 +193,7 @@ function TableTemplate(props) {
                                                             of{" "}
                                                             <span
                                                                 style={{
-                                                                    color: "#fff",
+                                                                    color: "violet",
                                                                 }}
                                                             >
                                                                 {
