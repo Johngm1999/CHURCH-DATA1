@@ -16,8 +16,8 @@ import {
     MenuItem,
 } from "@mui/material";
 import axios from "axios";
-import FormSubmissionBtn from "../../components/FormSubmissionBtn";
-import endpoints from "../../services/endpoints";
+import FormSubmissionBtn from "../../../components/FormSubmissionBtn";
+import endpoints from "../../../services/endpoints";
 import toast from "react-hot-toast";
 
 const findAge = (dateOfBirth) => {

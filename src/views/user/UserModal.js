@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import ModalWrapper from "../../components/ModalWrapper";
-// import YouthDataCollectionForm from "./YothForm";
 
 function YouthModal({ text, Form, bg }) {
     return (

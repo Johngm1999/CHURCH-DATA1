@@ -1,5 +1,6 @@
-import YouthDataCollectionForm from "./YothForm";
-import YouthModal from "./YouthModal";
+import YouthDataCollectionForm from "./youth/YothForm";
+import GlobalFormDataCollectionForm from "./global/GlobalForm";
+import UserModal from "./UserModal";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useAuthenticationState } from "../../context/Auth.context";
 import churchImg from "../../asset/img/church.jpeg";
@@ -24,7 +25,7 @@ function UserDash() {
             id: 3,
             bg: "green",
             displayText: "Add Global Data",
-            form: () => <>Form Not Created</>,
+            form: GlobalFormDataCollectionForm,
         },
     ];
 
@@ -98,7 +99,7 @@ function UserDash() {
                                 boxShadow: 4,
                             }}
                         >
-                            <YouthModal
+                            <UserModal
                                 text={item.displayText}
                                 Form={item.form}
                                 bg={item.bg}
