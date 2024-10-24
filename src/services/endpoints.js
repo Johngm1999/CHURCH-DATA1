@@ -6,6 +6,7 @@ const endpoints = Object.freeze({
             "/instructor/activate_instrutor/changePasswordinstuctor",
         forgetPassword:
             "/instructor/activate_instrutor/forgotpassword_instructor",
+        logout: "/auth/logout",
     },
     youth: {
         add: "youth/add",

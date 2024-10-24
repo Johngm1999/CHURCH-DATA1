@@ -7,6 +7,7 @@ import { ReactComponent as SortDown } from "../../asset/icons/SortDown.svg";
 import { ReactComponent as Sort } from "../../asset/icons/Sort.svg";
 import { Button } from "@mui/material";
 import PreviewIcon from "@mui/icons-material/VisibilityOutlined";
+import CertificatePreview from "../CertificatePreview";
 
 function TableTemplate(props) {
     const {
@@ -27,6 +28,7 @@ function TableTemplate(props) {
         getIncompleteDataCount,
         DisplayForm,
         showFullDetails,
+        isComplete,
     } = props;
 
     return (
@@ -85,7 +87,15 @@ function TableTemplate(props) {
                                     className="th text-center"
                                     style={{ background: "#92b6f0" }}
                                 >
-                                    Complete Details
+                                    Details
+                                </div>
+                            )}
+                            {isComplete && (
+                                <div
+                                    className="th text-center"
+                                    style={{ background: "#92b6f0" }}
+                                >
+                                    Certificate
                                 </div>
                             )}
                         </div>
@@ -232,6 +242,15 @@ function TableTemplate(props) {
                                                 />
                                             </Button>
                                         </ModalWrapper>
+                                    </div>
+                                )}
+                                {isComplete && (
+                                    <div className="td text-center">
+                                        <CertificatePreview
+                                            data={{
+                                                ...row.original,
+                                            }}
+                                        />
                                     </div>
                                 )}
                             </div>

@@ -51,6 +51,7 @@ const PaginatedTable = (props) => {
         handlePageJump,
         DisplayForm = () => <div></div>,
         showFullDetails = false,
+        isComplete = false,
     } = props;
     const downloadFileName = downloadExcelName || name;
     // const ensureString = (value) => {
@@ -245,6 +246,7 @@ const PaginatedTable = (props) => {
                             getIncompleteDataCount={getIncompleteDataCount}
                             DisplayForm={DisplayForm}
                             showFullDetails={showFullDetails}
+                            isComplete={isComplete}
                         />
                         {pageOptions.length > 0 && (
                             <AdvancedPagination

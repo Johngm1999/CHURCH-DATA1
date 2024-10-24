@@ -540,6 +540,7 @@ function GlobalComplete({ getIncompleteDataCount }) {
                 handlePageJump={handlePageJump}
                 DisplayForm={GlobalDataDisplayForm}
                 showFullDetails
+                isComplete
             />
         </>
     );

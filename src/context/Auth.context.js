@@ -133,7 +133,15 @@ const AuthenticationProvider = (props) => {
         return userData;
     }, []);
 
-    const logout = useCallback(() => {
+    const logout = useCallback(async () => {
+        let refreshToken = localStorage.getItem("refreshToken");
+        if (refreshToken) {
+            let body = { refreshToken: refreshToken };
+            const response = await axios.post(
+                endpoints.authentication.logout,
+                body
+            );
+        }
         setUser(initUser);
         localStorage.clear();
         navigate("login");

@@ -4,7 +4,8 @@ import html2canvas from "html2canvas";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import letter from "../asset/img/letter.png";
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
 const CertificateTemplate = React.forwardRef((props, ref) => {
     const { studentName, courseName, completionDate, signatureSrc, sealSrc } =
@@ -16,11 +17,11 @@ const CertificateTemplate = React.forwardRef((props, ref) => {
             style={{
                 backgroundImage: `url(${letter})`,
                 backgroundSize: "contain",
-                backgroundPosition: "center",
+                // backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
-                borderRadius: 10,
-                padding: "40px",
-                width: "40%", // Set a width constraint
+                // borderRadius: 10,
+                padding: "35px",
+                width: "75%", // Set a width constraint
                 maxWidth: "800px", // Ensure it doesn't exceed a certain size
                 margin: "0 auto", // Center the box horizontally
                 wordWrap: "break-word", // Ensure text wraps properly
@@ -33,7 +34,7 @@ const CertificateTemplate = React.forwardRef((props, ref) => {
                 pt: 2,
             }}
         >
-            <Box sx={{ pt: 4 }}>
+            <Box sx={{ pt: "43%" }}>
                 <h1 style={styles.title}>Certificate of Completion</h1>
                 <p style={styles.content}>
                     This is to certify that <strong>{studentName}</strong> has
@@ -41,7 +42,7 @@ const CertificateTemplate = React.forwardRef((props, ref) => {
                     <strong>{courseName}</strong> on{" "}
                     <strong>{completionDate}</strong>.
                 </p>
-                <div style={styles.signatureContainer}>
+                {/* <div style={styles.signatureContainer}>
                     <div>
                         <img
                             src={signatureSrc}
@@ -54,7 +55,7 @@ const CertificateTemplate = React.forwardRef((props, ref) => {
                         <img src={sealSrc} alt="Seal" style={styles.seal} />
                         <div>seal</div>
                     </div>
-                </div>
+                </div> */}
             </Box>
         </Box>
     );
@@ -62,7 +63,7 @@ const CertificateTemplate = React.forwardRef((props, ref) => {
 
 const styles = {
     title: {
-        fontSize: "2rem",
+        fontSize: "1.5rem",
         textAlign: "center",
         marginBottom: "20px",
     },
@@ -85,7 +86,7 @@ const styles = {
     },
 };
 
-const Certificate = () => {
+const Certificate = ({ closeModal }) => {
     const [studentName, setStudentName] = useState("");
     const [courseName, setCourseName] = useState("");
     const [completionDate, setCompletionDate] = useState("");
@@ -96,43 +97,96 @@ const Certificate = () => {
 
     const certificateRef = useRef();
 
+    // const handleDownloadPDF = () => {
+    //     const input = certificateRef.current;
+    //     html2canvas(input).then((canvas) => {
+    //         const imgData = canvas.toDataURL("image/png");
+    //         const pdf = new jsPDF();
+    //         pdf.addImage(imgData, "PNG", 0, 0, 220, 300);
+    //         pdf.save("certificate.pdf");
+    //     });
+    // };
     const handleDownloadPDF = () => {
         const input = certificateRef.current;
-        html2canvas(input).then((canvas) => {
+
+        // Use a higher scale factor to improve image quality
+        html2canvas(input, { scale: 3 }).then((canvas) => {
             const imgData = canvas.toDataURL("image/png");
-            const pdf = new jsPDF();
-            pdf.addImage(imgData, "PNG", 0, 0, 220, 300);
-            pdf.save("certificate.pdf");
+
+            // Create a PDF document with higher quality
+            const pdf = new jsPDF("portrait", "mm", "a4");
+
+            // Calculate the width and height of the PDF page in pixels
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+
+            // Add the image with scaling to fit into the PDF
+            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+            pdf.save("certificate-nw.pdf");
+            closeModal();
         });
     };
 
     return (
-        <div>
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
-                <TextField
-                    label="Student Name"
-                    variant="outlined"
-                    value={studentName}
-                    onChange={(e) => setStudentName(e.target.value)}
-                    style={{ marginRight: "10px" }}
-                />
-                <TextField
-                    label="Course Name"
-                    variant="outlined"
-                    value={courseName}
-                    onChange={(e) => setCourseName(e.target.value)}
-                    style={{ marginRight: "10px" }}
-                />
-                <TextField
-                    label="Completion Date"
-                    type="date"
-                    variant="outlined"
-                    InputLabelProps={{ shrink: true }}
-                    value={completionDate}
-                    onChange={(e) => setCompletionDate(e.target.value)}
-                    style={{ marginRight: "10px" }}
+        <div style={{ position: "relative" }}>
+            <div
+                style={{
+                    textAlign: "center",
+                    position: "absolute",
+                    top: -20,
+                    right: 0,
+                }}
+            >
+                <FileDownloadOutlinedIcon
+                    onClick={handleDownloadPDF}
+                    sx={{
+                        color: "blue",
+                        cursor: "pointer",
+                        fontSize: "28px",
+                        "&:hover": {
+                            color: "#556aed", // Background on hover
+                        },
+                    }}
                 />
             </div>
+            <Grid
+                container
+                spacing={2}
+                alignItems="center"
+                justifyContent="center"
+                style={{ marginBottom: "20px" }}
+            >
+                <Grid item xs={12} sm={4}>
+                    <TextField
+                        label="Student Name"
+                        variant="outlined"
+                        value={studentName}
+                        onChange={(e) => setStudentName(e.target.value)}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                    <TextField
+                        label="Course Name"
+                        variant="outlined"
+                        value={courseName}
+                        onChange={(e) => setCourseName(e.target.value)}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                    <TextField
+                        label="Completion Date"
+                        type="date"
+                        variant="outlined"
+                        InputLabelProps={{ shrink: true }}
+                        value={completionDate}
+                        onChange={(e) => setCompletionDate(e.target.value)}
+                        fullWidth
+                    />
+                </Grid>
+            </Grid>
 
             <CertificateTemplate
                 ref={certificateRef}
