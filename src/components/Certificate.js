@@ -6,6 +6,8 @@ import TextField from "@mui/material/TextField";
 import letter from "../asset/img/letter.png";
 import { Box, Grid } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import ConfettiExplosion from "react-confetti-explosion";
+import toast from "react-hot-toast";
 
 const CertificateTemplate = React.forwardRef((props, ref) => {
     const { userName, courseName, completionDate, signatureSrc, sealSrc } =
@@ -95,6 +97,7 @@ const Certificate = ({ closeModal, data }) => {
         "your-signature-image-url"
     );
     const [sealSrc, setSealSrc] = useState("your-seal-image-url");
+    const [downloadCompleted, setDownloadCompleted] = useState(false);
 
     const certificateRef = useRef();
     console.log(data);
@@ -126,7 +129,14 @@ const Certificate = ({ closeModal, data }) => {
             pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
             pdf.save("certificate-nw.pdf");
-            closeModal();
+            // closeModal();
+            setDownloadCompleted(true);
+            toast.success("Download Completed");
+
+            setTimeout(() => {
+                setDownloadCompleted(false);
+                closeModal();
+            }, 2000);
         });
     };
 
@@ -159,9 +169,10 @@ const Certificate = ({ closeModal, data }) => {
                 justifyContent="center"
                 style={{ marginBottom: "20px" }}
             >
+                {downloadCompleted && <ConfettiExplosion />}
                 <Grid item xs={12} sm={4}>
                     <TextField
-                        label="Global Meber Name"
+                        label="Global Member Name"
                         variant="outlined"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
@@ -205,6 +216,7 @@ const Certificate = ({ closeModal, data }) => {
                     color="secondary"
                     onClick={handleDownloadPDF}
                     style={{ marginLeft: "10px" }}
+                    disabled={downloadCompleted}
                 >
                     Download as PDF
                 </Button>

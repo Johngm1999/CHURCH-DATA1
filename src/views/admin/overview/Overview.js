@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useAxiosGet } from "../../../hooks/axiosHooks";
 import endpoints from "../../../services/endpoints";
 import Profile from "../../../components/navbar/Profile";
-import Certificate from "../../../components/Certificate";
 
 const ReportCard = ({ title, type, location, titleColor = "#000" }) => {
     const navigate = useNavigate();
@@ -107,11 +106,13 @@ const Overview = () => {
                     boxShadow: 3,
                     my: 6,
                     borderRadius: 2,
-                    minWidth: "15%",
+                    // minWidth: "15%",
                     maxWidth: "20%",
                     // bgcolor: "greenyellow",
                     borderBottom: "2px solid grey",
                     fontWeight: 700,
+                    textWrap: "wrap",
+                    wordWrap: "break-word",
                 }}
             >
                 DATA COUNT
@@ -174,10 +175,12 @@ const Overview = () => {
                     boxShadow: 3,
                     my: 4,
                     borderRadius: 2,
-                    minWidth: "15%",
+                    // minWidth: "15%",
                     maxWidth: "20%",
                     borderBottom: "2px solid grey",
                     fontWeight: 700,
+                    textWrap: "wrap",
+                    wordWrap: "break-word",
                 }}
             >
                 DATA REPORT
@@ -194,7 +197,6 @@ const Overview = () => {
                     </Grid>
                 ))}
             </Grid>
-            {/* <Certificate /> */}
         </Container>
     );
 };

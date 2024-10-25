@@ -30,7 +30,7 @@ function Sidebar({ routes, show }) {
                 className="h4 pt-4 ps-4 text-secondary"
                 style={{ fontWeight: 700, height: "100px" }}
             >
-                Church-Portal
+                CHURCH-PORTAL
             </div>
 
             {/* Menu Section */}
