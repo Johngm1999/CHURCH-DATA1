@@ -8,7 +8,7 @@ import { Box, Grid } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
 const CertificateTemplate = React.forwardRef((props, ref) => {
-    const { studentName, courseName, completionDate, signatureSrc, sealSrc } =
+    const { userName, courseName, completionDate, signatureSrc, sealSrc } =
         props;
 
     return (
@@ -35,12 +35,13 @@ const CertificateTemplate = React.forwardRef((props, ref) => {
             }}
         >
             <Box sx={{ pt: "43%" }}>
-                <h1 style={styles.title}>Certificate of Completion</h1>
+                {/* <h1 style={styles.title}>Certificate of Completion</h1> */}
                 <p style={styles.content}>
-                    This is to certify that <strong>{studentName}</strong> has
-                    successfully completed the course{" "}
+                    This is to certify that <strong>{userName}</strong> has a
+                    member of this church
+                    {/* successfully completed the course{" "}
                     <strong>{courseName}</strong> on{" "}
-                    <strong>{completionDate}</strong>.
+                    <strong>{completionDate}</strong>. */}
                 </p>
                 {/* <div style={styles.signatureContainer}>
                     <div>
@@ -86,8 +87,8 @@ const styles = {
     },
 };
 
-const Certificate = ({ closeModal }) => {
-    const [studentName, setStudentName] = useState("");
+const Certificate = ({ closeModal, data }) => {
+    const [userName, setUserName] = useState(data.fullName || "");
     const [courseName, setCourseName] = useState("");
     const [completionDate, setCompletionDate] = useState("");
     const [signatureSrc, setSignatureSrc] = useState(
@@ -96,6 +97,7 @@ const Certificate = ({ closeModal }) => {
     const [sealSrc, setSealSrc] = useState("your-seal-image-url");
 
     const certificateRef = useRef();
+    console.log(data);
 
     // const handleDownloadPDF = () => {
     //     const input = certificateRef.current;
@@ -130,7 +132,7 @@ const Certificate = ({ closeModal }) => {
 
     return (
         <div style={{ position: "relative" }}>
-            <div
+            {/* <div
                 style={{
                     textAlign: "center",
                     position: "absolute",
@@ -149,7 +151,7 @@ const Certificate = ({ closeModal }) => {
                         },
                     }}
                 />
-            </div>
+            </div> */}
             <Grid
                 container
                 spacing={2}
@@ -159,14 +161,14 @@ const Certificate = ({ closeModal }) => {
             >
                 <Grid item xs={12} sm={4}>
                     <TextField
-                        label="Student Name"
+                        label="Global Meber Name"
                         variant="outlined"
-                        value={studentName}
-                        onChange={(e) => setStudentName(e.target.value)}
+                        value={userName}
+                        onChange={(e) => setUserName(e.target.value)}
                         fullWidth
                     />
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                {/* <Grid item xs={12} sm={4}>
                     <TextField
                         label="Course Name"
                         variant="outlined"
@@ -185,12 +187,12 @@ const Certificate = ({ closeModal }) => {
                         onChange={(e) => setCompletionDate(e.target.value)}
                         fullWidth
                     />
-                </Grid>
+                </Grid> */}
             </Grid>
 
             <CertificateTemplate
                 ref={certificateRef}
-                studentName={studentName || "Your Name"}
+                userName={userName || "Your Name"}
                 courseName={courseName || "Course Name"}
                 completionDate={completionDate || "Completion Date"}
                 signatureSrc={signatureSrc}

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import PaginatedTable from "../../../components/table/PaginatedTable";
 import endpoints from "../../../services/endpoints";
-import GlobalForm from "./GlobalForm";
-import GlobalDataDisplayForm from "./GlobalDataDisplayForm";
+import ParishForm from "./ParishForm";
+import ParishDataDisplayForm from "./ParishDataDisplayForm";
 import { useAxiosGet } from "../../../hooks/axiosHooks";
 import viewProps from "../../viewprops";
 import {
@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import toast from "react-hot-toast";
 
-function GlobalComplete({ getIncompleteDataCount }) {
+function ParishComplete({ getIncompleteDataCount }) {
     const [page, setPage] = useState(1);
     const [triggerApiCall, setTriggerApiCall] = useState(true);
 
@@ -29,10 +29,7 @@ function GlobalComplete({ getIncompleteDataCount }) {
         name: "",
         mobileNumber: "",
         unit: "",
-        maritialStatus: "",
-        dobFrom: "",
-        dobTo: "",
-        country: "",
+        familyName: "",
     });
 
     const [isSearching, setIsSearching] = useState(false); // Whether a search is active
@@ -40,11 +37,9 @@ function GlobalComplete({ getIncompleteDataCount }) {
     // Search Criteria Selection
     const [selectedCriteria, setSelectedCriteria] = useState({
         name: false,
-        dob: false,
+        familyName: false,
         mobileNumber: false,
         unit: false,
-        maritialStatus: false,
-        country: false,
     });
 
     // Build the search query string based on searchParams object
@@ -61,9 +56,9 @@ function GlobalComplete({ getIncompleteDataCount }) {
     // Conditional URL based on whether the user is searching or not
     const url = isSearching
         ? `${
-              endpoints.global.search
+              endpoints.parish.search
           }?page=${page}&limit=10&${buildSearchQuery()}`
-        : `${endpoints.global.get}?page=${page}&limit=10`;
+        : `${endpoints.parish.get}?page=${page}&limit=10`;
 
     const fetchUtils = useAxiosGet(url, { preventCall: !triggerApiCall });
 
@@ -112,23 +107,11 @@ function GlobalComplete({ getIncompleteDataCount }) {
                 ...prevTerms,
                 [name]: "", // Set the corresponding search term to an empty string
             }));
-            if (name === "dob")
-                setSearchParams((prevTerms) => ({
-                    ...prevTerms,
-                    dobFrom: "", // Set the corresponding search term to an empty string
-                    dobTo: "",
-                }));
         }
     };
 
     const handleSearch = (e) => {
         e.preventDefault();
-        if (searchParams.dobFrom && !searchParams.dobTo) {
-            toast.error(
-                "Search is only available if you select the complete DOB range (From and To)."
-            );
-            return;
-        }
         setIsSearching(true); // Set the mode to searching
         setPage(1); // Reset to first page on search
         setTriggerApiCall(true); // Trigger API call with search parameters
@@ -137,21 +120,15 @@ function GlobalComplete({ getIncompleteDataCount }) {
     const handleResetSearch = () => {
         setSearchParams({
             name: "",
-            dob: "",
+            familyName: "",
             mobileNumber: "",
             unit: "",
-            maritialStatus: "",
-            dobFrom: "",
-            dobTo: "",
-            country: "",
         }); // Clear the search fields
         setSelectedCriteria({
             name: false,
-            dob: false,
+            familyName: false,
             mobileNumber: false,
             unit: false,
-            maritialStatus: false,
-            country: false,
         }); // Reset the criteria selection
         setIsSearching(false); // Exit search mode
         setPage(1); // Reset to first page
@@ -159,12 +136,10 @@ function GlobalComplete({ getIncompleteDataCount }) {
     };
 
     const hasSearchParams =
-        searchParams.maritialStatus ||
-        (searchParams.dobFrom && searchParams.dobTo) ||
         searchParams.mobileNumber ||
-        searchParams.name ||
+        searchParams.familyName ||
         searchParams.unit ||
-        searchParams.country;
+        searchParams.name;
 
     const shouldDisplayResults =
         fetchUtils.response.length > 0 ||
@@ -192,27 +167,17 @@ function GlobalComplete({ getIncompleteDataCount }) {
                                         name="name"
                                     />
                                 }
-                                label="Name"
+                                label="Head of the family"
                             />
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        checked={selectedCriteria.country}
+                                        checked={selectedCriteria.familyName}
                                         onChange={handleCriteriaChange}
-                                        name="country"
+                                        name="familyName"
                                     />
                                 }
-                                label="Country"
-                            />
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={selectedCriteria.dob}
-                                        onChange={handleCriteriaChange}
-                                        name="dob"
-                                    />
-                                }
-                                label="Date of Birth"
+                                label="Family Name"
                             />
                             <FormControlLabel
                                 control={
@@ -234,18 +199,6 @@ function GlobalComplete({ getIncompleteDataCount }) {
                                 }
                                 label="Unit"
                             />
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={
-                                            selectedCriteria.maritialStatus
-                                        }
-                                        onChange={handleCriteriaChange}
-                                        name="maritialStatus"
-                                    />
-                                }
-                                label="Marital Status"
-                            />
                         </Box>
 
                         {/* Search Fields */}
@@ -263,57 +216,16 @@ function GlobalComplete({ getIncompleteDataCount }) {
                                         />
                                     </Grid>
                                 )}
-                                {selectedCriteria.country && (
+                                {selectedCriteria.familyName && (
                                     <Grid item xs={12} sm={6}>
                                         <TextField
-                                            label="Country Of Residence"
+                                            label="Family Name"
                                             variant="outlined"
-                                            name="country"
-                                            value={searchParams.country}
+                                            name="familyName"
+                                            value={searchParams.familyName}
                                             onChange={handleSearchChange}
                                             fullWidth
                                         />
-                                    </Grid>
-                                )}
-                                {selectedCriteria.dob && (
-                                    <Grid item xs={12} sm={6}>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={6}>
-                                                <TextField
-                                                    label="Date of Birth (From)"
-                                                    variant="outlined"
-                                                    type="date"
-                                                    name="dobFrom"
-                                                    value={searchParams.dobFrom}
-                                                    onChange={
-                                                        handleSearchChange
-                                                    }
-                                                    InputLabelProps={{
-                                                        shrink: true,
-                                                    }}
-                                                    fullWidth
-                                                />
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <TextField
-                                                    label="Date of Birth (To)"
-                                                    variant="outlined"
-                                                    type="date"
-                                                    name="dobTo"
-                                                    disabled={
-                                                        !searchParams.dobFrom
-                                                    }
-                                                    value={searchParams.dobTo}
-                                                    onChange={
-                                                        handleSearchChange
-                                                    }
-                                                    InputLabelProps={{
-                                                        shrink: true,
-                                                    }}
-                                                    fullWidth
-                                                />
-                                            </Grid>
-                                        </Grid>
                                     </Grid>
                                 )}
                                 {selectedCriteria.mobileNumber && (
@@ -425,68 +337,13 @@ function GlobalComplete({ getIncompleteDataCount }) {
                                         </FormControl>
                                     </Grid>
                                 )}
-                                {selectedCriteria.maritialStatus && (
-                                    <Grid item xs={12} sm={6}>
-                                        <FormControl
-                                            fullWidth
-                                            variant="outlined"
-                                        >
-                                            <InputLabel>
-                                                Marital Status
-                                            </InputLabel>
-                                            <Select
-                                                label="maritialStatus"
-                                                name="maritialStatus"
-                                                value={
-                                                    searchParams.maritialStatus ||
-                                                    ""
-                                                }
-                                                onChange={handleSearchChange}
-                                            >
-                                                <MenuItem value="">
-                                                    <em>
-                                                        Select your Maritial
-                                                        Status
-                                                    </em>
-                                                </MenuItem>
-                                                {[
-                                                    {
-                                                        key: "Single",
-                                                        value: "Single",
-                                                    },
-                                                    {
-                                                        key: "Widow",
-                                                        value: "Widow",
-                                                    },
-                                                    {
-                                                        key: "Divorced",
-                                                        value: "Divorced",
-                                                    },
-                                                    {
-                                                        key: "Other",
-                                                        value: "Other",
-                                                    },
-                                                ].map((option) => (
-                                                    <MenuItem
-                                                        value={option.value}
-                                                        key={option.value}
-                                                    >
-                                                        {option.key}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
-                                )}
                             </Grid>
 
                             {/* Search and Reset Buttons */}
-                            {(searchParams.maritialStatus ||
-                                (searchParams.dobFrom && searchParams.dobTo) ||
-                                searchParams.mobileNumber ||
+                            {(searchParams.mobileNumber ||
                                 searchParams.name ||
                                 searchParams.unit ||
-                                searchParams.country) && (
+                                searchParams.familyName) && (
                                 <Box
                                     display="flex"
                                     justifyContent="space-between"
@@ -527,10 +384,10 @@ function GlobalComplete({ getIncompleteDataCount }) {
             {/* Paginated Table */}
             <PaginatedTable
                 handleNext={handleNext}
-                {...viewProps.GlobalDetails}
+                {...viewProps.ParishDetails}
                 handlePrevious={handlePrevious}
-                Form={GlobalForm}
-                endpoints={endpoints.global}
+                Form={ParishForm}
+                endpoints={endpoints.parish}
                 formSize="lg"
                 {...fetchUtils}
                 getIncompleteDataCount={getIncompleteDataCount}
@@ -538,12 +395,11 @@ function GlobalComplete({ getIncompleteDataCount }) {
                 handleFirst={handleFirst}
                 handleLast={handleLast}
                 handlePageJump={handlePageJump}
-                DisplayForm={GlobalDataDisplayForm}
+                DisplayForm={ParishDataDisplayForm}
                 showFullDetails
-                isComplete
             />
         </>
     );
 }
 
-export default GlobalComplete;
+export default ParishComplete;

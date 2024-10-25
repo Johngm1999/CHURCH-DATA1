@@ -232,7 +232,7 @@ const GlobalForm = ({ onCancel, updateValues }) => {
                     </Grid>
 
                     <ReadOnlyTextField
-                        label="Maritial Status"
+                        label="Marital Status"
                         value={updateValues.maritialStatus}
                     />
 

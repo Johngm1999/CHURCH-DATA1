@@ -198,7 +198,7 @@ function TableTemplate(props) {
                                             modalTitle={
                                                 <>
                                                     Full Details{" "}
-                                                    {row.original.fullName && (
+                                                    {row.original.fullName ? (
                                                         <>
                                                             of{" "}
                                                             <span
@@ -209,6 +209,20 @@ function TableTemplate(props) {
                                                                 {
                                                                     row.original
                                                                         .fullName
+                                                                }
+                                                            </span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            of Family{" "}
+                                                            <span
+                                                                style={{
+                                                                    color: "violet",
+                                                                }}
+                                                            >
+                                                                {
+                                                                    row.original
+                                                                        .familyName
                                                                 }
                                                             </span>
                                                         </>

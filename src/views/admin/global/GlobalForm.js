@@ -372,7 +372,7 @@ const GlobalForm = ({
                                     color: "#54527C",
                                 }}
                             >
-                                Maritial Status
+                                Marital Status
                             </div>
                             <Field
                                 sx={{ position: "relative" }}

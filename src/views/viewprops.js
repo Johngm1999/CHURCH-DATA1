@@ -63,6 +63,44 @@ const viewProps = Object.freeze({
             "delete",
         ],
     },
+    ParishDetails: {
+        name: "Parish Members Details", // Update the name as needed
+        columnHeads: [
+            "ID",
+            "FORM NUMBER",
+            "family Name",
+            "Head",
+            "MOBILE NUMBER",
+        ],
+        relevants: [
+            "prefixedId",
+            "formNumber",
+            "familyName",
+            "headName",
+            "contactNumber",
+        ],
+    },
+    ParishDeletedDetails: {
+        name: "Deleted Parish Members", // Update the name as needed
+        columnHeads: [
+            "ID",
+            "FORM NUMBER",
+            "family Name",
+            "Head",
+            "MOBILE NUMBER",
+            "RESTORE",
+            "DELETE",
+        ],
+        relevants: [
+            "prefixedId",
+            "formNumber",
+            "familyName",
+            "headName",
+            "contactNumber",
+            "restore",
+            "delete",
+        ],
+    },
 });
 
 export default viewProps;

@@ -144,7 +144,7 @@ const Overview = () => {
                             variant="h4"
                             sx={{ fontWeight: "bold", color: "primary.main" }}
                         >
-                            {data.response.GlobalMembers || 0}
+                            {data.response.globalMembers || 0}
                         </Typography>
                     </Paper>
                 </Grid>
@@ -160,7 +160,7 @@ const Overview = () => {
                             variant="h4"
                             sx={{ fontWeight: "bold", color: "primary.main" }}
                         >
-                            {data.response.ParishMembers || 0}
+                            {data.response?.parishMembers || 0}
                         </Typography>
                     </Paper>
                 </Grid>

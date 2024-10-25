@@ -20,7 +20,11 @@ function Sidebar({ routes, show }) {
     };
 
     return (
-        <Box style={sidebarStyle} sx={{ boxShadow: 5 }} className="bg-primary">
+        <Box
+            style={sidebarStyle}
+            sx={{ boxShadow: 6, borderTop: "50px solid lightblue" }}
+            className="bg-primary"
+        >
             {/* Header */}
             <div
                 className="h4 pt-4 ps-4 text-secondary"

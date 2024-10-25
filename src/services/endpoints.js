@@ -37,6 +37,18 @@ const endpoints = Object.freeze({
         restoreGlobal: "global/restoreGlobal",
         permanentDelete: "global/permanentDelete",
     },
+    parish: {
+        add: "parish/add",
+        update: "parish/update",
+        delete: "parish/delete",
+        get: "parish/",
+        incompleteList: "parish/inomplete",
+        incompleteCount: "parish/incomplete-count",
+        search: "parish/search",
+        deletedParish: "parish/deletedParish",
+        restoreParish: "parish/restoreParish",
+        permanentDelete: "parish/permanentDelete",
+    },
 });
 
 export default endpoints;

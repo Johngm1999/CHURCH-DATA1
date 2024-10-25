@@ -9,10 +9,7 @@ import {
     Radio,
     FormHelperText,
     Grid,
-    Select,
-    MenuItem,
 } from "@mui/material";
-import FormSubmissionBtn from "../../../components/FormSubmissionBtn";
 
 const ReadOnlyTextField = ({ label, value, ...rest }) => {
     return (
@@ -235,7 +232,7 @@ const GlobalForm = ({ onCancel, updateValues }) => {
                     </Grid>
 
                     <ReadOnlyTextField
-                        label="Maritial Status"
+                        label="Marital Status"
                         value={updateValues.maritialStatus}
                     />
 

@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import ModalWrapper from "../../components/ModalWrapper";
 
-function YouthModal({ text, Form, bg }) {
+function UserModal({ text, Form, bg }) {
     return (
         <ModalWrapper
             modalTitle={text || "Add Data"}
@@ -40,4 +40,4 @@ function YouthModal({ text, Form, bg }) {
     );
 }
 
-export default YouthModal;
+export default UserModal;
