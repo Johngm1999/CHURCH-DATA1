@@ -1,175 +1,167 @@
 import React, { useRef, useState } from "react";
+import PropTypes from "prop-types";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import letter from "../asset/img/letter.png";
-import { Box, Grid } from "@mui/material";
+import { Button, TextField, Box, Grid } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import ConfettiExplosion from "react-confetti-explosion";
 import toast from "react-hot-toast";
+import endpoints from "../services/endpoints";
+import axios from "axios";
+import { useAxiosGet } from "../hooks/axiosHooks";
+import letter from "../asset/img/letter.png";
 
-const CertificateTemplate = React.forwardRef((props, ref) => {
-    const { userName, courseName, completionDate, signatureSrc, sealSrc } =
-        props;
-
-    return (
+const CertificateTemplate = React.forwardRef(
+    ({ userName, courseName, completionDate, signatureSrc, sealSrc }, ref) => (
         <Box
             ref={ref}
-            style={{
+            sx={{
                 backgroundImage: `url(${letter})`,
                 backgroundSize: "contain",
-                // backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
-                // borderRadius: 10,
                 padding: "35px",
-                width: "75%", // Set a width constraint
-                maxWidth: "800px", // Ensure it doesn't exceed a certain size
-                margin: "0 auto", // Center the box horizontally
-                wordWrap: "break-word", // Ensure text wraps properly
-                backgroundColor: "#fff", // Optional: add a background color to ensure readability
-            }}
-            sx={{
+                width: "75%",
+                maxWidth: "800px",
+                margin: "0 auto",
+                backgroundColor: "#fff",
                 justifyContent: "center",
                 alignItems: "center",
                 minHeight: "80vh",
                 pt: 2,
             }}
         >
-            <Box sx={{ pt: "43%" }}>
-                {/* <h1 style={styles.title}>Certificate of Completion</h1> */}
+            <Box sx={{ pt: "53%" }}>
                 <p style={styles.content}>
-                    This is to certify that <strong>{userName}</strong> has a
-                    member of this church
-                    {/* successfully completed the course{" "}
-                    <strong>{courseName}</strong> on{" "}
-                    <strong>{completionDate}</strong>. */}
+                    This is to certify that <strong>{userName}</strong> is a
+                    member of this church.
                 </p>
-                {/* <div style={styles.signatureContainer}>
-                    <div>
-                        <img
-                            src={signatureSrc}
-                            alt="Signature"
-                            style={styles.signature}
-                        />
-                        <div>signature</div>
-                    </div>
-                    <div>
-                        <img src={sealSrc} alt="Seal" style={styles.seal} />
-                        <div>seal</div>
-                    </div>
-                </div> */}
             </Box>
         </Box>
-    );
-});
+    )
+);
+
+CertificateTemplate.propTypes = {
+    userName: PropTypes.string.isRequired,
+    courseName: PropTypes.string,
+    completionDate: PropTypes.string,
+    signatureSrc: PropTypes.string,
+    sealSrc: PropTypes.string,
+};
 
 const styles = {
-    title: {
-        fontSize: "1.5rem",
-        textAlign: "center",
-        marginBottom: "20px",
-    },
     content: {
         fontSize: "1.2rem",
         textAlign: "center",
         marginBottom: "30px",
     },
-    signatureContainer: {
-        display: "flex",
-        justifyContent: "space-between",
-        marginTop: "40%",
-    },
-    signature: {
-        width: "150px",
-        marginRight: "20px",
-    },
-    seal: {
-        width: "100px",
-    },
 };
 
 const Certificate = ({ closeModal, data }) => {
     const [userName, setUserName] = useState(data.fullName || "");
-    const [courseName, setCourseName] = useState("");
-    const [completionDate, setCompletionDate] = useState("");
-    const [signatureSrc, setSignatureSrc] = useState(
-        "your-signature-image-url"
-    );
-    const [sealSrc, setSealSrc] = useState("your-seal-image-url");
     const [downloadCompleted, setDownloadCompleted] = useState(false);
-
+    const [isDisabled, setIsDisabled] = useState(false);
     const certificateRef = useRef();
-    console.log(data);
 
-    // const handleDownloadPDF = () => {
-    //     const input = certificateRef.current;
-    //     html2canvas(input).then((canvas) => {
-    //         const imgData = canvas.toDataURL("image/png");
-    //         const pdf = new jsPDF();
-    //         pdf.addImage(imgData, "PNG", 0, 0, 220, 300);
-    //         pdf.save("certificate.pdf");
-    //     });
-    // };
-    const handleDownloadPDF = () => {
+    const history = useAxiosGet(
+        `${endpoints.dashboard.certificateHstory}?id=${data.prefixedId}`
+    );
+    const historyData = history.response;
+
+    const createCertificateHistory = async () => {
+        try {
+            await axios.post(endpoints.dashboard.generatePdf, {
+                id: data.prefixedId,
+            });
+        } catch (err) {
+            toast.error(
+                err.response?.data?.errorMessage || "Something went wrong"
+            );
+        }
+    };
+
+    const downloadPDF = async (imgData, pdfWidth, pdfHeight) => {
+        const pdf = new jsPDF("portrait", "mm", "a4");
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save("certificate-nw.pdf");
+    };
+
+    const handleDownloadPDF = async () => {
         const input = certificateRef.current;
 
-        // Use a higher scale factor to improve image quality
-        html2canvas(input, { scale: 3 }).then((canvas) => {
+        await createCertificateHistory();
+        setDownloadCompleted(true);
+
+        try {
+            const canvas = await html2canvas(input, { scale: 3 });
             const imgData = canvas.toDataURL("image/png");
 
-            // Create a PDF document with higher quality
             const pdf = new jsPDF("portrait", "mm", "a4");
-
-            // Calculate the width and height of the PDF page in pixels
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
 
-            // Add the image with scaling to fit into the PDF
-            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+            await downloadPDF(imgData, pdfWidth, pdfHeight);
 
-            pdf.save("certificate-nw.pdf");
-            // closeModal();
-            setDownloadCompleted(true);
             toast.success("Download Completed");
-
             setTimeout(() => {
                 setDownloadCompleted(false);
                 closeModal();
+                setIsDisabled(true);
             }, 2000);
-        });
+        } catch (error) {
+            console.error("PDF Download Error:", error);
+            toast.error("Failed to download PDF. Please try again.");
+        } finally {
+            setDownloadCompleted(false);
+        }
     };
 
     return (
-        <div style={{ position: "relative" }}>
-            {/* <div
-                style={{
-                    textAlign: "center",
-                    position: "absolute",
-                    top: -20,
-                    right: 0,
-                }}
-            >
-                <FileDownloadOutlinedIcon
-                    onClick={handleDownloadPDF}
+        <div style={{ position: "relative", overflow: "hidden" }}>
+            {historyData.length > 0 && (
+                <Box
                     sx={{
-                        color: "blue",
-                        cursor: "pointer",
-                        fontSize: "28px",
-                        "&:hover": {
-                            color: "#556aed", // Background on hover
-                        },
+                        m: 2,
+                        padding: "10px",
+                        backgroundColor: "#f0f0f5",
+                        borderRadius: 8,
+                        textAlign: "center",
+                        fontSize: "1rem",
+                        color: "#333",
+                        boxShadow: 3,
+                        borderLeft: "52px solid red",
                     }}
-                />
-            </div> */}
+                >
+                    Last Certificate Generation Date:{" "}
+                    <strong>
+                        {new Date(
+                            historyData[0].certificate_created_date
+                        ).toLocaleString("en-IN", {
+                            timeZone: "Asia/Kolkata",
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                            // hour: "2-digit",
+                            // minute: "2-digit",
+                            // second: "2-digit",
+                        })}
+                    </strong>
+                </Box>
+            )}
             <Grid
                 container
                 spacing={2}
                 alignItems="center"
                 justifyContent="center"
-                style={{ marginBottom: "20px" }}
+                sx={{ mb: 2, mt: 3, pt: 2 }}
+                borderTop={2}
             >
-                {downloadCompleted && <ConfettiExplosion zIndex={100000} />}
+                {downloadCompleted && (
+                    <ConfettiExplosion
+                        zIndex={100000}
+                        duration={1800}
+                        height={"100vh"}
+                    />
+                )}
                 <Grid item xs={12} sm={4}>
                     <TextField
                         label="Global Member Name"
@@ -179,50 +171,41 @@ const Certificate = ({ closeModal, data }) => {
                         fullWidth
                     />
                 </Grid>
-                {/* <Grid item xs={12} sm={4}>
-                    <TextField
-                        label="Course Name"
-                        variant="outlined"
-                        value={courseName}
-                        onChange={(e) => setCourseName(e.target.value)}
-                        fullWidth
-                    />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                    <TextField
-                        label="Completion Date"
-                        type="date"
-                        variant="outlined"
-                        InputLabelProps={{ shrink: true }}
-                        value={completionDate}
-                        onChange={(e) => setCompletionDate(e.target.value)}
-                        fullWidth
-                    />
-                </Grid> */}
             </Grid>
 
             <CertificateTemplate
                 ref={certificateRef}
                 userName={userName || "Your Name"}
-                courseName={courseName || "Course Name"}
-                completionDate={completionDate || "Completion Date"}
-                signatureSrc={signatureSrc}
-                sealSrc={sealSrc}
+                courseName="Course Name"
+                completionDate="Completion Date"
+                signatureSrc="your-signature-image-url"
+                sealSrc="your-seal-image-url"
             />
 
-            <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <Box textAlign="center" mt={2}>
                 <Button
                     variant="contained"
                     color="secondary"
-                    onClick={handleDownloadPDF}
-                    style={{ marginLeft: "10px" }}
-                    disabled={downloadCompleted}
+                    onClick={() => {
+                        setIsDisabled(true);
+                        handleDownloadPDF();
+                    }}
+                    disabled={isDisabled}
+                    startIcon={<FileDownloadOutlinedIcon />}
                 >
                     Download as PDF
                 </Button>
-            </div>
+            </Box>
         </div>
     );
+};
+
+Certificate.propTypes = {
+    closeModal: PropTypes.func.isRequired,
+    data: PropTypes.shape({
+        fullName: PropTypes.string,
+        prefixedId: PropTypes.string.isRequired,
+    }).isRequired,
 };
 
 export default Certificate;

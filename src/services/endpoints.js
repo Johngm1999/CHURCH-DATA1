@@ -24,6 +24,8 @@ const endpoints = Object.freeze({
         get: "dashboard/",
         changePassword: "dashboard/changePassword",
         changeUserPassword: "dashboard/changeUserPassword",
+        certificateHstory: "dashboard/history",
+        generatePdf: "dashboard/generatePdf",
     },
     global: {
         add: "global/add",

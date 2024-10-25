@@ -4,6 +4,7 @@ import UserModal from "./UserModal";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useAuthenticationState } from "../../context/Auth.context";
 import churchImg from "../../asset/img/church.jpeg";
+import ParishForm from "./parish/ParishForm";
 
 function UserDash() {
     // You can adjust the number of modals here
@@ -19,7 +20,7 @@ function UserDash() {
             id: 2,
             bg: "violet",
             displayText: "Add Parish Data",
-            form: () => <>Form Not Created</>,
+            form: ParishForm,
         },
         {
             id: 3,

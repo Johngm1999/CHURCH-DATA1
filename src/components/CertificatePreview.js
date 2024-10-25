@@ -9,7 +9,15 @@ const CertificatePreview = ({ data }) => {
             modalTitle={"GENERATED CERTIFICATE"}
             modalAttrs={{ size: "md" }}
             renderModalBody={(closeModal) => (
-                <Box sx={{ background: "#dcdedc", py: 5 }}>
+                <Box
+                    sx={{
+                        background: "#dcdedc",
+                        py: 5,
+                        borderRadius: 5,
+                        boxShadow: 2,
+                        border: "1px solid white",
+                    }}
+                >
                     <Certificate closeModal={closeModal} data={data} />
                 </Box>
             )}
