@@ -169,7 +169,7 @@ const Certificate = ({ closeModal, data }) => {
                 justifyContent="center"
                 style={{ marginBottom: "20px" }}
             >
-                {downloadCompleted && <ConfettiExplosion />}
+                {downloadCompleted && <ConfettiExplosion zIndex={100000} />}
                 <Grid item xs={12} sm={4}>
                     <TextField
                         label="Global Member Name"
