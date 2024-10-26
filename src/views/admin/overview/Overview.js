@@ -3,6 +3,7 @@ import { Box, Container, Grid, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAxiosGet } from "../../../hooks/axiosHooks";
 import endpoints from "../../../services/endpoints";
+import Profile from "../../../components/navbar/Profile";
 
 const ReportCard = ({ title, type, location, titleColor = "#000" }) => {
     const navigate = useNavigate();
@@ -30,15 +31,17 @@ const ReportCard = ({ title, type, location, titleColor = "#000" }) => {
                     bgcolor: titleColor,
                     borderRadius: 5,
                     width: { xs: "80%", sm: "70%", md: "90%" }, // Responsive width for title box
-                    left: "50%",
-                    transform: "translateX(-50%)", // Center align the box
+                    left: "5%",
+                    // transform: "translateX(-50%)", // Center align the box
                     color: "#fff",
                     textAlign: "center",
                     fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" }, // Responsive font size
                     cursor: "pointer",
                     transition: "transform 0.3s, background-color 0.3s",
+                    boxShadow: 6,
                     "&:hover": {
                         backgroundColor: "primary.dark", // Change color on hover
+                        transform: "scale(1.1)",
                     },
                 }}
                 onClick={() => navigate(location)}
@@ -51,12 +54,6 @@ const ReportCard = ({ title, type, location, titleColor = "#000" }) => {
 
 const Overview = () => {
     const data = useAxiosGet(endpoints.dashboard.get);
-
-    const userCounts = {
-        YouthData: 120,
-        GlobalMembers: 45,
-        ParishMembers: 80,
-    };
 
     const reports = [
         {
@@ -85,29 +82,40 @@ const Overview = () => {
                 variant="h4"
                 sx={{
                     p: 2,
-                    textAlign: "center",
+                    textAlign: "right",
                     boxShadow: 3,
                     mb: 2,
                     borderRadius: 5,
                     fontWeight: 700,
-                    bgcolor: "#fff",
+                    // bgcolor: "#fff",
+                    // background:
+                    //     "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(122,5,217,1) 100%)",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                 }}
             >
-                CHURCH DATA PORTAL
+                <span style={{ width: "65%" }}>CHURCH DATA PORTAL</span>
+                <Profile />
             </Typography>
             <Typography
                 variant="h6"
                 sx={{
-                    px: 2,
+                    px: 1,
                     textAlign: "center",
                     boxShadow: 3,
                     my: 6,
                     borderRadius: 2,
-                    width: "12%",
-                    bgcolor: "greenyellow",
+                    // minWidth: "15%",
+                    maxWidth: "20%",
+                    // bgcolor: "greenyellow",
+                    borderBottom: "2px solid grey",
+                    fontWeight: 700,
+                    textWrap: "wrap",
+                    wordWrap: "break-word",
                 }}
             >
-                Data Count
+                DATA COUNT
             </Typography>
             <Grid container spacing={3}>
                 {/* Members Card */}
@@ -137,7 +145,7 @@ const Overview = () => {
                             variant="h4"
                             sx={{ fontWeight: "bold", color: "primary.main" }}
                         >
-                            {data.response.GlobalMembers || 0}
+                            {data.response.globalMembers || 0}
                         </Typography>
                     </Paper>
                 </Grid>
@@ -153,7 +161,7 @@ const Overview = () => {
                             variant="h4"
                             sx={{ fontWeight: "bold", color: "primary.main" }}
                         >
-                            {data.response.ParishMembers || 0}
+                            {data.response?.parishMembers || 0}
                         </Typography>
                     </Paper>
                 </Grid>
@@ -167,11 +175,15 @@ const Overview = () => {
                     boxShadow: 3,
                     my: 4,
                     borderRadius: 2,
-                    width: "15%",
-                    bgcolor: "greenyellow",
+                    // minWidth: "15%",
+                    maxWidth: "20%",
+                    borderBottom: "2px solid grey",
+                    fontWeight: 700,
+                    textWrap: "wrap",
+                    wordWrap: "break-word",
                 }}
             >
-                Data Report
+                DATA REPORT
             </Typography>
             <Grid container spacing={6} sx={{ mt: 8 }}>
                 {reports.map(({ type, title, color, location }) => (

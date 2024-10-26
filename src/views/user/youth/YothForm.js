@@ -16,7 +16,31 @@ import {
     MenuItem,
 } from "@mui/material";
 import axios from "axios";
-import FormSubmissionBtn from "../../components/FormSubmissionBtn";
+import FormSubmissionBtn from "../../../components/FormSubmissionBtn";
+import endpoints from "../../../services/endpoints";
+import toast from "react-hot-toast";
+
+const findAge = (dateOfBirth) => {
+    if (dateOfBirth) {
+        const birthDate = new Date(dateOfBirth); // Convert the string to a Date object
+        const today = new Date(); // Get the current date
+
+        let age = today.getFullYear() - birthDate.getFullYear(); // Calculate the difference in years
+        const monthDifference = today.getMonth() - birthDate.getMonth(); // Get the difference in months
+
+        // Adjust the age if the current month/day is before the birth month/day
+        if (
+            monthDifference < 0 ||
+            (monthDifference === 0 && today.getDate() < birthDate.getDate())
+        ) {
+            age--; // If birthday hasn't occurred this year, subtract one year
+        }
+
+        // console.log("Age:", age);
+        return age < 0 ? 0 : age;
+    }
+    return 0;
+};
 
 const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
     const initialValues = {
@@ -57,54 +81,60 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
         unit: "",
         specials: "",
         healthIssues: "",
+        additionalInfo: "",
     };
 
     const validationSchema = Yup.object({
-        formNumber: Yup.string().required("Required"),
-        fullName: Yup.string().required("Required"),
-        dateOfBirth: Yup.string().required("Required"),
-        age: Yup.number().required("Required"),
-        gender: Yup.string().required("Required"),
-        permanentAddress: Yup.string().required("Required"),
-        mobileNumber: Yup.string().required("Required"),
-        educationalQualification: Yup.string().required("Required"),
-        currentOccupation: Yup.string(),
-        professionalDetails: Yup.string(),
-        currentCourse: Yup.string(),
-        pendingSacraments: Yup.string(),
-        hasOrganisationGroup: Yup.string().required("Required"),
-        organisationGroup: Yup.string(),
-        hasParishActivity: Yup.string().required("Required"),
-        parishActivity: Yup.string(),
-        isOutsideParish: Yup.string().required("Required"),
-        isStudent: Yup.string().required("Required"),
-        countryCity: Yup.string().required("Required"),
-        parishContact: Yup.string().required("Required"),
-        residentialAddress: Yup.string().required("Required"),
-        isAttendingSundayMass: Yup.string().required("Required"),
-        sundayMassLocation: Yup.string(),
-        houseName: Yup.string().required("Required"),
-        parentsName: Yup.string().required("Required"),
-        parentsNumber: Yup.string().required("Required"),
-        unit: Yup.string().required("Required"),
-        specials: Yup.string(),
-        healthIssues: Yup.string(),
+        formNumber: Yup.string().required("Required"), // Required field
+        fullName: Yup.string().nullable(), // Optional, but validates if a value is present
+        dateOfBirth: Yup.string().nullable(),
+        age: Yup.number().nullable().positive().integer(), // Optional, should be a positive integer if present
+        gender: Yup.string().nullable(),
+        permanentAddress: Yup.string().nullable(),
+        mobileNumber: Yup.string().nullable(), // Example validation if mobileNumber is present
+        educationalQualification: Yup.string().nullable(),
+        currentOccupation: Yup.string().nullable(),
+        professionalDetails: Yup.string().nullable(),
+        currentCourse: Yup.string().nullable(),
+        pendingSacraments: Yup.string().nullable(),
+        hasOrganisationGroup: Yup.string().nullable(),
+        organisationGroup: Yup.string().nullable(),
+        hasParishActivity: Yup.string().nullable(),
+        parishActivity: Yup.string().nullable(),
+        isOutsideParish: Yup.string().nullable(),
+        isStudent: Yup.string().nullable(),
+        countryCity: Yup.string().nullable(),
+        parishContact: Yup.string().nullable(),
+        residentialAddress: Yup.string().nullable(),
+        isAttendingSundayMass: Yup.string().nullable(),
+        sundayMassLocation: Yup.string().nullable(),
+        houseName: Yup.string().nullable(),
+        parentsName: Yup.string().nullable(),
+        parentsNumber: Yup.string().nullable(), // Example validation
+        unit: Yup.string().nullable(),
+        specials: Yup.string().nullable(),
+        healthIssues: Yup.string().nullable(),
+        email: Yup.string()
+            .nullable() // Allows the email field to be null or empty
+            .email("Invalid email format"),
+        additionalInfo: Yup.string().nullable(),
     });
 
-    const onSubmit = (values, { setSubmitting }) => {
-        // axios
-        //     .post(endpoint, values)
-        //     .then(() => {
-        //         onAfterSubmit();
-        //     })
-        //     .catch((err) => {
-        //         showAlert(
-        //             "error",
-        //             err.response.data?.statusText || "Something went wrong"
-        //         );
-        //         console.log(err);
-        //     })
-        //     .finally((res) => setSubmitting(false));
+    const onSubmit = async (values, { setSubmitting }) => {
+        try {
+            await axios.post(endpoints.youth.add, values);
+            onAfterSubmit();
+            toast.success(`Record has been added successfully`);
+        } catch (err) {
+            // Log the error and display error message in toast
+            console.error("Server Error:", err);
+            toast.error(
+                err.response?.data?.errorMesaage || "Something went wrong"
+            );
+        } finally {
+            // Set submitting state to false
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -115,25 +145,32 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
         >
             {({ values, setFieldValue, errors, touched }) => (
                 <Form>
-                    <Grid item xs={12} sm={6} my={2}>
-                        <Field name="formNumber">
-                            {({ field }) => (
-                                <TextField
-                                    fullWidth
-                                    label="Form Number"
-                                    {...field}
-                                    error={
-                                        touched.formNumber &&
-                                        Boolean(errors.formNumber)
-                                    }
-                                    helperText={
-                                        touched.formNumber && errors.formNumber
-                                    }
-                                />
-                            )}
-                        </Field>
-                    </Grid>
-                    <FormLabel component="legend">
+                    <Field name="formNumber">
+                        {({ field }) => (
+                            <TextField
+                                fullWidth
+                                label="Form Number"
+                                {...field}
+                                error={
+                                    touched.formNumber &&
+                                    Boolean(errors.formNumber)
+                                }
+                                helperText={
+                                    touched.formNumber && errors.formNumber
+                                }
+                            />
+                        )}
+                    </Field>
+                    <FormLabel
+                        component="legend"
+                        sx={{
+                            fontSize: "1.5rem", // Customize font size
+                            fontWeight: "bold", // Customize font weight
+                            color: "#a184b0", // Customize text color
+                            textTransform: "uppercase", // Uppercase text
+                            letterSpacing: "0.5px", // Customize letter spacing
+                        }}
+                    >
                         Personal Information
                     </FormLabel>
 
@@ -167,6 +204,16 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                         label="Date of Birth (DD/MM/YYYY)"
                                         InputLabelProps={{ shrink: true }}
                                         {...field}
+                                        onChange={(e) => {
+                                            setFieldValue(
+                                                "dateOfBirth",
+                                                e.target.value
+                                            );
+                                            setFieldValue(
+                                                "age",
+                                                findAge(e.target.value)
+                                            );
+                                        }}
                                         error={
                                             touched.dateOfBirth &&
                                             Boolean(errors.dateOfBirth)
@@ -235,7 +282,16 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                     </Grid>
 
                     {/* Permanent Address and Current Address */}
-                    <FormLabel component="legend">
+                    <FormLabel
+                        component="legend"
+                        sx={{
+                            fontSize: "1.5rem", // Customize font size
+                            fontWeight: "bold", // Customize font weight
+                            color: "#a184b0", // Customize text color
+                            textTransform: "uppercase", // Uppercase text
+                            letterSpacing: "0.5px", // Customize letter spacing
+                        }}
+                    >
                         Contact Information
                     </FormLabel>
                     <Grid container spacing={2} my={2}>
@@ -283,6 +339,7 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                     <TextField
                                         fullWidth
                                         label="Mobile Number"
+                                        type="number"
                                         {...field}
                                         error={
                                             touched.mobileNumber &&
@@ -312,97 +369,117 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
 
                     {/* Email and Educational Qualification */}
 
-                    <Grid item xs={12} sm={6} mb={2}>
-                        <Field name="email">
-                            {({ field }) => (
-                                <TextField
-                                    fullWidth
-                                    label="Email Address (if available)"
-                                    type="email"
-                                    {...field}
-                                />
-                            )}
-                        </Field>
-                    </Grid>
+                    <Field name="email">
+                        {({ field }) => (
+                            <TextField
+                                fullWidth
+                                label="Email Address (if available)"
+                                type="email"
+                                {...field}
+                            />
+                        )}
+                    </Field>
 
-                    <FormLabel component="legend">
+                    <FormLabel
+                        component="legend"
+                        sx={{
+                            fontSize: "1.5rem", // Customize font size
+                            fontWeight: "bold", // Customize font weight
+                            color: "#a184b0", // Customize text color
+                            textTransform: "uppercase", // Uppercase text
+                            letterSpacing: "0.5px", // Customize letter spacing
+                            py: 2,
+                        }}
+                    >
                         Educational Information
                     </FormLabel>
-                    <Grid item xs={12} sm={6} my={2}>
-                        <FormControl
-                            fullWidth
-                            component="fieldset"
-                            error={
-                                touched.educationalQualification &&
-                                Boolean(errors.educationalQualification)
-                            }
+                    <FormControl
+                        fullWidth
+                        component="fieldset"
+                        error={
+                            touched.educationalQualification &&
+                            Boolean(errors.educationalQualification)
+                        }
+                    >
+                        <div
+                            // component="legend"
+                            style={{
+                                position: "absolute",
+                                top: -8,
+                                left: 21,
+                                backgroundColor: "white",
+                                zIndex: 10000,
+                                fontSize: "11px",
+                                color: "#54527C",
+                            }}
                         >
-                            <FormLabel component="legend">
-                                Highest Educational Qualification
-                            </FormLabel>
-                            <Field name="educationalQualification">
-                                {({ field }) => (
-                                    <Select
-                                        {...field}
-                                        label="Highest Educational Qualification"
-                                        value={field.value || ""}
-                                        onChange={(e) => {
-                                            setFieldValue(
-                                                "educationalQualification",
-                                                e.target.value
-                                            );
-                                        }}
-                                    >
-                                        <MenuItem value="">
-                                            <em>Select your qualification</em>
+                            Highest Educational Qualification
+                        </div>
+                        <Field
+                            sx={{ position: "relative" }}
+                            name="educationalQualification"
+                        >
+                            {({ field }) => (
+                                <Select
+                                    {...field}
+                                    label="Highest Educational Qualification"
+                                    value={field.value || ""}
+                                    onChange={(e) => {
+                                        setFieldValue(
+                                            "educationalQualification",
+                                            e.target.value
+                                        );
+                                    }}
+                                >
+                                    <MenuItem value="">
+                                        <em>Select your qualification</em>
+                                    </MenuItem>
+                                    {[
+                                        {
+                                            key: "Below 10th",
+                                            value: "below_10th",
+                                        },
+                                        {
+                                            key: "10th Pass",
+                                            value: "10th_pass",
+                                        },
+                                        {
+                                            key: "12th Pass",
+                                            value: "12th_pass",
+                                        },
+                                        {
+                                            key: "Graduate",
+                                            value: "graduate",
+                                        },
+                                        {
+                                            key: "Post Graduate",
+                                            value: "post_graduate",
+                                        },
+                                        {
+                                            key: "Diploma/Certification",
+                                            value: "diploma_certification",
+                                        },
+                                        {
+                                            key: "Other",
+                                            value: "other",
+                                        },
+                                    ].map((option) => (
+                                        <MenuItem
+                                            value={option.value}
+                                            key={option.value}
+                                        >
+                                            {option.key}
                                         </MenuItem>
-                                        {[
-                                            {
-                                                key: "Below 10th",
-                                                value: "below_10th",
-                                            },
-                                            {
-                                                key: "10th Pass",
-                                                value: "10th_pass",
-                                            },
-                                            {
-                                                key: "12th Pass",
-                                                value: "12th_pass",
-                                            },
-                                            {
-                                                key: "Graduate",
-                                                value: "graduate",
-                                            },
-                                            {
-                                                key: "Post Graduate",
-                                                value: "post_graduate",
-                                            },
-                                            {
-                                                key: "Diploma/Certification",
-                                                value: "diploma_certification",
-                                            },
-                                            {
-                                                key: "Other",
-                                                value: "other",
-                                            },
-                                        ].map((option) => (
-                                            <MenuItem
-                                                value={option.value}
-                                                key={option.value}
-                                            >
-                                                {option.key}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                )}
-                            </Field>
-                            {touched.educationalQualification && (
-                                <FormHelperText>
-                                    {errors.educationalQualification}
-                                </FormHelperText>
+                                    ))}
+                                </Select>
                             )}
-                        </FormControl>
-                    </Grid>
+                        </Field>
+                        {touched.educationalQualification && (
+                            <FormHelperText>
+                                {errors.educationalQualification}
+                            </FormHelperText>
+                        )}
+                    </FormControl>
 
                     {/* Current Occupation and Professional Details */}
                     <Grid container spacing={2} my={2}>
@@ -432,7 +509,7 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                     </Grid>
 
                     {/* Current Course and Pending Sacraments */}
-                    <Grid spacing={2} my={2}>
+                    <Grid my={2}>
                         <Field name="currentCourse">
                             {({ field }) => (
                                 <TextField
@@ -445,7 +522,16 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                     </Grid>
 
                     {/* Sacraments Checkboxes */}
-                    <FormLabel component="legend">
+                    <FormLabel
+                        component="legend"
+                        sx={{
+                            fontSize: "1.5rem", // Customize font size
+                            fontWeight: "bold", // Customize font weight
+                            color: "#a184b0", // Customize text color
+                            textTransform: "uppercase", // Uppercase text
+                            letterSpacing: "0.5px", // Customize letter spacing
+                        }}
+                    >
                         Relegious Information
                     </FormLabel>
                     <Grid container spacing={2} my={2}>
@@ -653,7 +739,16 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                         )}
                     </Grid>
 
-                    <FormLabel component="legend">
+                    <FormLabel
+                        component="legend"
+                        sx={{
+                            fontSize: "1.5rem", // Customize font size
+                            fontWeight: "bold", // Customize font weight
+                            color: "#a184b0", // Customize text color
+                            textTransform: "uppercase", // Uppercase text
+                            letterSpacing: "0.5px", // Customize letter spacing
+                        }}
+                    >
                         For Those Living Outside The Parish (if Applicable)
                     </FormLabel>
 
@@ -768,6 +863,7 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
+                                        type="number"
                                         label="Contact Number"
                                         {...field}
                                         error={
@@ -871,7 +967,18 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                         )}
                     </Grid>
 
-                    <FormLabel component="legend">Family Details</FormLabel>
+                    <FormLabel
+                        component="legend"
+                        sx={{
+                            fontSize: "1.5rem", // Customize font size
+                            fontWeight: "bold", // Customize font weight
+                            color: "#a184b0", // Customize text color
+                            textTransform: "uppercase", // Uppercase text
+                            letterSpacing: "0.5px", // Customize letter spacing
+                        }}
+                    >
+                        Family Details
+                    </FormLabel>
 
                     <Grid container spacing={2} my={2}>
                         <Grid item xs={12} sm={6}>
@@ -921,6 +1028,7 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
+                                        type="number"
                                         label="Parent's Contact Number"
                                         {...field}
                                         error={
@@ -936,20 +1044,147 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                             </Field>
                         </Grid>
 
+                        {/* <Grid item xs={12} sm={6}>
+                        <Field name="unit">
+                            {({ field }) => (
+                                <TextField
+                                    fullWidth
+                                    label="Unit"
+                                    {...field}
+                                    error={
+                                        touched.unit && Boolean(errors.unit)
+                                    }
+                                    helperText={touched.unit && errors.unit}
+                                />
+                            )}
+                        </Field>
+                    </Grid> */}
                         <Grid item xs={12} sm={6}>
-                            <Field name="unit">
-                                {({ field }) => (
-                                    <TextField
-                                        fullWidth
-                                        label="Unit"
-                                        {...field}
-                                        error={
-                                            touched.unit && Boolean(errors.unit)
-                                        }
-                                        helperText={touched.unit && errors.unit}
-                                    />
+                            <FormControl
+                                fullWidth
+                                component="fieldset"
+                                error={touched.unit && Boolean(errors.unit)}
+                            >
+                                <div
+                                    // component="legend"
+                                    style={{
+                                        position: "absolute",
+                                        top: -8,
+                                        left: 21,
+                                        backgroundColor: "white",
+                                        zIndex: 10000,
+                                        fontSize: "11px",
+                                        color: "#54527C",
+                                        paddingRight: 4,
+                                    }}
+                                >
+                                    Unit
+                                </div>
+                                <Field
+                                    sx={{ position: "relative" }}
+                                    name="unit"
+                                >
+                                    {({ field }) => (
+                                        <Select
+                                            {...field}
+                                            label="Unit"
+                                            value={field.value || ""}
+                                            onChange={(e) => {
+                                                setFieldValue(
+                                                    "unit",
+                                                    e.target.value
+                                                );
+                                            }}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Select your Unit</em>
+                                            </MenuItem>
+                                            {[
+                                                {
+                                                    key: "St Augustine",
+                                                    value: "St_Augustine",
+                                                },
+                                                {
+                                                    key: "St Alphonsa",
+                                                    value: "St_Alphonsa",
+                                                },
+                                                {
+                                                    key: "St Chavara",
+                                                    value: "St_Chavara",
+                                                },
+                                                {
+                                                    key: "St Domenic Savio",
+                                                    value: "St_Domenic_Savio",
+                                                },
+                                                {
+                                                    key: "St George",
+                                                    value: "St_George",
+                                                },
+                                                {
+                                                    key: "St John's",
+                                                    value: "St_Johns",
+                                                },
+                                                {
+                                                    key: "St Joseph",
+                                                    value: "St_Joseph",
+                                                },
+                                                {
+                                                    key: "St Little Flower",
+                                                    value: "St_Little_Flower",
+                                                },
+                                                {
+                                                    key: "St Matthews",
+                                                    value: "St_Matthews",
+                                                },
+                                                {
+                                                    key: "St Mary's",
+                                                    value: "St_Marys",
+                                                },
+                                                {
+                                                    key: "St Mother Theresa",
+                                                    value: "St_Mother_Theresa",
+                                                },
+                                                {
+                                                    key: "St Mariagorety",
+                                                    value: "St_Mariagorety",
+                                                },
+                                                {
+                                                    key: "St Peter and Paul",
+                                                    value: "St_Peter_and_Paul",
+                                                },
+                                                {
+                                                    key: "St Jude",
+                                                    value: "St_Jude",
+                                                },
+                                                {
+                                                    key: "St Thomas",
+                                                    value: "St_Thomas",
+                                                },
+                                                {
+                                                    key: "St Antony's",
+                                                    value: "St_Antonys",
+                                                },
+                                                {
+                                                    key: "St Xavier's",
+                                                    value: "St_Xaviers",
+                                                },
+                                            ].map((option) => (
+                                                <MenuItem
+                                                    value={option.value}
+                                                    key={option.value}
+                                                >
+                                                    {option.key}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    )}
+                                </Field>
+                                {touched.unit && (
+                                    <FormHelperText>
+                                        {errors.unit}
+                                    </FormHelperText>
                                 )}
-                            </Field>
+                            </FormControl>
                         </Grid>
                     </Grid>
 
@@ -993,6 +1228,17 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                             </Field>
                         </Grid>
                     </Grid>
+                    <Field name="additionalInfo">
+                        {({ field }) => (
+                            <TextField
+                                fullWidth
+                                label="Additional Information"
+                                multiline
+                                rows={4} // Adjust rows for larger text area
+                                {...field}
+                            />
+                        )}
+                    </Field>
 
                     {/* Submit Button */}
 

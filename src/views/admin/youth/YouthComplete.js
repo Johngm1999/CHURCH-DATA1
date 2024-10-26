@@ -2,6 +2,7 @@ import { useState } from "react";
 import PaginatedTable from "../../../components/table/PaginatedTable";
 import endpoints from "../../../services/endpoints";
 import YouthDataCollectionForm from "./YouthForm";
+import YouthDataDisplayFrom from "./YouthDataDisplayForm";
 import { useAxiosGet } from "../../../hooks/axiosHooks";
 import viewProps from "../../viewprops";
 import {
@@ -12,7 +13,12 @@ import {
     Box,
     Typography,
     Grid,
+    FormControl,
+    Select,
+    MenuItem,
+    InputLabel,
 } from "@mui/material";
+import toast from "react-hot-toast";
 
 function Youthcomplete({ getIncompleteDataCount }) {
     const [page, setPage] = useState(1);
@@ -21,10 +27,11 @@ function Youthcomplete({ getIncompleteDataCount }) {
     // States for multiple search criteria
     const [searchParams, setSearchParams] = useState({
         name: "",
-        dob: "",
         mobileNumber: "",
         unit: "",
         education: "",
+        dobFrom: "",
+        dobTo: "",
     });
 
     const [isSearching, setIsSearching] = useState(false); // Whether a search is active
@@ -67,11 +74,27 @@ function Youthcomplete({ getIncompleteDataCount }) {
         setPage(page);
         setTriggerApiCall(true);
     };
+    const handleFirst = () => {
+        setPage(1);
+        setTriggerApiCall(true);
+    };
+    const handleLast = (totalPages) => {
+        setPage(totalPages);
+        setTriggerApiCall(true);
+    };
+    const handlePageJump = (page, totalPages) => {
+        const pageNumber = Math.max(1, Math.min(totalPages, Number(page)));
+        setPage(pageNumber);
+        setTriggerApiCall(true);
+    };
 
     const cellModifier = {
-        "sacraments.baptism": ({ value }) => (value == 1 ? "yes" : "no"),
-        "sacraments.holyCommunion": ({ value }) => (value == 1 ? "yes" : "no"),
-        "sacraments.confirmation": ({ value }) => (value == 1 ? "yes" : "no"),
+        "sacraments.baptism": ({ value }) =>
+            Number(value) === 1 ? "yes" : "no",
+        "sacraments.holyCommunion": ({ value }) =>
+            Number(value) === 1 ? "yes" : "no",
+        "sacraments.confirmation": ({ value }) =>
+            Number(value) === 1 ? "yes" : "no",
         pendingSacraments: ({ value }) => (value ? value : "Nothing Pending"),
     };
 
@@ -97,11 +120,23 @@ function Youthcomplete({ getIncompleteDataCount }) {
                 ...prevTerms,
                 [name]: "", // Set the corresponding search term to an empty string
             }));
+            if (name === "dob")
+                setSearchParams((prevTerms) => ({
+                    ...prevTerms,
+                    dobFrom: "", // Set the corresponding search term to an empty string
+                    dobTo: "",
+                }));
         }
     };
 
     const handleSearch = (e) => {
         e.preventDefault();
+        if (searchParams.dobFrom && !searchParams.dobTo) {
+            toast.error(
+                "Search is only available if you select the complete DOB range (From and To)."
+            );
+            return;
+        }
         setIsSearching(true); // Set the mode to searching
         setPage(1); // Reset to first page on search
         setTriggerApiCall(true); // Trigger API call with search parameters
@@ -114,6 +149,8 @@ function Youthcomplete({ getIncompleteDataCount }) {
             mobileNumber: "",
             unit: "",
             education: "",
+            dobFrom: "",
+            dobTo: "",
         }); // Clear the search fields
         setSelectedCriteria({
             name: false,
@@ -127,143 +164,303 @@ function Youthcomplete({ getIncompleteDataCount }) {
         setTriggerApiCall(true); // Trigger API call for default data
     };
 
+    const hasSearchParams =
+        searchParams.education ||
+        (searchParams.dobFrom && searchParams.dobTo) ||
+        searchParams.mobileNumber ||
+        searchParams.name ||
+        searchParams.unit;
+
+    const shouldDisplayResults =
+        fetchUtils.response.length > 0 ||
+        (fetchUtils.response.length <= 0 && hasSearchParams);
+
     return (
         <>
-            <Box sx={{ marginBottom: 4 }}>
-                <Typography variant="h6" gutterBottom>
-                    Search Criteria
-                </Typography>
+            {shouldDisplayResults && (
+                <Box sx={{ marginBottom: 4 }}>
+                    <Typography variant="h6" gutterBottom>
+                        Search Criteria
+                    </Typography>
 
-                {/* Search Criteria Selection */}
-                <Box
-                    display="flex"
-                    justifyContent="space-around"
-                    flexWrap="wrap"
-                >
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={selectedCriteria.name}
-                                onChange={handleCriteriaChange}
-                                name="name"
-                            />
-                        }
-                        label="Name"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={selectedCriteria.dob}
-                                onChange={handleCriteriaChange}
-                                name="dob"
-                            />
-                        }
-                        label="Date of Birth"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={selectedCriteria.mobileNumber}
-                                onChange={handleCriteriaChange}
-                                name="mobileNumber"
-                            />
-                        }
-                        label="Mobile Number"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={selectedCriteria.unit}
-                                onChange={handleCriteriaChange}
-                                name="unit"
-                            />
-                        }
-                        label="Unit"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={selectedCriteria.education}
-                                onChange={handleCriteriaChange}
-                                name="education"
-                            />
-                        }
-                        label="Education"
-                    />
-                </Box>
-
-                {/* Search Fields */}
-                <form onSubmit={handleSearch}>
-                    <Grid container spacing={2} my={2}>
-                        {selectedCriteria.name && (
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    label="Name"
-                                    variant="outlined"
+                    {/* Search Criteria Selection */}
+                    <Box
+                        display="flex"
+                        justifyContent="space-around"
+                        flexWrap="wrap"
+                    >
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={selectedCriteria.name}
+                                    onChange={handleCriteriaChange}
                                     name="name"
-                                    value={searchParams.name}
-                                    onChange={handleSearchChange}
-                                    fullWidth
                                 />
-                            </Grid>
-                        )}
-                        {selectedCriteria.dob && (
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    label="Date of Birth"
-                                    variant="outlined"
-                                    type="date"
+                            }
+                            label="Name"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={selectedCriteria.dob}
+                                    onChange={handleCriteriaChange}
                                     name="dob"
-                                    value={searchParams.dob}
-                                    onChange={handleSearchChange}
-                                    InputLabelProps={{ shrink: true }}
-                                    fullWidth
                                 />
-                            </Grid>
-                        )}
-                        {selectedCriteria.mobileNumber && (
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    label="Mobile Number"
-                                    variant="outlined"
+                            }
+                            label="Date of Birth"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={selectedCriteria.mobileNumber}
+                                    onChange={handleCriteriaChange}
                                     name="mobileNumber"
-                                    value={searchParams.mobileNumber}
-                                    onChange={handleSearchChange}
-                                    fullWidth
                                 />
-                            </Grid>
-                        )}
-                        {selectedCriteria.unit && (
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    label="Unit"
-                                    variant="outlined"
+                            }
+                            label="Mobile Number"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={selectedCriteria.unit}
+                                    onChange={handleCriteriaChange}
                                     name="unit"
-                                    value={searchParams.unit}
-                                    onChange={handleSearchChange}
-                                    fullWidth
                                 />
-                            </Grid>
-                        )}
-                        {selectedCriteria.education && (
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    label="Education"
-                                    variant="outlined"
+                            }
+                            label="Unit"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={selectedCriteria.education}
+                                    onChange={handleCriteriaChange}
                                     name="education"
-                                    value={searchParams.education}
-                                    onChange={handleSearchChange}
-                                    fullWidth
                                 />
-                            </Grid>
-                        )}
-                    </Grid>
+                            }
+                            label="Education"
+                        />
+                    </Box>
 
-                    {/* Search and Reset Buttons */}
-                    {setSearchParams.education ||
-                        searchParams.dob ||
-                        searchParams.mobileNumber ||
-                        (searchParams.name && (
+                    {/* Search Fields */}
+                    <form onSubmit={handleSearch}>
+                        <Grid container spacing={2} my={2}>
+                            {selectedCriteria.name && (
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        label="Name"
+                                        variant="outlined"
+                                        name="name"
+                                        value={searchParams.name}
+                                        onChange={handleSearchChange}
+                                        fullWidth
+                                    />
+                                </Grid>
+                            )}
+                            {selectedCriteria.dob && (
+                                <Grid item xs={12} sm={6}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                            <TextField
+                                                label="Date of Birth (From)"
+                                                variant="outlined"
+                                                type="date"
+                                                name="dobFrom"
+                                                value={searchParams.dobFrom}
+                                                onChange={handleSearchChange}
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <TextField
+                                                label="Date of Birth (To)"
+                                                variant="outlined"
+                                                type="date"
+                                                name="dobTo"
+                                                disabled={!searchParams.dobFrom}
+                                                value={searchParams.dobTo}
+                                                onChange={handleSearchChange}
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            )}
+                            {selectedCriteria.mobileNumber && (
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        label="Mobile Number"
+                                        variant="outlined"
+                                        name="mobileNumber"
+                                        value={searchParams.mobileNumber}
+                                        onChange={handleSearchChange}
+                                        fullWidth
+                                    />
+                                </Grid>
+                            )}
+                            {selectedCriteria.unit && (
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl fullWidth variant="outlined">
+                                        <InputLabel>Unit</InputLabel>
+                                        <Select
+                                            label="Unit"
+                                            name="unit"
+                                            value={searchParams.unit || ""}
+                                            onChange={handleSearchChange}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Select your Unit</em>
+                                            </MenuItem>
+                                            {[
+                                                {
+                                                    key: "St Augustine",
+                                                    value: "St_Augustine",
+                                                },
+                                                {
+                                                    key: "St Alphonsa",
+                                                    value: "St_Alphonsa",
+                                                },
+                                                {
+                                                    key: "St Chavara",
+                                                    value: "St_Chavara",
+                                                },
+                                                {
+                                                    key: "St Domenic Savio",
+                                                    value: "St_Domenic_Savio",
+                                                },
+                                                {
+                                                    key: "St George",
+                                                    value: "St_George",
+                                                },
+                                                {
+                                                    key: "St John's",
+                                                    value: "St_Johns",
+                                                },
+                                                {
+                                                    key: "St Joseph",
+                                                    value: "St_Joseph",
+                                                },
+                                                {
+                                                    key: "St Little Flower",
+                                                    value: "St_Little_Flower",
+                                                },
+                                                {
+                                                    key: "St Matthews",
+                                                    value: "St_Matthews",
+                                                },
+                                                {
+                                                    key: "St Mary's",
+                                                    value: "St_Marys",
+                                                },
+                                                {
+                                                    key: "St Mother Theresa",
+                                                    value: "St_Mother_Theresa",
+                                                },
+                                                {
+                                                    key: "St Mariagorety",
+                                                    value: "St_Mariagorety",
+                                                },
+                                                {
+                                                    key: "St Peter and Paul",
+                                                    value: "St_Peter_and_Paul",
+                                                },
+                                                {
+                                                    key: "St Jude",
+                                                    value: "St_Jude",
+                                                },
+                                                {
+                                                    key: "St Thomas",
+                                                    value: "St_Thomas",
+                                                },
+                                                {
+                                                    key: "St Antony's",
+                                                    value: "St_Antonys",
+                                                },
+                                                {
+                                                    key: "St Xavier's",
+                                                    value: "St_Xaviers",
+                                                },
+                                            ].map((option) => (
+                                                <MenuItem
+                                                    value={option.value}
+                                                    key={option.value}
+                                                >
+                                                    {option.key}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            )}
+                            {selectedCriteria.education && (
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl fullWidth variant="outlined">
+                                        <InputLabel>Education</InputLabel>
+                                        <Select
+                                            label="Education"
+                                            name="education"
+                                            value={searchParams.education || ""}
+                                            onChange={handleSearchChange}
+                                        >
+                                            <MenuItem value="">
+                                                <em>
+                                                    Select your qualification
+                                                </em>
+                                            </MenuItem>
+                                            {[
+                                                {
+                                                    key: "Below 10th",
+                                                    value: "below_10th",
+                                                },
+                                                {
+                                                    key: "10th Pass",
+                                                    value: "10th_pass",
+                                                },
+                                                {
+                                                    key: "12th Pass",
+                                                    value: "12th_pass",
+                                                },
+                                                {
+                                                    key: "Graduate",
+                                                    value: "graduate",
+                                                },
+                                                {
+                                                    key: "Post Graduate",
+                                                    value: "post_graduate",
+                                                },
+                                                {
+                                                    key: "Diploma/Certification",
+                                                    value: "diploma_certification",
+                                                },
+                                                {
+                                                    key: "Other",
+                                                    value: "other",
+                                                },
+                                            ].map((option) => (
+                                                <MenuItem
+                                                    value={option.value}
+                                                    key={option.value}
+                                                >
+                                                    {option.key}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            )}
+                        </Grid>
+
+                        {/* Search and Reset Buttons */}
+                        {(searchParams.education ||
+                            (searchParams.dobFrom && searchParams.dobTo) ||
+                            searchParams.mobileNumber ||
+                            searchParams.name ||
+                            searchParams.unit) && (
                             <Box
                                 display="flex"
                                 justifyContent="space-between"
@@ -271,8 +468,19 @@ function Youthcomplete({ getIncompleteDataCount }) {
                             >
                                 <Button
                                     variant="contained"
-                                    color="primary"
+                                    color={
+                                        searchParams.dobFrom &&
+                                        !searchParams.dobTo
+                                            ? "error"
+                                            : "success"
+                                    }
                                     type="submit"
+                                    // disabled={
+                                    //     searchParams.dobFrom && !searchParams.dobTo
+                                    // }
+                                    // title={
+                                    //     "Button only available if yo select complete DOB range"
+                                    // }
                                 >
                                     Search
                                 </Button>
@@ -284,9 +492,10 @@ function Youthcomplete({ getIncompleteDataCount }) {
                                     Reset
                                 </Button>
                             </Box>
-                        ))}
-                </form>
-            </Box>
+                        )}
+                    </form>
+                </Box>
+            )}
 
             {/* Paginated Table */}
             <PaginatedTable
@@ -296,10 +505,15 @@ function Youthcomplete({ getIncompleteDataCount }) {
                 Form={YouthDataCollectionForm}
                 endpoints={endpoints.youth}
                 formSize="lg"
-                pagination={fetchUtils.response?.pagination}
                 {...fetchUtils}
                 getIncompleteDataCount={getIncompleteDataCount}
                 cellModifier={cellModifier}
+                pagination={fetchUtils.pagination}
+                handleFirst={handleFirst}
+                handleLast={handleLast}
+                handlePageJump={handlePageJump}
+                DisplayForm={YouthDataDisplayFrom}
+                showFullDetails
             />
         </>
     );

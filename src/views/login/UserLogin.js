@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     TextField,
@@ -18,7 +18,7 @@ import Loader from "../../components/Loader";
 import toast from "react-hot-toast";
 import churchImg from "../../asset/img/church.jpeg";
 
-function Login({ showAlert }) {
+function Login() {
     const [visible, setVisible] = useState(false);
     const togglePasswordVisibility = () => {
         setVisible(!visible);
@@ -31,8 +31,13 @@ function Login({ showAlert }) {
 
     const [loggingIn, setLoggingIn] = useState(false);
 
-    const { login } = useAuthenticationState();
+    const { login, logout } = useAuthenticationState();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        logout();
+        // eslint-disable-next-line
+    }, []);
 
     const onLogin = (e) => {
         e.preventDefault();
@@ -42,6 +47,7 @@ function Login({ showAlert }) {
             .then(() => {
                 setLoggingIn(false);
                 navigate("/overview");
+                toast.success("Login Success");
             })
             .catch((err) => {
                 setLoggingIn(false);
@@ -110,6 +116,7 @@ function Login({ showAlert }) {
                                 margin="normal"
                                 required
                                 variant="outlined"
+                                autoComplete="current-password"
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">

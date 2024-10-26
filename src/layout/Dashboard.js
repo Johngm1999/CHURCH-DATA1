@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Outlet } from "react-router-dom";
-import Loader from "../components/Loader.js";
-// import AdminNavbar from '../components/navbar/AdminNavbar.js';
+// import Loader from "../components/Loader.js";
+// import AdminNavbar from "../components/navbar/AdminNavbar.js";
 import Sidebar from "../components/sidebar/Sidebar.js";
 import { useAuthenticationState } from "../context/Auth.context.js";
 // import { useAxiosGet } from '../services/axiosHooks.js';
@@ -46,34 +46,43 @@ const Dashboard = (props) => {
     }, [location]);
 
     return (
-        <>
+        <div
+            style={{
+                background: "#e6eaeb",
+            }}
+        >
             {user?.user_role?.toLowerCase() === "admin" && (
-                <Sidebar {...props} show={showSidebar} />
+                <Sidebar
+                    {...props}
+                    show={showSidebar}
+                    toggleSidebar={toggleSidebar}
+                />
             )}
+            {/* 
+            <AdminNavbar
+                toggleSidebar={toggleSidebar}
+                showSidebar={showSidebar}
+                // notifications={notifications}
+                // reFetchNotifications={reFetch}
+            /> */}
 
             <div
                 style={{
                     marginLeft: `${showSidebar ? "250px" : "0px"}`,
                     position: "relative",
                     transition: "margin .25s",
-                    height: "96vh",
+                    height: "100vh",
                     overflow: "auto",
                 }}
                 ref={mainContent}
             >
-                {/* <AdminNavbar
-                    toggleSidebar={toggleSidebar}
-                    showSidebar={showSidebar}
-                    notifications={notifications}
-                    reFetchNotifications={reFetch}
-                /> */}
                 <div className="px-5 mt-4">
                     {/* {loading ? <Loader /> : <Outlet />} */}
                     <Outlet />
                 </div>
                 {/* <footer className='py-4' /> */}
             </div>
-        </>
+        </div>
     );
 };
 

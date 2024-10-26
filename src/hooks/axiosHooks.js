@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
 const useAxiosGet = (url, { preventCall = false, ...restConfig } = {}) => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(true);
     const [response, setResponse] = useState([]);
     const [reloadToken, setReloadToken] = useState(false);
+    const [pagination, setPagination] = useState({});
 
     const reFetch = () => {
         setReloadToken((token) => !token);
@@ -27,6 +28,7 @@ const useAxiosGet = (url, { preventCall = false, ...restConfig } = {}) => {
                     if (!unmounted) {
                         setError(false);
                         setResponse(res.data.responseData);
+                        setPagination(res.data.pagination);
                         setLoading(false);
                     }
                 })
@@ -34,6 +36,7 @@ const useAxiosGet = (url, { preventCall = false, ...restConfig } = {}) => {
                     if (!unmounted) {
                         setError(err);
                         setResponse([]);
+                        setPagination();
                         setLoading(false);
 
                         // if (axios.isCancel(err)) {
@@ -55,9 +58,10 @@ const useAxiosGet = (url, { preventCall = false, ...restConfig } = {}) => {
             unmounted = true;
             controller.abort();
         };
+        // eslint-disable-next-line
     }, [url, reloadToken, preventCall]);
 
-    return { response, loading, error, reFetch };
+    return { response, loading, error, reFetch, pagination };
 };
 
 const useAxiosGetMultiple = (
@@ -150,6 +154,7 @@ const useAxiosGetMultiple = (
             unmountedOnReload.current = true;
             controller.abort();
         };
+        // eslint-disable-next-line
     }, [reloadToken, preventCall]);
 
     const reFetch = () => {
@@ -243,6 +248,7 @@ const useAxiosPost = (
             unmounted = true;
             controller.abort();
         };
+        // eslint-disable-next-line
     }, [url, reloadToken, preventCall]);
 
     return { response, loading, error, reFetch };
@@ -279,7 +285,7 @@ const useAxiosPostMultiple = (requests, { preventCall = false } = {}) => {
                     await axios({
                         signal: controller.signal,
                         ...request,
-                        method: 'post',
+                        method: "post",
                     })
                         .then((res) => {
                             result[name] = res.data.responseData;

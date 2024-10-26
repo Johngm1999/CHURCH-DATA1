@@ -7,14 +7,13 @@ import {
     useGlobalFilter,
     usePagination,
 } from "react-table";
-import { GlobalFilter } from "./GlobalFilter";
+// import { GlobalFilter } from "./GlobalFilter";
 import Loader from "../Loader";
 import TableTemplate from "./TableTemplate";
 import { ReactComponent as Download } from "../../asset/icons/Download.svg";
-import { ReactComponent as ChevronRight } from "../../asset/icons/ChevronRight.svg";
-import { ReactComponent as ChevronLeft } from "../../asset/icons/ChevronLeft.svg";
 import ReactExport from "react-export-excel-xlsx-fix";
 import withAlert from "../withAlert";
+import AdvancedPagination from "./AdvancedPagination";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -46,19 +45,23 @@ const PaginatedTable = (props) => {
         handleNext,
         handlePrevious,
         pagination = {},
-        isCch,
         getIncompleteDataCount,
+        handleFirst,
+        handleLast,
+        handlePageJump,
+        DisplayForm = () => <div></div>,
+        showFullDetails = false,
+        isComplete = false,
     } = props;
     const downloadFileName = downloadExcelName || name;
-    const ensureString = (value) => {
-        if (value === null || value === undefined) {
-            return "";
-        }
-        return String(value);
-    };
+    // const ensureString = (value) => {
+    //     if (value === null || value === undefined) {
+    //         return "";
+    //     }
+    //     return String(value);
+    // };
 
-    const { currentPage, totalPages, totalRecords, recordsPerPage } =
-        pagination;
+    const { currentPage, totalPages, totalRecords, limit } = pagination;
 
     const columnData = useRef(
         relevants.map((element, i) => {
@@ -104,18 +107,13 @@ const PaginatedTable = (props) => {
         getTableBodyProps,
         headerGroups,
         page,
-        nextPage,
-        previousPage,
-        canNextPage,
-        canPreviousPage,
         pageOptions,
-        pageCount,
         prepareRow,
-        state,
-        setGlobalFilter,
+        // state,
+        // setGlobalFilter,
     } = tableInstance;
 
-    const { globalFilter, pageIndex } = state;
+    // const { globalFilter } = state;
 
     let modalSize = {};
 
@@ -151,15 +149,15 @@ const PaginatedTable = (props) => {
             <div className="pe-2 py-4 pe-md-4 d-flex align-items-center cardHead">
                 <span
                     // className='mt--3 '
-                    style={{ fontSize: "20px", color: "#000" }}
+                    style={{ fontSize: "20px", color: "#000", fontWeight: 700 }}
                 >
-                    {name}
+                    {name?.toUpperCase()}
                 </span>
                 <span className="ms-auto">
-                    <GlobalFilter
+                    {/* <GlobalFilter
                         filter={globalFilter}
                         setFilter={setGlobalFilter}
-                    />
+                    /> */}
                 </span>
                 {insertable && (
                     <ModalWrapper
@@ -169,14 +167,11 @@ const PaginatedTable = (props) => {
                             <formType.add
                                 onAfterSubmit={() => {
                                     closeModal();
-                                    // showAlert(
-                                    //     "success",
-                                    //     `The record has been added successfully`
-                                    // );
                                     reFetch();
                                 }}
                                 onCancel={closeModal}
                                 endpoint={endpoints.add}
+                                getIncompleteDataCount={getIncompleteDataCount}
                                 {...addFormProps}
                             />
                         )}
@@ -249,35 +244,22 @@ const PaginatedTable = (props) => {
                             modalSize={modalSize}
                             showAlert={showAlert}
                             getIncompleteDataCount={getIncompleteDataCount}
+                            DisplayForm={DisplayForm}
+                            showFullDetails={showFullDetails}
+                            isComplete={isComplete}
                         />
                         {pageOptions.length > 0 && (
-                            <div className="paginate">
-                                <button
-                                    disabled={currentPage === 1}
-                                    onClick={() =>
-                                        handlePrevious(currentPage - 1)
-                                    }
-                                >
-                                    <ChevronLeft />
-                                </button>
-                                <div className="page">
-                                    <span className="current">
-                                        {currentPage}
-                                    </span>
-                                    <span className="divider">/</span>
-                                    <span className="total">
-                                        {isCch ? 1 : totalPages}
-                                    </span>
-                                </div>
-                                <button
-                                    disabled={
-                                        isCch || currentPage === totalPages
-                                    }
-                                    onClick={() => handleNext(currentPage + 1)}
-                                >
-                                    <ChevronRight />
-                                </button>
-                            </div>
+                            <AdvancedPagination
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                totalRecords={totalRecords}
+                                recordsPerPage={limit}
+                                handlePrevious={handlePrevious}
+                                handleNext={handleNext}
+                                handleFirst={handleFirst}
+                                handleLast={handleLast}
+                                handlePageJump={handlePageJump}
+                            />
                         )}
                     </>
                 )}

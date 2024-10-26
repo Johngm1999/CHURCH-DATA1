@@ -1,26 +1,24 @@
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Suspense } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthenticationState } from "../context/Auth.context";
 import Dashboard from "../layout/Dashboard";
-import Login from "../views/login/UserLogin";
 import adminRoutes from "./adminRoutes";
 import userRoutes from "./userRoutes";
 import { Toaster } from "react-hot-toast";
+import Loader from "../components/Loader";
+import Login from "../views/login/UserLogin";
 
 function GenerateRoutes() {
     const { user } = useAuthenticationState();
-
-    console.log(user?.user_role?.toLowerCase());
 
     let routes = [];
     switch (user?.user_role?.toLowerCase()) {
         case "admin":
             routes = [...adminRoutes];
             break;
-
         case "user":
             routes = [...userRoutes];
             break;
-
         default:
             break;
     }
@@ -28,21 +26,38 @@ function GenerateRoutes() {
     return (
         <>
             <Routes>
-                <Route exact path="/login" element={<Login />} />
-                <Route path={"/"} element={<Dashboard routes={routes} />}>
+                <Route
+                    exact
+                    path="/login"
+                    element={
+                        <Suspense fallback={<Loader />}>
+                            <Login />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/"
+                    element={
+                        <Suspense fallback={<Loader />}>
+                            <Dashboard routes={routes} />
+                        </Suspense>
+                    }
+                >
                     {routes.map((route) => (
                         <Route
                             key={route.path}
                             path={route.path}
                             element={
-                                <ProtectedRoute>
-                                    {<route.page />}
-                                </ProtectedRoute>
+                                <Suspense fallback={<Loader />}>
+                                    <ProtectedRoute>
+                                        <route.page />
+                                    </ProtectedRoute>
+                                </Suspense>
                             }
                         />
                     ))}
                 </Route>
-                <Route path="*" element={<Navigate to={"/login"} />} />
+                <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
             <Toaster />
         </>
@@ -51,10 +66,9 @@ function GenerateRoutes() {
 
 function ProtectedRoute({ children }) {
     const { user } = useAuthenticationState();
-    let location = useLocation();
 
-    if (!user.user_role) {
-        return <Navigate to="/login" state={{ from: location }} replace />;
+    if (!user?.user_role) {
+        return <Navigate to="/login" replace />;
     }
     return children;
 }

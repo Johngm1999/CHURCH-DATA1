@@ -12007,18 +12007,20 @@ textarea {
 }
 
 body ::-webkit-scrollbar {
-  width: 6px;
+  width: 15px;
   height: 6px;
 }
 
 body ::-webkit-scrollbar-thumb {
   background-color: #adb8ed;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 body ::-webkit-scrollbar-track {
-  border-radius: 10px;
+  border-radius: 4px;
   background-color: #e2dddd;
+  cursor: pointer;
 }
 
 @media screen and (min-width: 480px) {
@@ -12434,9 +12436,6 @@ body ::-webkit-scrollbar-track {
   line-height: 26px;
 }
 .crudCard .paginate button {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12501,6 +12500,7 @@ body ::-webkit-scrollbar-track {
   display: table-cell;
   max-width: 500px;
   overflow-x: auto;
+  border-bottom: 1px solid grey;
 }
 .table div ::-webkit-scrollbar {
   width: 5px !important;
@@ -12517,10 +12517,12 @@ body ::-webkit-scrollbar-track {
 
 .table-responsive {
   display: block;
-  border-radius: 15px;
-  padding-bottom: 10px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
   background-color: white;
   width: 100%;
+  box-shadow: #1d242e;
+  border: 1px solid grey;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }/*# sourceMappingURL=style.css.map */

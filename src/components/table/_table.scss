@@ -43,9 +43,6 @@
             }
         }
         button {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -110,6 +107,7 @@
         display: table-cell;
         max-width: 500px;
         overflow-x: auto;
+        border-bottom: 1px solid grey;
     }
     div ::-webkit-scrollbar {
         width: 5px !important;
@@ -126,10 +124,12 @@
 }
 .table-responsive {
     display: block;
-    border-radius: 15px;
-    padding-bottom: 10px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
     background-color: white;
     width: 100%;
+    box-shadow: #1d242e;
+    border: 1px solid grey;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
