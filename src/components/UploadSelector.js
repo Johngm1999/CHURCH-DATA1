@@ -35,7 +35,8 @@ function UploadSelector({ onChange, accept, label, id, inputAttrs }) {
             className="d-flex flex-column fs-6 align-items-center py-3 mt-3"
             style={{
                 borderRadius: "10px",
-                borderColor: "#107BFF",
+                // borderColor: "#107BFF",
+                borderColor: "#140ac9",
                 borderStyle: "dashed",
                 background: isDragActive ? "#107BFF1A" : "#e8fafa",
             }}

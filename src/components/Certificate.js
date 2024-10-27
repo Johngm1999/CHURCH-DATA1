@@ -258,7 +258,7 @@ const Certificate = ({ closeModal, data }) => {
                     /> */}
                 <UploadSelector
                     onChange={handleImageUpload}
-                    label="Browse your file"
+                    label="Browse Image"
                     id="media-upload"
                     inputAttrs={{ multiple: false }}
                 />
