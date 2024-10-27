@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { Button, TextField, Box, Grid } from "@mui/material";
+import { Button, TextField, Box, Grid, Collapse } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import ConfettiExplosion from "react-confetti-explosion";
 import toast from "react-hot-toast";
@@ -10,9 +10,11 @@ import endpoints from "../services/endpoints";
 import axios from "axios";
 import { useAxiosGet } from "../hooks/axiosHooks";
 import letter from "../asset/img/letter.png";
+import UploadSelector from "./UploadSelector";
+import { CloseOutlined } from "@mui/icons-material";
 
 const CertificateTemplate = React.forwardRef(
-    ({ userName, courseName, completionDate, signatureSrc, sealSrc }, ref) => (
+    ({ userName, uploadedImageSrc }, ref) => (
         <Box
             ref={ref}
             sx={{
@@ -28,6 +30,7 @@ const CertificateTemplate = React.forwardRef(
                 alignItems: "center",
                 minHeight: "80vh",
                 pt: 2,
+                textAlign: "center",
             }}
         >
             <Box sx={{ pt: "53%" }}>
@@ -35,6 +38,17 @@ const CertificateTemplate = React.forwardRef(
                     This is to certify that <strong>{userName}</strong> is a
                     member of this church.
                 </p>
+                {uploadedImageSrc && (
+                    <img
+                        src={uploadedImageSrc}
+                        alt="Uploaded"
+                        style={{
+                            maxWidth: "150px",
+                            margin: "20px auto",
+                            display: "block",
+                        }}
+                    />
+                )}
             </Box>
         </Box>
     )
@@ -42,10 +56,7 @@ const CertificateTemplate = React.forwardRef(
 
 CertificateTemplate.propTypes = {
     userName: PropTypes.string.isRequired,
-    courseName: PropTypes.string,
-    completionDate: PropTypes.string,
-    signatureSrc: PropTypes.string,
-    sealSrc: PropTypes.string,
+    uploadedImageSrc: PropTypes.string,
 };
 
 const styles = {
@@ -56,10 +67,83 @@ const styles = {
     },
 };
 
+const DisplaySelectedFile = ({ selectedFile, onClose }) => (
+    <div
+        style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "10px",
+            // backgroundColor: "#f9f9f9",
+            borderRadius: "8px",
+        }}
+    >
+        <div
+            style={{
+                width: "60%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "10px 20px",
+                border: "1px solid #e0e0e0",
+                borderRadius: "8px",
+                backgroundColor: "#fff",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            }}
+        >
+            <div style={{ display: "flex", flexDirection: "column" }}>
+                <div
+                    style={{
+                        fontWeight: "600",
+                        fontSize: "14px",
+                        color: "#333",
+                        marginBottom: "4px",
+                    }}
+                >
+                    File Name: {selectedFile?.name}
+                </div>
+                <div
+                    style={{
+                        fontWeight: "400",
+                        fontSize: "12px",
+                        color: "#888",
+                    }}
+                >
+                    File Size: {byteConverter(selectedFile?.size).mb}
+                </div>
+            </div>
+            <Box
+                sx={{
+                    background: "#cccac6",
+                    borderRadius: 15,
+                    boxShadow: 3,
+                    border: "1px solid #8a8988",
+                }}
+            >
+                <CloseOutlined
+                    role="button"
+                    onClick={onClose}
+                    aria-label="Close"
+                    style={{
+                        color: "#ff4d4f",
+                        cursor: "pointer",
+                        fontSize: "28px",
+                        padding: "4px",
+                    }}
+                />
+            </Box>
+        </div>
+    </div>
+);
+
 const Certificate = ({ closeModal, data }) => {
     const [userName, setUserName] = useState(data.fullName || "");
     const [downloadCompleted, setDownloadCompleted] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
+    const [uploadedImageSrc, setUploadedImageSrc] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [fileError, setFileError] = useState(false);
     const certificateRef = useRef();
 
     const history = useAxiosGet(
@@ -76,6 +160,26 @@ const Certificate = ({ closeModal, data }) => {
             toast.error(
                 err.response?.data?.errorMessage || "Something went wrong"
             );
+        }
+    };
+
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            setSelectedFile(file);
+            const isImage = file.type.startsWith("image/");
+            if (isImage) {
+                setFileError(false);
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setUploadedImageSrc(reader.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                setFileError(true);
+                setUploadedImageSrc(null);
+            }
         }
     };
 
@@ -140,62 +244,97 @@ const Certificate = ({ closeModal, data }) => {
                             day: "2-digit",
                             month: "long",
                             year: "numeric",
-                            // hour: "2-digit",
-                            // minute: "2-digit",
-                            // second: "2-digit",
                         })}
                     </strong>
                 </Box>
             )}
-            <Grid
-                container
-                spacing={2}
-                alignItems="center"
-                justifyContent="center"
-                sx={{ mb: 2, mt: 3, pt: 2 }}
-                borderTop={2}
-            >
-                {downloadCompleted && (
-                    <ConfettiExplosion
-                        zIndex={100000}
-                        duration={1800}
-                        height={"100vh"}
-                    />
-                )}
-                <Grid item xs={12} sm={4}>
-                    <TextField
-                        label="Global Member Name"
-                        variant="outlined"
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        fullWidth
-                    />
-                </Grid>
+
+            <Grid xs={12} sm={4}>
+                {/* <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        style={{ background: "red" }}
+                    /> */}
+                <UploadSelector
+                    onChange={handleImageUpload}
+                    label="Browse your file"
+                    id="media-upload"
+                    inputAttrs={{ multiple: false }}
+                />
+                <Collapse in={fileError}>
+                    <div style={{ color: "red", fontWeight: 700 }}>
+                        Only image files are supported.
+                    </div>
+                </Collapse>
             </Grid>
-
-            <CertificateTemplate
-                ref={certificateRef}
-                userName={userName || "Your Name"}
-                courseName="Course Name"
-                completionDate="Completion Date"
-                signatureSrc="your-signature-image-url"
-                sealSrc="your-seal-image-url"
-            />
-
-            <Box textAlign="center" mt={2}>
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => {
-                        setIsDisabled(true);
-                        handleDownloadPDF();
+            <Collapse in={selectedFile}>
+                <DisplaySelectedFile
+                    selectedFile={selectedFile}
+                    onClose={() => {
+                        setSelectedFile(null);
+                        setFileError(false);
+                        setUploadedImageSrc(null);
                     }}
-                    disabled={isDisabled}
-                    startIcon={<FileDownloadOutlinedIcon />}
+                />
+            </Collapse>
+            <Collapse in={!fileError && uploadedImageSrc}>
+                <Grid
+                    container
+                    spacing={2}
+                    alignItems="center"
+                    justifyContent="center"
+                    sx={{ mb: 2, mt: 3, pt: 2 }}
+                    borderTop={2}
                 >
-                    Download as PDF
-                </Button>
-            </Box>
+                    {/* <Grid item xs={12} sm={4}> */}
+                    {/* <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        style={{ background: "red" }}
+                    /> */}
+                    {/* <UploadModal /> */}
+                    {/* </Grid> */}
+                    {downloadCompleted && (
+                        <ConfettiExplosion
+                            zIndex={100000}
+                            duration={1800}
+                            height={"100vh"}
+                        />
+                    )}
+                    <Grid item xs={12} sm={4}>
+                        <TextField
+                            label="Global Member Name"
+                            variant="outlined"
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
+                            fullWidth
+                        />
+                    </Grid>
+                </Grid>
+
+                <CertificateTemplate
+                    ref={certificateRef}
+                    userName={userName || "Your Name"}
+                    uploadedImageSrc={uploadedImageSrc}
+                />
+
+                <Box textAlign="center" mt={2}>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => {
+                            setIsDisabled(true);
+                            handleDownloadPDF();
+                        }}
+                        disabled={isDisabled}
+                        startIcon={<FileDownloadOutlinedIcon />}
+                    >
+                        Download as PDF
+                    </Button>
+                </Box>
+            </Collapse>
         </div>
     );
 };
@@ -209,3 +348,10 @@ Certificate.propTypes = {
 };
 
 export default Certificate;
+
+// Byte Converter Function
+function byteConverter(bytes) {
+    const kb = bytes / 1024;
+    const mb = kb / 1024;
+    return { kb: Math.round(kb) + "kb", mb: mb.toFixed(2) + "mb" };
+}

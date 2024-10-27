@@ -16,6 +16,7 @@ const CertificatePreview = ({ data }) => {
                         borderRadius: 5,
                         boxShadow: 2,
                         border: "1px solid white",
+                        px: 1,
                     }}
                 >
                     <Certificate closeModal={closeModal} data={data} />
