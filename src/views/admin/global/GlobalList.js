@@ -10,8 +10,12 @@ function GlobalList() {
     const [value, setValue] = useState(0); // State to manage active tab
     const [inComp, setIncomp] = useState(false);
     const response = useAxiosGet(endpoints.global.incompleteCount);
+    const [incompleteCount, setIncompleteCount] = useState(0);
 
-    const hasIncompleteData = inComp || response?.response?.incompleteCount > 0; // Change this based on your data logic
+    const hasIncompleteData =
+        inComp > 0 || response?.response?.incompleteCount > 0; // Change this based on your data logi
+
+    const incompCount = incompleteCount || response?.response?.incompleteCount;
 
     const handleChange = (event, newValue) => {
         setValue(newValue); // Update active tab value
@@ -19,19 +23,21 @@ function GlobalList() {
 
     const getIncompleteDataCount = async () => {
         try {
-            const response = await axios.get(endpoints.global.incompleteCount);
+            const response = await axios.get(endpoints.parish.incompleteCount);
 
             if (response.status === 200 && !response.data.isError) {
                 // Extract the incomplete count from the response
                 const incompleteCount =
                     response?.data?.responseData?.incompleteCount;
                 setIncomp(incompleteCount > 0);
+                setIncompleteCount(incompleteCount);
             } else {
                 console.error(
                     "Error fetching incomplete data count:",
                     response.data.message
                 );
                 setIncomp(false);
+                setIncompleteCount(0);
             }
         } catch (error) {
             console.error("Error occurred during API call:", error.message);
@@ -75,7 +81,8 @@ function GlobalList() {
                             {hasIncompleteData && (
                                 <Badge
                                     color="success"
-                                    variant="dot"
+                                    badgeContent={incompCount || 0}
+                                    max={500}
                                     sx={{
                                         position: "absolute",
                                         top: 0,

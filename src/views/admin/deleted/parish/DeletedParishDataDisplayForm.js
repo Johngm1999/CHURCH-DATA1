@@ -157,6 +157,16 @@ const ParishDataDisplayForm = ({ onCancel, updateValues }) => {
                                 component="div"
                             />
                         </Grid>
+                        <Grid item xs={12}>
+                            <Field
+                                name="headMobile"
+                                as={TextField}
+                                label="Mobile"
+                                type="number"
+                                fullWidth
+                            />
+                            <ErrorMessage name="headMobile" component="div" />
+                        </Grid>
                     </Grid>
                     <FormLabel
                         component="legend"
@@ -205,6 +215,19 @@ const ParishDataDisplayForm = ({ onCancel, updateValues }) => {
                             />
                         </Grid>
 
+                        <Grid item xs={12}>
+                            <ReadOnlyTextField
+                                name="member1Mobile"
+                                label="Mobile"
+                                fullWidth
+                                value={updateValues.member1Mobile}
+                            />
+                            <ErrorMessage
+                                name="member1Mobile"
+                                component="div"
+                            />
+                        </Grid>
+
                         {/* Member 2 */}
                         <Grid item xs={6}>
                             <ReadOnlyTextField
@@ -233,6 +256,18 @@ const ParishDataDisplayForm = ({ onCancel, updateValues }) => {
                             />
                             <ErrorMessage
                                 name="member2Occupation"
+                                component="div"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ReadOnlyTextField
+                                name="member2Mobile"
+                                label="Mobile"
+                                fullWidth
+                                value={updateValues.member2Mobile}
+                            />
+                            <ErrorMessage
+                                name="member2Mobile"
                                 component="div"
                             />
                         </Grid>
@@ -265,6 +300,106 @@ const ParishDataDisplayForm = ({ onCancel, updateValues }) => {
                             />
                             <ErrorMessage
                                 name="member3Occupation"
+                                component="div"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ReadOnlyTextField
+                                name="member3Mobile"
+                                label="Mobile"
+                                fullWidth
+                                value={updateValues.member3Mobile}
+                            />
+                            <ErrorMessage
+                                name="member3Mobile"
+                                component="div"
+                            />
+                        </Grid>
+
+                        {/* Member 4 */}
+                        <Grid item xs={6}>
+                            <ReadOnlyTextField
+                                name="member4Name"
+                                label="Other Member 4 (Name)"
+                                fullWidth
+                                value={updateValues.member4Name}
+                            />
+                            <ErrorMessage name="member4Name" component="div" />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <ReadOnlyTextField
+                                name="member4Age"
+                                label="Age"
+                                fullWidth
+                                value={updateValues.member4Age}
+                            />
+                            <ErrorMessage name="member4Age" component="div" />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <ReadOnlyTextField
+                                name="member4Occupation"
+                                label="Occupation"
+                                fullWidth
+                                value={updateValues.member4Occupation}
+                            />
+                            <ErrorMessage
+                                name="member4Occupation"
+                                component="div"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ReadOnlyTextField
+                                name="member4Mobile"
+                                label="Mobile"
+                                fullWidth
+                                value={updateValues.member4Mobile}
+                            />
+                            <ErrorMessage
+                                name="member4Mobile"
+                                component="div"
+                            />
+                        </Grid>
+
+                        {/* Member 5 */}
+                        <Grid item xs={6}>
+                            <ReadOnlyTextField
+                                name="member5Name"
+                                label="Other Member 5 (Name)"
+                                fullWidth
+                                value={updateValues.member5Name}
+                            />
+                            <ErrorMessage name="member5Name" component="div" />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <ReadOnlyTextField
+                                name="member5Age"
+                                label="Age"
+                                fullWidth
+                                value={updateValues.member5Age}
+                            />
+                            <ErrorMessage name="member5Age" component="div" />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <ReadOnlyTextField
+                                name="member5Occupation"
+                                label="Occupation"
+                                fullWidth
+                                value={updateValues.member5Occupation}
+                            />
+                            <ErrorMessage
+                                name="member5Occupation"
+                                component="div"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ReadOnlyTextField
+                                name="member5Mobile"
+                                label="Mobile"
+                                fullWidth
+                                value={updateValues.member5Mobile}
+                            />
+                            <ErrorMessage
+                                name="member5Mobile"
                                 component="div"
                             />
                         </Grid>

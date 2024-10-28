@@ -11,7 +11,12 @@ function YouthList() {
     const [inComp, setIncomp] = useState(false);
     const response = useAxiosGet(endpoints.youth.incompleteCount);
 
-    const hasIncompleteData = inComp || response?.response?.incompleteCount > 0; // Change this based on your data logic
+    const [incompleteCount, setIncompleteCount] = useState(0);
+
+    const hasIncompleteData =
+        inComp > 0 || response?.response?.incompleteCount > 0; // Change this based on your data logi
+
+    const incompCount = incompleteCount || response?.response?.incompleteCount;
 
     const handleChange = (event, newValue) => {
         setValue(newValue); // Update active tab value
@@ -19,25 +24,26 @@ function YouthList() {
 
     const getIncompleteDataCount = async () => {
         try {
-            const response = await axios.get(endpoints.youth.incompleteCount);
+            const response = await axios.get(endpoints.parish.incompleteCount);
 
             if (response.status === 200 && !response.data.isError) {
                 // Extract the incomplete count from the response
                 const incompleteCount =
                     response?.data?.responseData?.incompleteCount;
                 setIncomp(incompleteCount > 0);
+                setIncompleteCount(incompleteCount);
             } else {
                 console.error(
                     "Error fetching incomplete data count:",
                     response.data.message
                 );
                 setIncomp(false);
+                setIncompleteCount(0);
             }
         } catch (error) {
             console.error("Error occurred during API call:", error.message);
         }
     };
-
     return (
         <Box>
             <Tabs
@@ -74,8 +80,9 @@ function YouthList() {
                             Incomplete
                             {hasIncompleteData && (
                                 <Badge
-                                    color="success"
-                                    variant="dot"
+                                    color="primary"
+                                    badgeContent={incompCount || 0}
+                                    max={500}
                                     sx={{
                                         position: "absolute",
                                         top: 0,

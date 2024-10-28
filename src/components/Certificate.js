@@ -2,7 +2,14 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { Button, TextField, Box, Grid, Collapse } from "@mui/material";
+import {
+    Button,
+    TextField,
+    Box,
+    Grid,
+    Collapse,
+    CircularProgress,
+} from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import ConfettiExplosion from "react-confetti-explosion";
 import toast from "react-hot-toast";
@@ -326,12 +333,18 @@ const Certificate = ({ closeModal, data }) => {
                         color="secondary"
                         onClick={() => {
                             setIsDisabled(true);
-                            handleDownloadPDF();
+                            setTimeout(() => {
+                                handleDownloadPDF();
+                            }, 1000); // 1000 milliseconds = 1 second
                         }}
                         disabled={isDisabled}
                         startIcon={<FileDownloadOutlinedIcon />}
                     >
-                        Download as PDF
+                        {isDisabled ? (
+                            <CircularProgress size={24} />
+                        ) : (
+                            "Download as PDF"
+                        )}
                     </Button>
                 </Box>
             </Collapse>

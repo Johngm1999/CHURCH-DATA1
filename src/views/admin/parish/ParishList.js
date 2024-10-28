@@ -10,8 +10,12 @@ function ParishList() {
     const [value, setValue] = useState(0); // State to manage active tab
     const [inComp, setIncomp] = useState(false);
     const response = useAxiosGet(endpoints.parish.incompleteCount);
+    const [incompleteCount, setIncompleteCount] = useState(0);
 
-    const hasIncompleteData = inComp || response?.response?.incompleteCount > 0; // Change this based on your data logic
+    const hasIncompleteData =
+        inComp > 0 || response?.response?.incompleteCount > 0; // Change this based on your data logi
+
+    const incompCount = incompleteCount || response?.response?.incompleteCount;
 
     const handleChange = (event, newValue) => {
         setValue(newValue); // Update active tab value
@@ -26,12 +30,14 @@ function ParishList() {
                 const incompleteCount =
                     response?.data?.responseData?.incompleteCount;
                 setIncomp(incompleteCount > 0);
+                setIncompleteCount(incompleteCount);
             } else {
                 console.error(
                     "Error fetching incomplete data count:",
                     response.data.message
                 );
                 setIncomp(false);
+                setIncompleteCount(0);
             }
         } catch (error) {
             console.error("Error occurred during API call:", error.message);
@@ -74,8 +80,10 @@ function ParishList() {
                             Incomplete
                             {hasIncompleteData && (
                                 <Badge
-                                    color="success"
-                                    variant="dot"
+                                    color="secondary"
+                                    // variant="dot"
+                                    badgeContent={incompCount || 0}
+                                    max={500}
                                     sx={{
                                         position: "absolute",
                                         top: 0,

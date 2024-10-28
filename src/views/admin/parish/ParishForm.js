@@ -30,9 +30,15 @@ const validationSchema = Yup.object({
     headName: Yup.string(),
     headAge: Yup.number(),
     headOccupation: Yup.string(),
+    headMobile: Yup.string(),
     member1Name: Yup.string(),
     member1Age: Yup.number(),
     member1Occupation: Yup.string(),
+    member1Mobile: Yup.string(),
+    member2Mobile: Yup.string(),
+    member3Mobile: Yup.string(),
+    member4Mobile: Yup.string(),
+    member5Mobile: Yup.string(),
     member2Name: Yup.string(),
     member2Age: Yup.number(),
     member2Occupation: Yup.string(),
@@ -105,6 +111,11 @@ const initialValues = {
     suggestedMobile: "",
     generalObservations: "",
     additionalInfo: "",
+    member1Mobile: "",
+    member2Mobile: "",
+    member3Mobile: "",
+    member4Mobile: "",
+    member5Mobile: "",
 };
 
 const ParishForm = ({
@@ -266,6 +277,16 @@ const ParishForm = ({
                                 component="div"
                             />
                         </Grid>
+                        <Grid item xs={12}>
+                            <Field
+                                name="headMobile"
+                                as={TextField}
+                                label="Mobile"
+                                type="number"
+                                fullWidth
+                            />
+                            <ErrorMessage name="headMobile" component="div" />
+                        </Grid>
                     </Grid>
                     <FormLabel
                         component="legend"
@@ -313,7 +334,19 @@ const ParishForm = ({
                                 component="div"
                             />
                         </Grid>
-
+                        <Grid item xs={12}>
+                            <Field
+                                name="member1Mobile"
+                                as={TextField}
+                                label="Mobile"
+                                type="number"
+                                fullWidth
+                            />
+                            <ErrorMessage
+                                name="member1Mobile"
+                                component="div"
+                            />
+                        </Grid>
                         {/* Member 2 */}
                         <Grid item xs={6}>
                             <Field
@@ -345,7 +378,19 @@ const ParishForm = ({
                                 component="div"
                             />
                         </Grid>
-
+                        <Grid item xs={12}>
+                            <Field
+                                name="member2Mobile"
+                                as={TextField}
+                                label="Mobile"
+                                type="number"
+                                fullWidth
+                            />
+                            <ErrorMessage
+                                name="member2Mobile"
+                                component="div"
+                            />
+                        </Grid>
                         {/* Member 3 */}
                         <Grid item xs={6}>
                             <Field
@@ -374,6 +419,109 @@ const ParishForm = ({
                             />
                             <ErrorMessage
                                 name="member3Occupation"
+                                component="div"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Field
+                                name="member3Mobile"
+                                as={TextField}
+                                label="Mobile"
+                                type="number"
+                                fullWidth
+                            />
+                            <ErrorMessage
+                                name="member3Mobile"
+                                component="div"
+                            />
+                        </Grid>
+
+                        {/* Member 4 */}
+                        <Grid item xs={6}>
+                            <Field
+                                name="member4Name"
+                                as={TextField}
+                                label="Other Member 4 (Name)"
+                                fullWidth
+                            />
+                            <ErrorMessage name="member4Name" component="div" />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Field
+                                name="member4Age"
+                                as={TextField}
+                                label="Age"
+                                fullWidth
+                            />
+                            <ErrorMessage name="member4Age" component="div" />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Field
+                                name="member4Occupation"
+                                as={TextField}
+                                label="Occupation"
+                                fullWidth
+                            />
+                            <ErrorMessage
+                                name="member4Occupation"
+                                component="div"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Field
+                                name="member4Mobile"
+                                as={TextField}
+                                label="Mobile"
+                                type="number"
+                                fullWidth
+                            />
+                            <ErrorMessage
+                                name="member4Mobile"
+                                component="div"
+                            />
+                        </Grid>
+
+                        {/* Member 5 */}
+                        <Grid item xs={6}>
+                            <Field
+                                name="member5Name"
+                                as={TextField}
+                                label="Other Member 5 (Name)"
+                                fullWidth
+                            />
+                            <ErrorMessage name="member5Name" component="div" />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Field
+                                name="member5Age"
+                                as={TextField}
+                                label="Age"
+                                fullWidth
+                            />
+                            <ErrorMessage name="member5Age" component="div" />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Field
+                                name="member5Occupation"
+                                as={TextField}
+                                label="Occupation"
+                                fullWidth
+                            />
+                            <ErrorMessage
+                                name="member5Occupation"
+                                component="div"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Field
+                                name="member5Mobile"
+                                as={TextField}
+                                label="Mobile"
+                                type="number"
+                                fullWidth
+                            />
+                            <ErrorMessage
+                                name="member5Mobile"
                                 component="div"
                             />
                         </Grid>
@@ -494,7 +642,7 @@ const ParishForm = ({
                             <Field
                                 name="child4Name"
                                 as={TextField}
-                                label="Child 3 (Name)"
+                                label="Child 4 (Name)"
                                 fullWidth
                             />
                             <ErrorMessage name="child4Name" component="div" />
