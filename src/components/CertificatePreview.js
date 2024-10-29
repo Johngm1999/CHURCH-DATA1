@@ -7,7 +7,7 @@ const CertificatePreview = ({ data }) => {
     return (
         <ModalWrapper
             modalTitle={"GENERATED CERTIFICATE"}
-            modalAttrs={{ size: "md" }}
+            modalAttrs={{ maxWidth: "lg" }}
             renderModalBody={(closeModal) => (
                 <Box
                     sx={{

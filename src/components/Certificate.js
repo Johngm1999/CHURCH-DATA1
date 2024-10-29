@@ -16,46 +16,226 @@ import toast from "react-hot-toast";
 import endpoints from "../services/endpoints";
 import axios from "axios";
 import { useAxiosGet } from "../hooks/axiosHooks";
-import letter from "../asset/img/letter.png";
+import churchLogo from "../asset/img/churchLogo.png";
+import seal from "../asset/img/churchSeal.png";
+import sign from "../asset/img/priestSign.png";
 import UploadSelector from "./UploadSelector";
 import { CloseOutlined } from "@mui/icons-material";
 
+// const CertificateTemplate = React.forwardRef(
+//     ({ userName, uploadedImageSrc }, ref) => (
+//         <Box
+//             ref={ref}
+//             sx={{
+//                 backgroundImage: `url(${letter})`,
+//                 backgroundSize: "contain",
+//                 backgroundRepeat: "no-repeat",
+//                 padding: "35px",
+//                 width: "75%",
+//                 maxWidth: "800px",
+//                 margin: "0 auto",
+//                 backgroundColor: "#fff",
+//                 justifyContent: "center",
+//                 alignItems: "center",
+//                 minHeight: "80vh",
+//                 pt: 2,
+//                 textAlign: "center",
+//             }}
+//         >
+//             <Box sx={{ pt: "53%" }}>
+//                 <p style={styles.content}>
+//                     This is to certify that <strong>{userName}</strong> is a
+//                     member of this church.
+//                 </p>
+//                 {uploadedImageSrc && (
+//                     <img
+//                         src={uploadedImageSrc}
+//                         alt="Uploaded"
+//                         style={{
+//                             maxWidth: "150px",
+//                             margin: "20px auto",
+//                             display: "block",
+//                         }}
+//                     />
+//                 )}
+//             </Box>
+//         </Box>
+//     )
+// );
+
 const CertificateTemplate = React.forwardRef(
-    ({ userName, uploadedImageSrc }, ref) => (
+    ({ userName, uploadedImageSrc, userId, houseName }, ref) => (
         <Box
             ref={ref}
             sx={{
-                backgroundImage: `url(${letter})`,
-                backgroundSize: "contain",
+                // backgroundImage: `url(${letter})`,
+                backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
                 padding: "35px",
-                width: "75%",
-                maxWidth: "800px",
+                width: "100%",
+                maxWidth: "1200px", // Increase maxWidth for landscape
+                height: "600px", // Set a fixed height for landscape orientation
                 margin: "0 auto",
                 backgroundColor: "#fff",
-                justifyContent: "center",
+                display: "flex",
                 alignItems: "center",
-                minHeight: "80vh",
-                pt: 2,
+                justifyContent: "space-between",
                 textAlign: "center",
             }}
         >
-            <Box sx={{ pt: "53%" }}>
-                <p style={styles.content}>
-                    This is to certify that <strong>{userName}</strong> is a
-                    member of this church.
-                </p>
-                {uploadedImageSrc && (
+            {/* Left side: Image with name and ID */}
+            {uploadedImageSrc && (
+                <>
+                    <Box
+                        sx={{
+                            width: "30%",
+                            textAlign: "center",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            padding: "20px",
+                            position: "relative",
+                            zIndex: 1,
+                        }}
+                    >
+                        {/* {uploadedImageSrc && ( */}
+                        <img
+                            src={uploadedImageSrc}
+                            alt="Uploaded"
+                            style={{
+                                marginBottom: "10px",
+                                display: "block",
+                                width: "180px", // Fixed width for passport size
+                                height: "210px",
+                            }}
+                        />
+                        {/* )} */}
+                        <p
+                            style={{
+                                margin: "5px 0",
+                                fontWeight: "bold",
+                                fontSize: "1.8rem",
+                                color: "#fff",
+                            }}
+                        >
+                            {userName}
+                        </p>
+                        {houseName && (
+                            <p
+                                style={{
+                                    margin: "5px 0",
+                                    fontSize: "1.5rem",
+                                    color: "#fff",
+                                }}
+                            >
+                                {houseName}
+                            </p>
+                        )}
+                    </Box>
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            width: 310,
+                            height: 354,
+                            bgcolor: "#3f6fe8",
+                            zIndex: 0,
+                            left: 0,
+                            bottom: 108,
+                        }}
+                    ></Box>
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            width: 390,
+                            height: 57,
+                            bgcolor: "#ede9e8",
+                            left: 0,
+                            bottom: 51,
+                            color: "#000",
+                            textAlign: "left",
+                            pt: 2,
+                            fontSize: 18,
+                            fontWeight: 700,
+                            pl: 2,
+                            display: "flex",
+                        }}
+                    >
+                        ID:
+                        {/* <p style={{ color: "blue" }}> */}
+                        {userId}
+                        {/* </p> */}
+                    </Box>
+                </>
+            )}
+            {/* Right side: Certificate content */}
+            <Box
+                sx={{
+                    width: "65%",
+                    paddingLeft: "20px",
+                    marginTop: "-20%",
+                    position: "relative",
+                }}
+            >
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <img
-                        src={uploadedImageSrc}
-                        alt="Uploaded"
+                        src={churchLogo}
+                        alt="churchLogo"
                         style={{
-                            maxWidth: "150px",
-                            margin: "20px auto",
+                            maxWidth: "80px", // Slightly larger for landscape
+                            marginBottom: "10px",
                             display: "block",
                         }}
                     />
-                )}
+                </Box>
+                <Box sx={{ fontWeight: 700, fontSize: 35 }}>
+                    ST.Sebastian's church Kottappady
+                </Box>
+                <p style={{ fontSize: 25 }}>Pravasi Membership Card</p>
+                <p>----------</p>
+                <p style={{ fontWeight: 700, fontSize: 25 }}>
+                    is active member of the church
+                </p>
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        position: "absolute",
+                        bottom: "-55%",
+                        right: -2,
+                        width: "85%",
+                    }}
+                >
+                    <img
+                        src={seal}
+                        alt="church seal"
+                        style={{
+                            maxWidth: "150px", // Slightly larger for landscape
+                            marginBottom: "10px",
+                            display: "block",
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            width: "50%",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <img
+                            src={sign}
+                            alt="priestSign"
+                            style={{
+                                maxWidth: "150px", // Slightly larger for landscape
+                                marginBottom: "10px",
+                                display: "block",
+                            }}
+                        />
+
+                        <Box>Fr. Robin Padinjarekuttu Parish Priest</Box>
+                    </Box>{" "}
+                </Box>
             </Box>
         </Box>
     )
@@ -64,14 +244,6 @@ const CertificateTemplate = React.forwardRef(
 CertificateTemplate.propTypes = {
     userName: PropTypes.string.isRequired,
     uploadedImageSrc: PropTypes.string,
-};
-
-const styles = {
-    content: {
-        fontSize: "1.2rem",
-        textAlign: "center",
-        marginBottom: "30px",
-    },
 };
 
 const DisplaySelectedFile = ({ selectedFile, onClose }) => (
@@ -146,11 +318,14 @@ const DisplaySelectedFile = ({ selectedFile, onClose }) => (
 
 const Certificate = ({ closeModal, data }) => {
     const [userName, setUserName] = useState(data.fullName || "");
+    const [userId, setUserId] = useState(data.prefixedId || "");
+    const [houseName, setUserHouseName] = useState(data.houseName || "");
     const [downloadCompleted, setDownloadCompleted] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
     const [uploadedImageSrc, setUploadedImageSrc] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileError, setFileError] = useState(false);
+    const [isCertificateLoading, setIsCertificateLoading] = useState(false);
     const certificateRef = useRef();
 
     const history = useAxiosGet(
@@ -171,6 +346,7 @@ const Certificate = ({ closeModal, data }) => {
     };
 
     const handleImageUpload = (event) => {
+        setIsCertificateLoading(true);
         const file = event.target.files[0];
 
         if (file) {
@@ -183,15 +359,19 @@ const Certificate = ({ closeModal, data }) => {
                     setUploadedImageSrc(reader.result);
                 };
                 reader.readAsDataURL(file);
+                setTimeout(() => {
+                    setIsCertificateLoading(false);
+                }, 1000);
             } else {
                 setFileError(true);
                 setUploadedImageSrc(null);
+                setIsCertificateLoading(false);
             }
         }
     };
 
     const downloadPDF = async (imgData, pdfWidth, pdfHeight) => {
-        const pdf = new jsPDF("portrait", "mm", "a4");
+        const pdf = new jsPDF("landscape", "mm", "a4");
         pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
         pdf.save("certificate-nw.pdf");
     };
@@ -206,7 +386,7 @@ const Certificate = ({ closeModal, data }) => {
             const canvas = await html2canvas(input, { scale: 3 });
             const imgData = canvas.toDataURL("image/png");
 
-            const pdf = new jsPDF("portrait", "mm", "a4");
+            const pdf = new jsPDF("landscape", "mm", "a4");
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
 
@@ -228,6 +408,15 @@ const Certificate = ({ closeModal, data }) => {
 
     return (
         <div style={{ position: "relative", overflow: "hidden" }}>
+            {downloadCompleted && (
+                <ConfettiExplosion
+                    zIndex={100000}
+                    duration={1800}
+                    height={"150vh"}
+                    width={2000}
+                    particleCount={250}
+                />
+            )}
             {historyData.length > 0 && (
                 <Box
                     sx={{
@@ -303,13 +492,7 @@ const Certificate = ({ closeModal, data }) => {
                     /> */}
                     {/* <UploadModal /> */}
                     {/* </Grid> */}
-                    {downloadCompleted && (
-                        <ConfettiExplosion
-                            zIndex={100000}
-                            duration={1800}
-                            height={"100vh"}
-                        />
-                    )}
+
                     <Grid item xs={12} sm={4}>
                         <TextField
                             label="Global Member Name"
@@ -319,14 +502,49 @@ const Certificate = ({ closeModal, data }) => {
                             fullWidth
                         />
                     </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <TextField
+                            label="Global Member House Name"
+                            variant="outlined"
+                            value={houseName}
+                            onChange={(e) => setUserHouseName(e.target.value)}
+                            fullWidth
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={4}>
+                        <TextField
+                            label="Global Member ID"
+                            variant="outlined"
+                            value={userId}
+                            onChange={(e) => setUserId(e.target.value)}
+                            fullWidth
+                        />
+                    </Grid>
                 </Grid>
-
-                <CertificateTemplate
-                    ref={certificateRef}
-                    userName={userName || "Your Name"}
-                    uploadedImageSrc={uploadedImageSrc}
-                />
-
+                {isCertificateLoading ? (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            p: 2,
+                            flexDirection: "column",
+                            color: "#2842eb",
+                        }}
+                    >
+                        <CircularProgress />
+                        Generating Certificate...
+                    </Box>
+                ) : (
+                    <CertificateTemplate
+                        ref={certificateRef}
+                        userName={userName || "Your Name"}
+                        uploadedImageSrc={uploadedImageSrc}
+                        userId={userId}
+                        houseName={houseName}
+                    />
+                )}
                 <Box textAlign="center" mt={2}>
                     <Button
                         variant="contained"
@@ -337,7 +555,7 @@ const Certificate = ({ closeModal, data }) => {
                                 handleDownloadPDF();
                             }, 1000); // 1000 milliseconds = 1 second
                         }}
-                        disabled={isDisabled}
+                        disabled={isDisabled || isCertificateLoading}
                         startIcon={<FileDownloadOutlinedIcon />}
                     >
                         {isDisabled ? (
