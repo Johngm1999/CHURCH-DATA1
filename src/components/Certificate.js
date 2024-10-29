@@ -88,17 +88,17 @@ const CertificateTemplate = React.forwardRef(
                 <>
                     <Box
                         sx={{
-                            width: "30%",
+                            width: "230px",
                             textAlign: "center",
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
-                            padding: "20px",
+                            // padding: "20px",
                             position: "relative",
                             zIndex: 1,
+                            overflow: "hidden",
                         }}
                     >
-                        {/* {uploadedImageSrc && ( */}
                         <img
                             src={uploadedImageSrc}
                             alt="Uploaded"
@@ -109,28 +109,30 @@ const CertificateTemplate = React.forwardRef(
                                 height: "210px",
                             }}
                         />
-                        {/* )} */}
-                        <p
+                        <div
                             style={{
                                 margin: "5px 0",
                                 fontWeight: "bold",
                                 fontSize: "1.8rem",
                                 color: "#fff",
+                                wordWrap: "break-word",
+                                width: "100%",
                             }}
                         >
                             {userName}
-                        </p>
-                        {houseName && (
-                            <p
-                                style={{
-                                    margin: "5px 0",
-                                    fontSize: "1.5rem",
-                                    color: "#fff",
-                                }}
-                            >
-                                {houseName}
-                            </p>
-                        )}
+                        </div>
+                        <div
+                            style={{
+                                margin: "5px 0",
+                                fontSize: "1.5rem",
+                                color: "#fff",
+                                width: "100%",
+                                overflow: "hidden",
+                                wordWrap: "break-word",
+                            }}
+                        >
+                            {houseName}
+                        </div>
                     </Box>
                     <Box
                         sx={{
@@ -146,7 +148,7 @@ const CertificateTemplate = React.forwardRef(
                     <Box
                         sx={{
                             position: "absolute",
-                            width: 390,
+                            width: 310,
                             height: 57,
                             bgcolor: "#ede9e8",
                             left: 0,
@@ -190,10 +192,22 @@ const CertificateTemplate = React.forwardRef(
                 <Box sx={{ fontWeight: 700, fontSize: 35 }}>
                     St. Sebastian's church Kottappady
                 </Box>
-                <p style={{ fontSize: 25 }}>Pravasi Membership Card</p>
-                <p>----------</p>
-                <p style={{ fontWeight: 700, fontSize: 25 }}>
-                    is active member of the church
+                <p
+                    style={{
+                        fontWeight: 700,
+                        fontSize: 25,
+                        marginTop: 10,
+                        // marginBottom: 0,
+                    }}
+                >
+                    <em>Global Member ID Card</em>
+                </p>
+                <p style={{ fontSize: 25, marginBottom: 0, fontWeight: 700 }}>
+                    {" "}
+                    {userName}
+                </p>
+                <p style={{ fontSize: 25 }}>
+                    is an active member of the church
                 </p>
                 <Box
                     sx={{
@@ -205,15 +219,20 @@ const CertificateTemplate = React.forwardRef(
                         width: "85%",
                     }}
                 >
-                    <img
-                        src={seal}
-                        alt="church seal"
-                        style={{
-                            maxWidth: "150px", // Slightly larger for landscape
-                            marginBottom: "10px",
-                            display: "block",
-                        }}
-                    />
+                    <Box>
+                        <span style={{ fontWeight: 700 }}>
+                            Issued On: {new Date().toLocaleDateString()}
+                        </span>
+                        <img
+                            src={seal}
+                            alt="church seal"
+                            style={{
+                                maxWidth: "150px", // Slightly larger for landscape
+                                marginBottom: "10px",
+                                display: "block",
+                            }}
+                        />
+                    </Box>
                     <Box
                         sx={{
                             width: "50%",
