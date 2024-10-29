@@ -6,7 +6,7 @@ import PictureAsPdfOutlinedIcon from "@mui/icons-material/PictureAsPdfOutlined";
 const CertificatePreview = ({ data }) => {
     return (
         <ModalWrapper
-            modalTitle={"GENERATED CERTIFICATE"}
+            modalTitle={"CERTIFICATE"}
             modalAttrs={{ maxWidth: "lg" }}
             renderModalBody={(closeModal) => (
                 <Box

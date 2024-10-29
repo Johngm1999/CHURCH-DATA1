@@ -188,7 +188,7 @@ const CertificateTemplate = React.forwardRef(
                     />
                 </Box>
                 <Box sx={{ fontWeight: 700, fontSize: 35 }}>
-                    ST.Sebastian's church Kottappady
+                    St. Sebastian's church Kottappady
                 </Box>
                 <p style={{ fontSize: 25 }}>Pravasi Membership Card</p>
                 <p>----------</p>
@@ -233,7 +233,10 @@ const CertificateTemplate = React.forwardRef(
                             }}
                         />
 
-                        <Box>Fr. Robin Padinjarekuttu Parish Priest</Box>
+                        <Box>
+                            <div>Fr. Robin Padinjarekuttu</div>{" "}
+                            <div> Parish Priest</div>
+                        </Box>
                     </Box>{" "}
                 </Box>
             </Box>
