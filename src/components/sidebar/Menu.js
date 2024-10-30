@@ -32,7 +32,7 @@ function Menu({ routes }) {
     }, [pathname]);
 
     const menuIconMap = {
-        overview: {
+        "": {
             active: <Dashboard />,
             inactive: <DashboardActive />,
         },

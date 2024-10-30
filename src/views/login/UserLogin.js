@@ -46,7 +46,7 @@ function Login() {
         login(userCredential)
             .then(() => {
                 setLoggingIn(false);
-                navigate("/overview");
+                navigate("/");
                 toast.success("Login Success");
             })
             .catch((err) => {

@@ -13,7 +13,7 @@ const DeletedYouth = lazy(() =>
 
 const adminRoutes = Object.freeze([
     {
-        path: "overview",
+        path: "",
         page: Overview,
         name: "Dashboard",
     },

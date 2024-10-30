@@ -5,7 +5,7 @@ const UserDash = lazy(() => import("../views/user/UserDash"));
 
 const userRoutes = Object.freeze([
     {
-        path: "overview",
+        path: "",
         page: UserDash,
         name: "Dashboard",
     },

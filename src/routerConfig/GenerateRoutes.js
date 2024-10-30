@@ -36,7 +36,7 @@ function GenerateRoutes() {
                     }
                 />
                 <Route
-                    path="/"
+                    path={"/"}
                     element={
                         <Suspense fallback={<Loader />}>
                             <Dashboard routes={routes} />
