@@ -66,6 +66,7 @@ const CertificateTemplate = React.forwardRef(
                                 display: "block",
                                 width: "180px", // Fixed width for passport size
                                 height: "210px",
+                                border: "1px solid grey",
                             }}
                         />
                         <div
