@@ -623,12 +623,18 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                     row
                                     name="hasOrganisationGroup"
                                     value={values.hasOrganisationGroup}
-                                    onChange={(e) =>
+                                    onChange={(e) => {
                                         setFieldValue(
                                             "hasOrganisationGroup",
                                             e.target.value
-                                        )
-                                    }
+                                        );
+                                        if (e.target.value === "no") {
+                                            setFieldValue(
+                                                "organisationGroup",
+                                                ""
+                                            );
+                                        }
+                                    }}
                                 >
                                     <FormControlLabel
                                         value="yes"
@@ -690,12 +696,15 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                     row
                                     name="hasParishActivity"
                                     value={values.hasParishActivity}
-                                    onChange={(e) =>
+                                    onChange={(e) => {
                                         setFieldValue(
                                             "hasParishActivity",
                                             e.target.value
-                                        )
-                                    }
+                                        );
+                                        if (e.target.value === "no") {
+                                            setFieldValue("parishActivity", "");
+                                        }
+                                    }}
                                 >
                                     <FormControlLabel
                                         value="yes"
@@ -916,12 +925,18 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                     row
                                     name="isAttendingSundayMass"
                                     value={values.isAttendingSundayMass}
-                                    onChange={(e) =>
+                                    onChange={(e) => {
                                         setFieldValue(
                                             "isAttendingSundayMass",
                                             e.target.value
-                                        )
-                                    }
+                                        );
+                                        if (e.target.value === "no") {
+                                            setFieldValue(
+                                                "sundayMassLocation",
+                                                ""
+                                            );
+                                        }
+                                    }}
                                 >
                                     <FormControlLabel
                                         value="yes"

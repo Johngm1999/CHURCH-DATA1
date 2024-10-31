@@ -819,6 +819,18 @@ const ParishForm = ({
                                         row
                                         {...field}
                                         aria-label="isParishWhatsappGroup"
+                                        onChange={(e) => {
+                                            setFieldValue(
+                                                "isParishWhatsappGroup",
+                                                e.target.value
+                                            );
+                                            if (e.target.value === "yes") {
+                                                setFieldValue(
+                                                    "suggestedMobile",
+                                                    ""
+                                                );
+                                            }
+                                        }}
                                     >
                                         <FormControlLabel
                                             value="yes"

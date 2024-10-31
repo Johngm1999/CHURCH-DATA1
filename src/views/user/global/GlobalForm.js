@@ -713,12 +713,18 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                     row
                                     name="hasAffiliatedWithAnyChurch"
                                     value={values.hasAffiliatedWithAnyChurch}
-                                    onChange={(e) =>
+                                    onChange={(e) => {
                                         setFieldValue(
                                             "hasAffiliatedWithAnyChurch",
                                             e.target.value
-                                        )
-                                    }
+                                        );
+                                        if (e.target.value === "no") {
+                                            setFieldValue(
+                                                "nameOfChurchAffiliated",
+                                                ""
+                                            );
+                                        }
+                                    }}
                                 >
                                     <FormControlLabel
                                         value="yes"

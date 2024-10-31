@@ -22,47 +22,6 @@ import sign from "../asset/img/priestSign.png";
 import UploadSelector from "./UploadSelector";
 import { CloseOutlined } from "@mui/icons-material";
 
-// const CertificateTemplate = React.forwardRef(
-//     ({ userName, uploadedImageSrc }, ref) => (
-//         <Box
-//             ref={ref}
-//             sx={{
-//                 backgroundImage: `url(${letter})`,
-//                 backgroundSize: "contain",
-//                 backgroundRepeat: "no-repeat",
-//                 padding: "35px",
-//                 width: "75%",
-//                 maxWidth: "800px",
-//                 margin: "0 auto",
-//                 backgroundColor: "#fff",
-//                 justifyContent: "center",
-//                 alignItems: "center",
-//                 minHeight: "80vh",
-//                 pt: 2,
-//                 textAlign: "center",
-//             }}
-//         >
-//             <Box sx={{ pt: "53%" }}>
-//                 <p style={styles.content}>
-//                     This is to certify that <strong>{userName}</strong> is a
-//                     member of this church.
-//                 </p>
-//                 {uploadedImageSrc && (
-//                     <img
-//                         src={uploadedImageSrc}
-//                         alt="Uploaded"
-//                         style={{
-//                             maxWidth: "150px",
-//                             margin: "20px auto",
-//                             display: "block",
-//                         }}
-//                     />
-//                 )}
-//             </Box>
-//         </Box>
-//     )
-// );
-
 const CertificateTemplate = React.forwardRef(
     ({ userName, uploadedImageSrc, userId, houseName }, ref) => (
         <Box
@@ -221,7 +180,7 @@ const CertificateTemplate = React.forwardRef(
                 >
                     <Box>
                         <span style={{ fontWeight: 700 }}>
-                            Issued On: {new Date().toLocaleDateString()}
+                            Issued On: {new Date().toLocaleDateString("en-GB")}
                         </span>
                         <img
                             src={seal}
