@@ -33,14 +33,9 @@ const AuthenticationProvider = (props) => {
 
         // Interceptor
 
-        // axios.defaults.baseURL = 'http://143.110.247.32:8070/api'; //Staging
-        // axios.defaults.baseURL = 'http://159.65.157.4:8070/api'; //Demo ip
-        //axios.defaults.baseURL = 'http://64.227.142.128:8070/api'; // Sales
-        // axios.defaults.baseURL = 'https://sdapi.streamhall.in/api'; // Local
-        // axios.defaults.baseURL = 'http://134.209.157.187:8070/api'; //Dev
         // axios.defaults.baseURL = "http://127.0.0.1:3000/api"; //test
-        // axios.defaults.baseURL = "http://13.60.18.35:3000/api"; //CI-CD
-        axios.defaults.baseURL = "https://api.ssck.in/api"; //CI-CD
+        // axios.defaults.baseURL = "http://127.0.0.1:8070/api"; //CI-CD
+        //CI-CD
 
         const axiosId = axios.interceptors.response.use(
             (res) => {

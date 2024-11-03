@@ -354,7 +354,7 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 color: "#54527C",
                             }}
                         >
-                            Maritial Status
+                            Marital Status
                         </div>
                         <Field
                             sx={{ position: "relative" }}
@@ -389,8 +389,8 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                             value: "Divorced",
                                         },
                                         {
-                                            key: "Other",
-                                            value: "Other",
+                                            key: "Married",
+                                            value: "Married",
                                         },
                                     ].map((option) => (
                                         <MenuItem

@@ -463,8 +463,8 @@ function GlobalComplete({ getIncompleteDataCount }) {
                                                         value: "Divorced",
                                                     },
                                                     {
-                                                        key: "Other",
-                                                        value: "Other",
+                                                        key: "Married",
+                                                        value: "Married",
                                                     },
                                                 ].map((option) => (
                                                     <MenuItem
