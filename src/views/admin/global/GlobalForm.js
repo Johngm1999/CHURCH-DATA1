@@ -8,8 +8,6 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
-    Checkbox,
-    FormGroup,
     FormHelperText,
     Grid,
     Select,
@@ -88,7 +86,6 @@ const GlobalForm = ({
             .nullable()
             .max(new Date(), "Date of Birth cannot be in the future"),
         age: Yup.number().nullable().positive().integer(), // Optional, should be a positive integer if present
-        houseName: Yup.string().nullable(),
         contactNumber: Yup.string().nullable(),
         whatsAppNumber: Yup.string().nullable(),
         email: Yup.string().nullable(),
@@ -403,8 +400,8 @@ const GlobalForm = ({
                                                 value: "Widow",
                                             },
                                             {
-                                                key: "Divorced",
-                                                value: "Divorced",
+                                                key: "Single Parent",
+                                                value: "Single Parent",
                                             },
                                             {
                                                 key: "Married",

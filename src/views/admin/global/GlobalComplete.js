@@ -459,8 +459,8 @@ function GlobalComplete({ getIncompleteDataCount }) {
                                                         value: "Widow",
                                                     },
                                                     {
-                                                        key: "Divorced",
-                                                        value: "Divorced",
+                                                        key: "Single Parent",
+                                                        value: "Single Parent",
                                                     },
                                                     {
                                                         key: "Married",
