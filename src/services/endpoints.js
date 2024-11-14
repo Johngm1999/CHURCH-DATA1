@@ -19,6 +19,7 @@ const endpoints = Object.freeze({
         deletedYouth: "youth/deletedYouth",
         restoreYouth: "youth/restoreYouth",
         permanentDelete: "youth/permanentDelete",
+        getDataForExcel: "youth/getDataForExcel",
     },
     dashboard: {
         get: "dashboard/",
@@ -38,6 +39,7 @@ const endpoints = Object.freeze({
         deletedGlobal: "global/deletedGlobal",
         restoreGlobal: "global/restoreGlobal",
         permanentDelete: "global/permanentDelete",
+        getDataForExcel: "global/getDataForExcel",
     },
     parish: {
         add: "parish/add",
@@ -50,6 +52,7 @@ const endpoints = Object.freeze({
         deletedParish: "parish/deletedParish",
         restoreParish: "parish/restoreParish",
         permanentDelete: "parish/permanentDelete",
+        getDataForExcel: "parish/getDataForExcel",
     },
 });
 

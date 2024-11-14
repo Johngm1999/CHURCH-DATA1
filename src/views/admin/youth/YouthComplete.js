@@ -19,6 +19,7 @@ import {
     InputLabel,
 } from "@mui/material";
 import toast from "react-hot-toast";
+import DownloadExcel from "../../../components/DownloadExcel";
 
 function Youthcomplete({ getIncompleteDataCount }) {
     const [page, setPage] = useState(1);
@@ -484,6 +485,12 @@ function Youthcomplete({ getIncompleteDataCount }) {
                                 >
                                     Search
                                 </Button>
+                                <DownloadExcel
+                                    apiEndpoint={`${
+                                        endpoints.youth.search
+                                    }?${buildSearchQuery()}`}
+                                    filename="Youth-user-search-list"
+                                />
                                 <Button
                                     variant="outlined"
                                     color="secondary"
@@ -514,6 +521,12 @@ function Youthcomplete({ getIncompleteDataCount }) {
                 handlePageJump={handlePageJump}
                 DisplayForm={YouthDataDisplayFrom}
                 showFullDetails
+                headerExtras={
+                    <DownloadExcel
+                        apiEndpoint={endpoints.youth.getDataForExcel}
+                        filename="Youth-user-list"
+                    />
+                }
             />
         </>
     );

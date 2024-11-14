@@ -19,6 +19,7 @@ import {
     InputLabel,
 } from "@mui/material";
 import toast from "react-hot-toast";
+import DownloadExcel from "../../../components/DownloadExcel";
 
 function ParishComplete({ getIncompleteDataCount }) {
     const [page, setPage] = useState(1);
@@ -367,6 +368,12 @@ function ParishComplete({ getIncompleteDataCount }) {
                                     >
                                         Search
                                     </Button>
+                                    <DownloadExcel
+                                        apiEndpoint={`${
+                                            endpoints.parish.search
+                                        }?${buildSearchQuery()}`}
+                                        filename="Parish-user-search-list"
+                                    />
                                     <Button
                                         variant="outlined"
                                         color="secondary"
@@ -397,6 +404,12 @@ function ParishComplete({ getIncompleteDataCount }) {
                 handlePageJump={handlePageJump}
                 DisplayForm={ParishDataDisplayForm}
                 showFullDetails
+                headerExtras={
+                    <DownloadExcel
+                        apiEndpoint={endpoints.parish.getDataForExcel}
+                        filename="Parish-user-list"
+                    />
+                }
             />
         </>
     );

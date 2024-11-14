@@ -19,6 +19,7 @@ import {
     InputLabel,
 } from "@mui/material";
 import toast from "react-hot-toast";
+import DownloadExcel from "../../../components/DownloadExcel";
 
 function GlobalComplete({ getIncompleteDataCount }) {
     const [page, setPage] = useState(1);
@@ -510,6 +511,13 @@ function GlobalComplete({ getIncompleteDataCount }) {
                                     >
                                         Search
                                     </Button>
+                                    <DownloadExcel
+                                        apiEndpoint={`${
+                                            endpoints.global.search
+                                        }?${buildSearchQuery()}`}
+                                        filename="Global-user-search-list"
+                                        isSearch
+                                    />
                                     <Button
                                         variant="outlined"
                                         color="secondary"
@@ -541,6 +549,12 @@ function GlobalComplete({ getIncompleteDataCount }) {
                 DisplayForm={GlobalDataDisplayForm}
                 showFullDetails
                 isComplete
+                headerExtras={
+                    <DownloadExcel
+                        apiEndpoint={endpoints.global.getDataForExcel}
+                        filename="Global-user-list"
+                    />
+                }
             />
         </>
     );
