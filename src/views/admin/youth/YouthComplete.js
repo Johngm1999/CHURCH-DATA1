@@ -490,6 +490,7 @@ function Youthcomplete({ getIncompleteDataCount }) {
                                         endpoints.youth.search
                                     }?${buildSearchQuery()}`}
                                     filename="Youth-user-search-list"
+                                    isSearch
                                 />
                                 <Button
                                     variant="outlined"

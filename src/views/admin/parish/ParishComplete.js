@@ -373,6 +373,7 @@ function ParishComplete({ getIncompleteDataCount }) {
                                             endpoints.parish.search
                                         }?${buildSearchQuery()}`}
                                         filename="Parish-user-search-list"
+                                        isSearch
                                     />
                                     <Button
                                         variant="outlined"
