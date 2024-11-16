@@ -17,6 +17,8 @@ import FormSubmissionBtn from "../../../components/FormSubmissionBtn";
 import axios from "axios";
 import toast from "react-hot-toast";
 import endpoints from "../../../services/endpoints";
+import MandatoryInfo from "../../../components/MandatoryInfo";
+import MandatoryIndicator from "../../../components/MandatoryIndicator";
 
 const findAge = (dateOfBirth) => {
     if (dateOfBirth) {
@@ -135,11 +137,16 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
         >
             {({ values, setFieldValue, errors, touched }) => (
                 <Form>
+                    <MandatoryInfo />
                     <Field name="formNumber">
                         {({ field }) => (
                             <TextField
                                 fullWidth
-                                label="Form Number"
+                                label={
+                                    <MandatoryIndicator>
+                                        Form Number
+                                    </MandatoryIndicator>
+                                }
                                 {...field}
                                 error={
                                     touched.formNumber &&
@@ -172,7 +179,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Full Name"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Full Name
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.fullName &&
@@ -190,7 +201,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Baptism Name"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Baptism Name
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.baptismName &&
@@ -211,7 +226,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="House Name"
+                                        label={
+                                            <MandatoryIndicator>
+                                                House Name
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.houseName &&
@@ -231,7 +250,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                     <TextField
                                         fullWidth
                                         type="date"
-                                        label="Date of Birth (DD/MM/YYYY)"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Date of Birth (DD/MM/YYYY)
+                                            </MandatoryIndicator>
+                                        }
                                         InputLabelProps={{ shrink: true }}
                                         {...field}
                                         onChange={(e) => {
@@ -263,7 +286,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Age"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Age
+                                            </MandatoryIndicator>
+                                        }
                                         type="number"
                                         {...field}
                                         error={
@@ -280,7 +307,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Contact Number (India)"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Contact Number (India)
+                                            </MandatoryIndicator>
+                                        }
                                         type="number"
                                         {...field}
                                         error={
@@ -303,7 +334,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="whatsApp Number (India)"
+                                        label={
+                                            <MandatoryIndicator>
+                                                whatsApp Number (India)
+                                            </MandatoryIndicator>
+                                        }
                                         type="number"
                                         {...field}
                                         error={
@@ -324,7 +359,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Email Address"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Email Address
+                                            </MandatoryIndicator>
+                                        }
                                         type="email"
                                         {...field}
                                     />
@@ -353,7 +392,9 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 color: "#54527C",
                             }}
                         >
-                            Marital Status
+                            <MandatoryIndicator>
+                                Marital Status
+                            </MandatoryIndicator>
                         </div>
                         <Field
                             sx={{ position: "relative" }}
@@ -429,7 +470,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Country of Residence"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Country of Residence
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.country &&
@@ -448,7 +493,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="City"
+                                        label={
+                                            <MandatoryIndicator>
+                                                City
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.city && Boolean(errors.city)
@@ -486,7 +535,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Postal Code"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Postal Code
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.postalCode &&
@@ -507,7 +560,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                     <TextField
                                         fullWidth
                                         type="number"
-                                        label="Contact Number (Abroad)"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Contact Number (Abroad)
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.contactNumberAbroad &&
@@ -530,7 +587,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                     <TextField
                                         fullWidth
                                         type="number"
-                                        label="WhatsApp Number (Abroad)"
+                                        label={
+                                            <MandatoryIndicator>
+                                                WhatsApp Number (Abroad)
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.whatsAppNumberAbroad &&
@@ -645,7 +706,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                         {({ field }) => (
                             <TextField
                                 fullWidth
-                                label="Occupation/Field of study"
+                                label={
+                                    <MandatoryIndicator>
+                                        Occupation/Field of study
+                                    </MandatoryIndicator>
+                                }
                                 {...field}
                                 error={
                                     touched.ocupationOrField &&
@@ -705,8 +770,10 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                     component="legend"
                                     sx={{ fontSize: 12 }}
                                 >
-                                    Are you a affiliated with any churches
-                                    (Parish/Mass Centre)?
+                                    <MandatoryIndicator>
+                                        Are you a affiliated with any churches
+                                        (Parish/Mass Centre)?
+                                    </MandatoryIndicator>
                                 </FormLabel>
                                 <RadioGroup
                                     row
@@ -750,7 +817,11 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                     {({ field }) => (
                                         <TextField
                                             fullWidth
-                                            label="Name of Church"
+                                            label={
+                                                <MandatoryIndicator>
+                                                    Name of Church
+                                                </MandatoryIndicator>
+                                            }
                                             {...field}
                                             error={
                                                 touched.nameOfChurchAffiliated &&
@@ -779,7 +850,10 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 }
                             >
                                 <FormLabel component="legend">
-                                    Do you have a chance for sunday mass ?
+                                    <MandatoryIndicator>
+                                        {" "}
+                                        Do you have a chance for sunday mass ?
+                                    </MandatoryIndicator>
                                 </FormLabel>
                                 <RadioGroup
                                     row
@@ -851,7 +925,7 @@ const GlobalForm = ({ onCancel, onAfterSubmit }) => {
                                 paddingRight: 4,
                             }}
                         >
-                            Unit
+                            <MandatoryIndicator>Unit</MandatoryIndicator>
                         </div>
                         <Field sx={{ position: "relative" }} name="unit">
                             {({ field }) => (

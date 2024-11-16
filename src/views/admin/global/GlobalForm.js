@@ -799,8 +799,10 @@ const GlobalForm = ({
                                     component="legend"
                                     sx={{ fontSize: 12 }}
                                 >
-                                    Are you a affiliated with any churches
-                                    (Parish/Mass Centre)?
+                                    <MandatoryIndicator>
+                                        Are you a affiliated with any churches
+                                        (Parish/Mass Centre)?
+                                    </MandatoryIndicator>
                                 </FormLabel>
                                 <RadioGroup
                                     row

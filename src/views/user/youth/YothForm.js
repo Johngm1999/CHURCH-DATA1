@@ -19,6 +19,8 @@ import axios from "axios";
 import FormSubmissionBtn from "../../../components/FormSubmissionBtn";
 import endpoints from "../../../services/endpoints";
 import toast from "react-hot-toast";
+import MandatoryInfo from "../../../components/MandatoryInfo";
+import MandatoryIndicator from "../../../components/MandatoryIndicator";
 
 const findAge = (dateOfBirth) => {
     if (dateOfBirth) {
@@ -145,11 +147,16 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
         >
             {({ values, setFieldValue, errors, touched }) => (
                 <Form>
+                    <MandatoryInfo />
                     <Field name="formNumber">
                         {({ field }) => (
                             <TextField
                                 fullWidth
-                                label="Form Number"
+                                label={
+                                    <MandatoryIndicator>
+                                        Form Number
+                                    </MandatoryIndicator>
+                                }
                                 {...field}
                                 error={
                                     touched.formNumber &&
@@ -181,7 +188,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Full Name"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Full Name
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.fullName &&
@@ -201,7 +212,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                     <TextField
                                         fullWidth
                                         type="date"
-                                        label="Date of Birth (DD/MM/YYYY)"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Date of Birth (DD/MM/YYYY)
+                                            </MandatoryIndicator>
+                                        }
                                         InputLabelProps={{ shrink: true }}
                                         {...field}
                                         onChange={(e) => {
@@ -235,7 +250,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Age"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Age
+                                            </MandatoryIndicator>
+                                        }
                                         type="number"
                                         {...field}
                                         error={
@@ -252,7 +271,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                 component="fieldset"
                                 error={touched.gender && Boolean(errors.gender)}
                             >
-                                <FormLabel component="legend">Gender</FormLabel>
+                                <FormLabel component="legend">
+                                    <MandatoryIndicator>
+                                        Gender
+                                    </MandatoryIndicator>
+                                </FormLabel>
                                 <RadioGroup
                                     row
                                     name="gender"
@@ -300,7 +323,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Permanent Address"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Permanent Address
+                                            </MandatoryIndicator>
+                                        }
                                         multiline
                                         rows={4} // Adjust rows for larger text area
                                         {...field}
@@ -338,7 +365,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Mobile Number"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Mobile Number
+                                            </MandatoryIndicator>
+                                        }
                                         type="number"
                                         {...field}
                                         error={
@@ -359,7 +390,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="WhatsApp Number"
+                                        label={
+                                            <MandatoryIndicator>
+                                                WhatsApp Number
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                     />
                                 )}
@@ -413,7 +448,9 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                 color: "#54527C",
                             }}
                         >
-                            Highest Educational Qualification
+                            <MandatoryIndicator>
+                                Highest Educational Qualification
+                            </MandatoryIndicator>
                         </div>
                         <Field
                             sx={{ position: "relative" }}
@@ -422,7 +459,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                             {({ field }) => (
                                 <Select
                                     {...field}
-                                    label="Highest Educational Qualification"
+                                    label={
+                                        <MandatoryIndicator>
+                                            Highest Educational Qualification
+                                        </MandatoryIndicator>
+                                    }
                                     value={field.value || ""}
                                     onChange={(e) => {
                                         setFieldValue(
@@ -538,7 +579,9 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                         <Grid item xs={12}>
                             <FormGroup>
                                 <FormLabel component="legend">
-                                    Sacraments Recieved
+                                    <MandatoryIndicator>
+                                        Sacraments Recieved
+                                    </MandatoryIndicator>
                                 </FormLabel>
                                 <FormControlLabel
                                     control={
@@ -661,7 +704,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                     {({ field }) => (
                                         <TextField
                                             fullWidth
-                                            label="Organisation Group"
+                                            label={
+                                                <MandatoryIndicator>
+                                                    Organisation Group
+                                                </MandatoryIndicator>
+                                            }
                                             {...field}
                                             error={
                                                 touched.organisationGroup &&
@@ -731,7 +778,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                     {({ field }) => (
                                         <TextField
                                             fullWidth
-                                            label="Parish Activity"
+                                            label={
+                                                <MandatoryIndicator>
+                                                    Parish Activity
+                                                </MandatoryIndicator>
+                                            }
                                             {...field}
                                             error={
                                                 touched.parishActivity &&
@@ -1001,7 +1052,11 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="House Name"
+                                        label={
+                                            <MandatoryIndicator>
+                                                House Name
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.houseName &&
@@ -1093,7 +1148,9 @@ const YouthDataCollectionForm = ({ onCancel, onAfterSubmit }) => {
                                         paddingRight: 4,
                                     }}
                                 >
-                                    Unit
+                                    <MandatoryIndicator>
+                                        Unit
+                                    </MandatoryIndicator>
                                 </div>
                                 <Field
                                     sx={{ position: "relative" }}

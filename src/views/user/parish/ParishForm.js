@@ -18,6 +18,8 @@ import FormSubmissionBtn from "../../../components/FormSubmissionBtn";
 import toast from "react-hot-toast";
 import axios from "axios";
 import endpoints from "../../../services/endpoints";
+import MandatoryInfo from "../../../components/MandatoryInfo";
+import MandatoryIndicator from "../../../components/MandatoryIndicator";
 
 // Validation Schema with Yup
 const validationSchema = Yup.object({
@@ -143,11 +145,16 @@ const ParishForm = ({ onCancel, onAfterSubmit }) => {
         >
             {({ values, touched, errors, setFieldValue }) => (
                 <Form>
+                    <MandatoryInfo />
                     <Box sx={{ py: 2 }}>
                         <Field
                             name="formNumber"
                             as={TextField}
-                            label="Form Number"
+                            label={
+                                <MandatoryIndicator>
+                                    Form Number
+                                </MandatoryIndicator>
+                            }
                             fullWidth
                         />
                         <ErrorMessage name="formNumber" component="div" />
@@ -172,7 +179,11 @@ const ParishForm = ({ onCancel, onAfterSubmit }) => {
                             <Field
                                 name="familyName"
                                 as={TextField}
-                                label="Family Name"
+                                label={
+                                    <MandatoryIndicator>
+                                        Family Name
+                                    </MandatoryIndicator>
+                                }
                                 fullWidth
                             />
                             <ErrorMessage name="familyName" component="div" />
@@ -181,7 +192,11 @@ const ParishForm = ({ onCancel, onAfterSubmit }) => {
                             <Field
                                 name="contactNumber"
                                 as={TextField}
-                                label="Contact Number"
+                                label={
+                                    <MandatoryIndicator>
+                                        Contact Number
+                                    </MandatoryIndicator>
+                                }
                                 fullWidth
                                 type="number"
                             />
@@ -205,7 +220,9 @@ const ParishForm = ({ onCancel, onAfterSubmit }) => {
                         <Field
                             name="address"
                             as={TextField}
-                            label="Address"
+                            label={
+                                <MandatoryIndicator>Address</MandatoryIndicator>
+                            }
                             fullWidth
                             multiline
                             rows={4}
@@ -231,7 +248,11 @@ const ParishForm = ({ onCancel, onAfterSubmit }) => {
                             <Field
                                 name="headName"
                                 as={TextField}
-                                label="Head of the Family (Name)"
+                                label={
+                                    <MandatoryIndicator>
+                                        Head of the Family (Name)
+                                    </MandatoryIndicator>
+                                }
                                 fullWidth
                             />
                             <ErrorMessage name="headName" component="div" />
@@ -240,7 +261,9 @@ const ParishForm = ({ onCancel, onAfterSubmit }) => {
                             <Field
                                 name="headAge"
                                 as={TextField}
-                                label="Age"
+                                label={
+                                    <MandatoryIndicator>Age</MandatoryIndicator>
+                                }
                                 fullWidth
                             />
                             <ErrorMessage name="headAge" component="div" />
@@ -262,7 +285,11 @@ const ParishForm = ({ onCancel, onAfterSubmit }) => {
                             <Field
                                 name="headMobile"
                                 as={TextField}
-                                label="Mobile"
+                                label={
+                                    <MandatoryIndicator>
+                                        Mobile
+                                    </MandatoryIndicator>
+                                }
                                 type="number"
                                 fullWidth
                             />
@@ -879,7 +906,7 @@ const ParishForm = ({ onCancel, onAfterSubmit }) => {
                                     paddingRight: 4,
                                 }}
                             >
-                                Unit
+                                <MandatoryIndicator>Unit</MandatoryIndicator>
                             </div>
                             <Field sx={{ position: "relative" }} name="unit">
                                 {({ field }) => (
