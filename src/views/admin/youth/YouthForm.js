@@ -18,6 +18,7 @@ import {
 import FormSubmissionBtn from "../../../components/FormSubmissionBtn";
 import axios from "axios";
 import toast from "react-hot-toast";
+import MandatoryIndicator from "../../../components/MandatoryIndicator";
 
 const findAge = (dateOfBirth) => {
     if (dateOfBirth) {
@@ -49,7 +50,18 @@ const YouthDataCollectionForm = ({
     updateValues,
     getIncompleteDataCount,
 }) => {
-    const initialValues = updateValues || {
+    let updatedData;
+    if (updateValues) {
+        updatedData = {
+            ...updateValues,
+            sacraments: {
+                baptism: Boolean(updateValues.sacraments.baptism),
+                confirmation: Boolean(updateValues.sacraments.confirmation),
+                holyCommunion: Boolean(updateValues.sacraments.holyCommunion),
+            },
+        };
+    }
+    const initialValues = updatedData || {
         formNumber: "",
         fullName: "",
         dateOfBirth: "",
@@ -168,12 +180,27 @@ const YouthDataCollectionForm = ({
         >
             {({ values, setFieldValue, errors, touched }) => (
                 <Form>
+                    <div
+                        style={{
+                            display: "flex",
+                            color: "#d95757",
+                            fontSize: 12,
+                            justifyContent: "center",
+                        }}
+                    >
+                        Fields need to mark the data as completed is indicated
+                        by <div style={{ color: "red", fontSize: 18 }}>*</div>
+                    </div>
                     <Grid item xs={12} sm={6} my={2}>
                         <Field name="formNumber">
                             {({ field }) => (
                                 <TextField
                                     fullWidth
-                                    label="Form Number"
+                                    label={
+                                        <MandatoryIndicator>
+                                            Form Number
+                                        </MandatoryIndicator>
+                                    }
                                     {...field}
                                     error={
                                         touched.formNumber &&
@@ -206,7 +233,11 @@ const YouthDataCollectionForm = ({
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Full Name"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Full Name
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.fullName &&
@@ -226,7 +257,11 @@ const YouthDataCollectionForm = ({
                                     <TextField
                                         fullWidth
                                         type="date"
-                                        label="Date of Birth (DD/MM/YYYY)"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Date of Birth (DD/MM/YYYY)
+                                            </MandatoryIndicator>
+                                        }
                                         InputLabelProps={{ shrink: true }}
                                         {...field}
                                         onChange={(e) => {
@@ -260,7 +295,11 @@ const YouthDataCollectionForm = ({
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Age"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Age
+                                            </MandatoryIndicator>
+                                        }
                                         type="number"
                                         {...field}
                                         error={
@@ -277,7 +316,11 @@ const YouthDataCollectionForm = ({
                                 component="fieldset"
                                 error={touched.gender && Boolean(errors.gender)}
                             >
-                                <FormLabel component="legend">Gender</FormLabel>
+                                <FormLabel component="legend">
+                                    <MandatoryIndicator>
+                                        Gender
+                                    </MandatoryIndicator>
+                                </FormLabel>
                                 <RadioGroup
                                     row
                                     name="gender"
@@ -325,7 +368,11 @@ const YouthDataCollectionForm = ({
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Permanent Address"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Permanent Address
+                                            </MandatoryIndicator>
+                                        }
                                         multiline
                                         rows={4} // Adjust rows for larger text area
                                         {...field}
@@ -363,7 +410,11 @@ const YouthDataCollectionForm = ({
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="Mobile Number"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Mobile Number
+                                            </MandatoryIndicator>
+                                        }
                                         type="number"
                                         {...field}
                                         error={
@@ -384,7 +435,11 @@ const YouthDataCollectionForm = ({
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="WhatsApp Number"
+                                        label={
+                                            <MandatoryIndicator>
+                                                WhatsApp Number
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                     />
                                 )}
@@ -440,7 +495,9 @@ const YouthDataCollectionForm = ({
                                     color: "#54527C",
                                 }}
                             >
-                                Highest Educational Qualification
+                                <MandatoryIndicator>
+                                    Highest Educational Qualification
+                                </MandatoryIndicator>
                             </div>
                             <Field
                                 sx={{ position: "relative" }}
@@ -449,7 +506,12 @@ const YouthDataCollectionForm = ({
                                 {({ field }) => (
                                     <Select
                                         {...field}
-                                        label="Highest Educational Qualification"
+                                        label={
+                                            <MandatoryIndicator>
+                                                Highest Educational
+                                                Qualification
+                                            </MandatoryIndicator>
+                                        }
                                         value={field.value || ""}
                                         onChange={(e) => {
                                             setFieldValue(
@@ -566,7 +628,9 @@ const YouthDataCollectionForm = ({
                         <Grid item xs={12}>
                             <FormGroup>
                                 <FormLabel component="legend">
-                                    Sacraments Recieved
+                                    <MandatoryIndicator>
+                                        Sacraments Recieved
+                                    </MandatoryIndicator>
                                 </FormLabel>
                                 <FormControlLabel
                                     control={
@@ -689,7 +753,11 @@ const YouthDataCollectionForm = ({
                                     {({ field }) => (
                                         <TextField
                                             fullWidth
-                                            label="Organisation Group"
+                                            label={
+                                                <MandatoryIndicator>
+                                                    Organisation Group
+                                                </MandatoryIndicator>
+                                            }
                                             {...field}
                                             error={
                                                 touched.organisationGroup &&
@@ -759,7 +827,11 @@ const YouthDataCollectionForm = ({
                                     {({ field }) => (
                                         <TextField
                                             fullWidth
-                                            label="Parish Activity"
+                                            label={
+                                                <MandatoryIndicator>
+                                                    Parish Activity
+                                                </MandatoryIndicator>
+                                            }
                                             {...field}
                                             error={
                                                 touched.parishActivity &&
@@ -1029,7 +1101,11 @@ const YouthDataCollectionForm = ({
                                 {({ field }) => (
                                     <TextField
                                         fullWidth
-                                        label="House Name"
+                                        label={
+                                            <MandatoryIndicator>
+                                                House Name
+                                            </MandatoryIndicator>
+                                        }
                                         {...field}
                                         error={
                                             touched.houseName &&
@@ -1124,7 +1200,9 @@ const YouthDataCollectionForm = ({
                                         paddingRight: 4,
                                     }}
                                 >
-                                    Unit
+                                    <MandatoryIndicator>
+                                        Unit
+                                    </MandatoryIndicator>
                                 </div>
                                 <Field
                                     sx={{ position: "relative" }}

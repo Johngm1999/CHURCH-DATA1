@@ -5,8 +5,11 @@ const capitalizeKeys = (data) => {
         const capitalizedItem = {};
         for (let key in item) {
             if (item.hasOwnProperty(key)) {
-                // Capitalize the key and add it to the new object
-                capitalizedItem[key.toUpperCase()] = item[key];
+                // Add spaces before capital letters and convert to uppercase
+                const formattedKey = key
+                    .replace(/([A-Z])/g, " $1") // Add space before each uppercase letter
+                    .toUpperCase(); // Convert the entire key to uppercase
+                capitalizedItem[formattedKey] = item[key];
             }
         }
         return capitalizedItem;
