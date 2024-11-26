@@ -86,7 +86,7 @@ function GlobalList() {
                                     sx={{
                                         position: "absolute",
                                         top: 0,
-                                        right: -85,
+                                        right: -70,
                                         "& .MuiBadge-dot": {
                                             width: 20, // Change width to your desired size
                                             height: 20, // Change height to your desired size

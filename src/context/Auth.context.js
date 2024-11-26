@@ -34,8 +34,8 @@ const AuthenticationProvider = (props) => {
         // Interceptor
 
         // axios.defaults.baseURL = "http://127.0.0.1:3000/api"; //test
-        axios.defaults.baseURL = "http://127.0.0.1:8070/api"; //CI-CD
-        // axios.defaults.baseURL = "https://api.ssck.in/api"; //for build
+        // axios.defaults.baseURL = "http://127.0.0.1:8070/api"; //CI-CD
+        axios.defaults.baseURL = "https://api.ssck.in/api"; //for build
 
         const axiosId = axios.interceptors.response.use(
             (res) => {

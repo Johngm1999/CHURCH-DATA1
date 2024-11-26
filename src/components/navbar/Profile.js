@@ -1,11 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
-import { Button, Dropdown, Form, InputGroup, Row } from "react-bootstrap";
+import { Button, Dropdown, Form, InputGroup } from "react-bootstrap";
 import endpoints from "../../services/endpoints";
 import Boy from "../../asset/img/Boy.png";
 import WithModal from "../WithModal";
 import withAlert from "../../hoc/withAlert";
-import { useAuthenticationState } from "../../context/Auth.context";
 import eyeopen from "../../asset/icons/Eyeopen.svg";
 import eyeclose from "../../asset/icons/Eyeclose.svg";
 import toast from "react-hot-toast";
@@ -25,7 +24,6 @@ function Profile({ showAlert }) {
         username: "",
     });
     const [submitting, setSubmitting] = useState(false);
-    const { logout, user } = useAuthenticationState();
 
     const togglePasswordVisibility = (field) => {
         setPasswordVisibility((prevState) => ({

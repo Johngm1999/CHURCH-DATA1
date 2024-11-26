@@ -1,7 +1,6 @@
 import React from "react";
 import Menu from "./Menu";
 import { Box } from "@mui/material";
-import LogoutWithWarning from "../Logout";
 
 function Sidebar({ routes, show }) {
     const sidebarStyle = {
